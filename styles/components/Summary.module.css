@@ -1,0 +1,191 @@
+/* Summary.module.css - Styles pour les résumés et cartes de résumé */
+
+/* Résumé de commande */
+.orderSummary {
+  margin-top: 32px;
+  padding: 24px;
+  background: #f8f9fa;
+  border-radius: 20px;
+  border: 1px solid #f1f3f4;
+}
+
+.summaryTitle {
+  color: #202124;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 16px;
+}
+
+.summaryLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #3c4043;
+}
+
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #dadce0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #202124;
+}
+
+.discount {
+  color: #34a853;
+  font-weight: 500;
+}
+
+/* Carte de résumé du plan */
+.planSummaryCard {
+  background: #fff;
+  border: 1px solid #dadce0;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.planSummaryHeader {
+  margin-bottom: 12px;
+}
+
+.planSummaryTitle {
+  color: #1a73e8;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 4px 0;
+}
+
+.planSummaryPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.planSummaryDescription {
+  color: #5f6368;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Résumé compact */
+.planSummaryCompact {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.selectedPlan {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selectedPlan h3 {
+  color: #1a73e8;
+  font-size: 16px;
+  margin: 0;
+}
+
+.priceDisplay {
+  text-align: right;
+}
+
+.trialPrice {
+  color: #34a853;
+  font-weight: 500;
+  font-size: 16px;
+  display: block;
+}
+
+.thenPrice {
+  color: #5f6368;
+  font-size: 13px;
+}
+
+/* Résumé de vérification */
+.verificationSummary {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 16px;
+  margin-top: 20px;
+}
+
+.verificationSteps {
+  margin-bottom: 16px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #5f6368;
+}
+
+.stepNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: #1a73e8;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* Détails trial - ajoutés depuis Confirmation.module.css */
+.trialDetails {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.trialInfo {
+  margin-top: 12px;
+}
+
+.trialStep {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.stepIcon {
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.trialStep div strong {
+  color: #3c4043;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.trialStep div p {
+  color: #5f6368;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .orderSummary,
+  .planSummaryCompact {
+    padding: 16px;
+  }
+}

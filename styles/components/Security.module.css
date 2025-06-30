@@ -1,0 +1,140 @@
+/* Security.module.css - Styles pour les éléments de sécurité et vérification */
+
+/* Badge de sécurité */
+.securityBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #e8f5e8;
+  color: #137333;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.securityIcon {
+  font-size: 14px;
+}
+
+.securityNotice .securityIcon {
+  font-size: 24px;
+  color: #34a853;
+}
+
+/* Notice de sécurité */
+.securityNotice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #34a853;
+}
+
+.securityText strong {
+  color: #1a73e8;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.securityText p {
+  color: #5f6368;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Informations de vérification */
+.verificationInfo {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 16px;
+  margin-top: 20px;
+}
+
+.verificationReasons {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0 0;
+}
+
+.verificationReasons li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #5f6368;
+}
+
+/* Garantie */
+.guarantee {
+  background: #e8f5e8;
+  color: #137333;
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 13px;
+  text-align: center;
+  border: 1px solid #ceead6;
+}
+
+/* Détails d'essai */
+.trialDetails {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 16px;
+  margin-top: 20px;
+}
+
+.trialInfo {
+  margin-top: 12px;
+}
+
+.trialStep {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.stepIcon {
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.trialStep div strong {
+  color: #3c4043;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.trialStep div p {
+  color: #5f6368;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Styles Security ajoutés depuis Confirmation.module.css */
+.securityNote {
+  color: #5f6368;
+  font-size: 13px;
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-weight: 400;
+}
+
+/* Indicateurs de confiance */
+.trustIndicators {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #f1f3f4;
+}

@@ -1,0 +1,13 @@
+/* 
+  This file is now empty as all styles have been moved to their respective component modules:
+  - Layout.module.css (container, background, overlay, popup)
+  - Header.module.css (header, title, description, logo)
+  - PlanCard.module.css (plan cards, pricing, features)
+  - Button.module.css (buttons, interactions)
+  - Form.module.css (forms, inputs, layouts)
+  - Security.module.css (security notices, trial info)
+  - Legal.module.css (legal information, terms)
+  
+  Components now import styles directly from their respective modules.
+  This file can be deleted once all dependencies are removed.
+*/

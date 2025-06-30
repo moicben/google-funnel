@@ -1,0 +1,128 @@
+/* Form.module.css - Styles pour les formulaires */
+
+/* Groupe de formulaire */
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Labels */
+.formLabel {
+  color: #3c4043;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+  letter-spacing: 0.1px;
+}
+
+/* Inputs */
+.formInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.formInput:hover {
+  border-color: #9aa0a6;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #4285f4;
+  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.1);
+}
+
+.formInput::placeholder {
+  color: #9aa0a6;
+}
+
+/* Titres de formulaire */
+.formTitle {
+  color: #202124;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 24px;
+  text-align: center;
+}
+
+.formSubtitle {
+  color: #5f6368;
+  font-size: 14px;
+  margin: 0 0 20px 0;
+}
+
+.paymentFormTitle {
+  color: #202124;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0 0 24px 0;
+  text-align: center;
+  letter-spacing: -0.2px;
+}
+
+/* Conteneurs de formulaire */
+.paymentContainer {
+  margin-bottom: 32px;
+}
+
+.paymentForm {
+  background: #fff;
+  border: 1px solid #dadce0;
+  border-radius: 18px;
+  padding: 32px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.paymentFormCard {
+  background: #fff;
+  border: 1px solid #dadce0;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.verificationForm {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f3f4;
+}
+
+.compactFormContainer {
+  margin: 20px 0;
+}
+
+/* Résumé de commande - ajouté depuis Confirmation.module.css */
+.orderSummary {
+  margin-top: 32px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #f1f3f4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+  
+  .paymentForm,
+  .paymentFormCard,
+  .verificationForm {
+    padding: 24px 20px;
+  }
+}
