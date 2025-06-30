@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/Popup.module.css';
 
-const BookingPopup = ({ showPopup, onClose }) => {
+const BookingPopup = ({ showPopup, onClose, campaignData }) => {
   const [emailError, setEmailError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);

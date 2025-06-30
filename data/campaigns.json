@@ -1,0 +1,40 @@
+{
+  "campaigns": {
+    "example-1": {
+      "id": "example-1",
+      "landingPageUrl": "https://monsite.com/confirmation",
+      "firstName": "Marie",
+      "lastName": "Dupont",
+      "email": "marie.dupont@example.com",
+      "createdAt": "2025-06-30T10:00:00Z",
+      "description": "Campagne exemple pour démonstration"
+    },
+    "example-2": {
+      "id": "example-2", 
+      "landingPageUrl": "https://monsite.com/confirmation",
+      "firstName": "Pierre",
+      "lastName": "Martin",
+      "email": "pierre.martin@example.com",
+      "createdAt": "2025-06-30T11:00:00Z",
+      "description": "Deuxième campagne exemple"
+    },
+    "coach-fitness-sarah": {
+      "id": "coach-fitness-sarah",
+      "landingPageUrl": "https://monsite.com/confirmation",
+      "firstName": "Sarah",
+      "lastName": "Johnson",
+      "email": "sarah.coach@gmail.com",
+      "createdAt": "2025-06-30T12:00:00Z",
+      "description": "Coaching fitness personnalisé"
+    },
+    "consultant-marketing-alex": {
+      "id": "consultant-marketing-alex",
+      "landingPageUrl": "https://monsite.com/confirmation", 
+      "firstName": "Alexandre",
+      "lastName": "Durand",
+      "email": "alex.marketing@gmail.com",
+      "createdAt": "2025-06-30T13:00:00Z",
+      "description": "Consultation marketing digital"
+    }
+  }
+}
