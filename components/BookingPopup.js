@@ -94,6 +94,11 @@ const BookingPopup = ({ showPopup, onClose, campaignData }) => {
               <div className={styles.dateTime}>
                 <div>Réunion Google Meet • 15 minutes</div>
                 <div className={styles.timezone}>(GMT+02:00) Heure d'Europe centrale - Paris</div>
+                {campaignData && (
+                  <div className={styles.eventHost}>
+                    {campaignData.firstName} {campaignData.lastName} • {campaignData.email}
+                  </div>
+                )}
               </div>
               <button className={styles.closeBtn} onClick={onClose}>
                 ×

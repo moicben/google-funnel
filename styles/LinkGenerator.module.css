@@ -11,7 +11,7 @@
 }
 
 .header h1 {
-  color: #25D366;
+  color: #673de6;
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
 }
@@ -52,7 +52,7 @@
 
 .select:focus {
   outline: none;
-  border-color: #25D366;
+  border-color: #673de6;
 }
 
 .preview {
@@ -71,7 +71,7 @@
   background: white;
   border-radius: 6px;
   padding: 1rem;
-  border-left: 4px solid #25D366;
+  border-left: 4px solid #673de6;
 }
 
 .campaignInfo p {
@@ -84,7 +84,7 @@
 }
 
 .generateBtn {
-  background: #25D366;
+  background: #673de6;
   color: white;
   border: none;
   padding: 1rem 2rem;
@@ -121,14 +121,14 @@
 .linkInput {
   flex: 1;
   padding: 0.75rem;
-  border: 2px solid #25D366;
+  border: 2px solid #673de6;
   border-radius: 6px;
   font-size: 0.9rem;
   background: white;
 }
 
 .copyBtn {
-  background: #25D366;
+  background: #673de6;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;

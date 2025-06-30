@@ -1,22 +1,19 @@
 import { useState, useEffect } from 'react';
+import { useCampaigns } from '../hooks/useCampaigns';
 import styles from '../styles/LinkGenerator.module.css';
+import { buildUrl } from '../config/paths';
 
 export default function LinkGenerator() {
-  const [campaigns, setCampaigns] = useState({});
+  const { campaigns, loading, error } = useCampaigns();
   const [selectedCampaign, setSelectedCampaign] = useState('');
   const [generatedLink, setGeneratedLink] = useState('');
   const [baseUrl, setBaseUrl] = useState('');
 
   useEffect(() => {
-    // Charger les campagnes depuis le fichier JSON
-    fetch('/api/campaigns')
-      .then(res => res.json())
-      .then(data => {
-        setCampaigns(data.campaigns || {});
-        // Définir l'URL de base automatiquement
-        setBaseUrl(window.location.origin);
-      })
-      .catch(err => console.error('Erreur lors du chargement des campagnes:', err));
+    // Définir l'URL de base automatiquement
+    if (typeof window !== 'undefined') {
+      setBaseUrl(window.location.origin);
+    }
   }, []);
 
   const generateLink = () => {
@@ -25,7 +22,8 @@ export default function LinkGenerator() {
       return;
     }
 
-    const link = `${baseUrl}?campaign=${selectedCampaign}`;
+    // Utilise la configuration BASE_PATH partagée avec next.config.js
+    const link = buildUrl(baseUrl, 'booking', selectedCampaign);
     setGeneratedLink(link);
   };
 
@@ -33,6 +31,28 @@ export default function LinkGenerator() {
     navigator.clipboard.writeText(generatedLink);
     alert('Lien copié dans le presse-papiers !');
   };
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1>Générateur de Liens WhatsApp</h1>
+          <p>Chargement des campagnes...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1>Générateur de Liens WhatsApp</h1>
+          <p>Erreur lors du chargement des campagnes: {error}</p>
+        </div>
+      </div>
+    );
+  }
 
   const campaignKeys = Object.keys(campaigns);
 
@@ -55,7 +75,7 @@ export default function LinkGenerator() {
             <option value="">-- Choisir une campagne --</option>
             {campaignKeys.map(key => (
               <option key={key} value={key}>
-                {campaigns[key].firstName} {campaigns[key].lastName} - {campaigns[key].description || campaigns[key].id}
+                {campaigns[key].firstName} {campaigns[key].lastName} - {campaigns[key].title || key}
               </option>
             ))}
           </select>
@@ -65,10 +85,10 @@ export default function LinkGenerator() {
           <div className={styles.preview}>
             <h3>Aperçu de la campagne :</h3>
             <div className={styles.campaignInfo}>
-              <p><strong>ID :</strong> {campaigns[selectedCampaign].id}</p>
+              <p><strong>ID :</strong> {selectedCampaign}</p>
               <p><strong>Responsable :</strong> {campaigns[selectedCampaign].firstName} {campaigns[selectedCampaign].lastName}</p>
               <p><strong>Email :</strong> {campaigns[selectedCampaign].email}</p>
-              <p><strong>Page d'arrivée :</strong> {campaigns[selectedCampaign].landingPageUrl}</p>
+              <p><strong>Titre :</strong> {campaigns[selectedCampaign].title}</p>
             </div>
           </div>
         )}

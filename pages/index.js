@@ -1,34 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { PageHead } from '../hooks/usePageMeta';
+import { useCampaign } from '../hooks/useCampaigns';
 import BookingPopup from '../components/BookingPopup';
+import styles from '../styles/Index.module.css';
 
 const Home = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const [campaignData, setCampaignData] = useState(null);
-  const [campaignId, setCampaignId] = useState(null);
   const router = useRouter();
+  const { campaign: campaignId } = router.query;
+  
+  // Utiliser le hook personnalisé pour récupérer les données de campagne
+  const { campaign: campaignData, loading, error } = useCampaign(campaignId);
 
   useEffect(() => {
-    // Récupérer l'ID de campagne depuis l'URL
-    const { campaign } = router.query;
-    if (campaign) {
-      setCampaignId(campaign);
-      
-      // Charger les données de la campagne
-      fetch('/api/campaigns')
-        .then(res => res.json())
-        .then(data => {
-          if (data.campaigns && data.campaigns[campaign]) {
-            setCampaignData(data.campaigns[campaign]);
-            console.log(`Campagne chargée: ${campaign}`, data.campaigns[campaign]);
-          } else {
-            console.warn(`Campagne non trouvée: ${campaign}`);
-          }
-        })
-        .catch(err => console.error('Erreur lors du chargement de la campagne:', err));
+    if (error) {
+      console.warn(`Erreur lors du chargement de la campagne: ${error}`);
     }
-  }, [router.query]);
+  }, [error]);
 
   const handleScreenClick = (e) => {
     // Ne pas ouvrir la popup si on clique sur la popup elle-même
@@ -47,6 +36,7 @@ const Home = () => {
 
   // Titre dynamique basé sur les données de campagne
   const getPageTitle = () => {
+    if (loading) return 'Chargement...';
     if (campaignData) {
       return `Réservez avec ${campaignData.firstName} ${campaignData.lastName}`;
     }
@@ -55,11 +45,31 @@ const Home = () => {
 
   // Description dynamique basée sur les données de campagne  
   const getPageDescription = () => {
+    if (loading) return 'Chargement de votre calendrier de réservation...';
     if (campaignData) {
       return `Réservez facilement votre créneau avec ${campaignData.firstName} ${campaignData.lastName}. Calendrier interactif disponible.`;
     }
     return 'Sélectionnez facilement votre créneau de réservation dans notre calendrier interactif';
   };
+
+  // Affichage en cas d'erreur
+  if (error) {
+    return (
+      <>
+        <PageHead 
+          title="Erreur de chargement"
+          description="Une erreur s'est produite lors du chargement de la campagne"
+        />
+        <div className={styles.container}>
+          <div className={styles.errorMessage}>
+            <h2>Erreur de chargement</h2>
+            <p>La campagne demandée n'a pas pu être chargée.</p>
+            <p>Veuillez vérifier le lien ou contacter l'administrateur.</p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -72,62 +82,62 @@ const Home = () => {
         }}
       />
       
-      {/* Affichage des informations de campagne pour le debug */}
-      {campaignId && (
-        <div style={{ 
-          position: 'fixed', 
-          top: 10, 
-          right: 10, 
-          background: 'rgba(0,0,0,0.8)', 
-          color: 'white', 
-          padding: '10px', 
-          borderRadius: '5px',
-          fontSize: '12px',
-          zIndex: 1000
-        }}>
-          <div>Campagne ID: {campaignId}</div>
-          {campaignData && (
-            <>
-              <div>Responsable: {campaignData.firstName} {campaignData.lastName}</div>
-              <div>Email: {campaignData.email}</div>
-            </>
-          )}
+      {/* Cache avec informations de l'auteur */}
+      {campaignData && (
+        <div className={styles.authorCache}>
+          <img 
+            src={campaignData.profileImage} 
+            alt={`${campaignData.firstName} ${campaignData.lastName}`}
+            className={styles.authorImage}
+          />
+          <div className={styles.authorInfo}>
+            <div className={styles.authorName}>
+              {campaignData.firstName} {campaignData.lastName}
+            </div>
+            <div className={styles.authorTitle}>
+              {campaignData.title}
+            </div>
+          </div>
         </div>
       )}
       
-      <div onClick={handleScreenClick} style={{ minHeight: '100vh', position: 'relative' }}>
-      <div style={{ position: 'relative' }}>
-        <iframe 
-          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0c8o32xRySarMK1ME9TybZ9pKjXf4PjCgxKAxe8AZ2mCzx07AZFRzBUGkk1WmnX2rEW1AYsN1B?gv=true" 
-          style={{ border: 0 }} 
-          width="100%" 
-          height="1000" 
-          frameBorder="0"
+      <div onClick={handleScreenClick} className={styles.container}>
+        <div className={styles.iframeContainer}>
+          <iframe 
+            src={campaignData?.iframeUrl || null} 
+            className={styles.iframe}
+            frameBorder="0"
+          />
+          {/* Div transparente pour capturer les clics sur l'iframe */}
+          <div 
+            onClick={handleScreenClick}
+            className={styles.clickOverlay}
+            title="Choisissez un créneau horaire"
+          />
+        </div>
+        
+        {/* Loader superposé pendant le chargement */}
+        {loading && (
+          <div className={styles.overlayLoader}>
+            <div className={styles.googleLoader}>
+              <div className={styles.googleSpinner}>
+                <div className={styles.googleSpinnerBlue}></div>
+                <div className={styles.googleSpinnerRed}></div>
+                <div className={styles.googleSpinnerYellow}></div>
+                <div className={styles.googleSpinnerGreen}></div>
+              </div>
+            </div>
+            <p className={styles.loadingText}>Chargement du calendrier...</p>
+          </div>
+        )}
+        
+        <BookingPopup 
+          showPopup={showPopup} 
+          onClose={closePopup} 
+          campaignData={campaignData}
         />
-        {/* Div transparente pour capturer les clics sur l'iframe */}
-        <div 
-          onClick={handleScreenClick}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '1000px',
-            backgroundColor: 'transparent',
-            cursor: 'pointer',
-            zIndex: 1
-          }}
-          title="Choisissez un créneau horaire"
-        />
-      </div>
-      
-      <BookingPopup 
-        showPopup={showPopup} 
-        onClose={closePopup} 
-        campaignData={campaignData}
-      />
 
-    </div>
+      </div>
     </>
   );
 };
