@@ -10,6 +10,16 @@ const PaymentForm = ({
   onSubmit,
   isSubmitting = false 
 }) => {
+  const handleExpiryChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ''); // Supprimer tous les caractères non-numériques
+    
+    if (value.length >= 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    }
+    
+    onInputChange('cardExpiry', value);
+  };
+
   return (
     <>
       <h3 className={formStyles.paymentFormTitle}>
@@ -57,7 +67,7 @@ const PaymentForm = ({
             className={formStyles.formInput}
             placeholder="MM/AA"
             value={formData.cardExpiry}
-            onChange={(e) => onInputChange('expiryDate', e.target.value)}
+            onChange={handleExpiryChange}
             maxLength="5"
           />
         </div>
