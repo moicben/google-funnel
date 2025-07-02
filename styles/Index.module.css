@@ -118,6 +118,7 @@
     .container {
         overflow: auto;
         min-height: auto;
+        max-height: auto;
         margin-top: 56px;
     }
 }

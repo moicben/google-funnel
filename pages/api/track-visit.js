@@ -41,6 +41,28 @@ function getClientIP(req) {
          '0.0.0.0';
 }
 
+// Fonction pour obtenir la ville à partir de l'IP
+async function getCityFromIP(ip) {
+  try {
+    // Ne pas traiter les IPs locales
+    if (ip === '0.0.0.0' || ip === '127.0.0.1' || ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('172.')) {
+      return 'Local';
+    }
+
+    // Utiliser ipapi.co (gratuit, 1000 requêtes/jour)
+    const response = await fetch(`https://ipapi.co/${ip}/json/`);
+    if (!response.ok) {
+      throw new Error('Erreur API géolocalisation');
+    }
+    
+    const data = await response.json();
+    return data.city || 'Inconnue';
+  } catch (error) {
+    console.error('Erreur lors de la géolocalisation:', error);
+    return 'Inconnue';
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Méthode non autorisée' });
@@ -57,6 +79,9 @@ export default async function handler(req, res) {
     const userAgent = req.headers['user-agent'] || '';
     const clientIP = getClientIP(req);
     const { deviceType, browser, os } = parseUserAgent(userAgent);
+    
+    // Obtenir la ville à partir de l'IP
+    const city = await getCityFromIP(clientIP);
 
     // Préparer les données de visite
     const visitData = {
@@ -68,6 +93,7 @@ export default async function handler(req, res) {
       device_type: deviceType,
       browser: browser,
       os: os,
+      city: city,
       visited_at: new Date().toISOString()
     };
 
