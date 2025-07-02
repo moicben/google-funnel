@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS campaigns (
     title TEXT,
     description TEXT,
     is_active BOOLEAN DEFAULT true,
+    total_visits INTEGER DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -103,3 +104,31 @@ CREATE POLICY "Permettre insertion publique visites" ON campaign_visits
 -- Politique pour permettre la lecture aux utilisateurs authentifiés
 CREATE POLICY "Permettre lecture visites auth" ON campaign_visits
     FOR SELECT USING (auth.role() = 'authenticated');
+
+-- Fonction pour incrémenter le compteur de visites
+CREATE OR REPLACE FUNCTION increment_campaign_visits()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE campaigns 
+    SET total_visits = total_visits + 1,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = NEW.campaign_id;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Trigger pour incrémenter automatiquement le compteur lors d'une nouvelle visite
+CREATE TRIGGER increment_visits_trigger
+    AFTER INSERT ON campaign_visits
+    FOR EACH ROW
+    EXECUTE FUNCTION increment_campaign_visits();
+
+-- Migration pour initialiser le compteur avec les visites existantes
+-- (à exécuter une seule fois après avoir ajouté la colonne)
+UPDATE campaigns 
+SET total_visits = (
+    SELECT COUNT(*) 
+    FROM campaign_visits 
+    WHERE campaign_visits.campaign_id = campaigns.id
+)
+WHERE total_visits = 0;

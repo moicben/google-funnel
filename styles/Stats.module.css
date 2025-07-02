@@ -42,6 +42,27 @@
   background: #3367d6;
 }
 
+/* Styles pour le compteur principal */
+.mainStatCard {
+  grid-column: 1 / -1;
+  text-align: center;
+  background: linear-gradient(135deg, #4285f4, #34a853);
+  color: white;
+  padding: 2rem;
+}
+
+.mainStatCard h3 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.mainStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .loading, .error {
   text-align: center;
   padding: 3rem;

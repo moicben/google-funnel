@@ -1,17 +1,15 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useCampaignStats } from '../hooks/useCampaignStats';
-import { useCampaign } from '../hooks/useCampaigns';
 import styles from '../styles/Stats.module.css';
 
 const StatsPage = () => {
   const router = useRouter();
   const { campaign: campaignId } = router.query;
   
-  const { campaign: campaignData, loading: campaignLoading } = useCampaign(campaignId);
-  const { stats, loading: statsLoading, error, refreshStats } = useCampaignStats(campaignId);
+  const { stats, loading, error, refreshStats } = useCampaignStats(campaignId);
 
-  if (campaignLoading || statsLoading) {
+  if (loading) {
     return (
       <div className={styles.container}>
         <div className={styles.loading}>Chargement des statistiques...</div>
@@ -33,12 +31,12 @@ const StatsPage = () => {
     );
   }
 
-  if (!campaignData) {
+  if (!stats) {
     return (
       <div className={styles.container}>
         <div className={styles.error}>
           <h2>Campagne non trouvée</h2>
-          <p>La campagne demandée n'existe pas ou n'est plus active.</p>
+          <p>Aucune statistique disponible pour cette campagne.</p>
         </div>
       </div>
     );
@@ -48,7 +46,6 @@ const StatsPage = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1>Statistiques de campagne</h1>
-        <h2>{campaignData.firstName} {campaignData.lastName}</h2>
         <button onClick={refreshStats} className={styles.refreshButton}>
           Actualiser
         </button>
@@ -58,7 +55,7 @@ const StatsPage = () => {
         <div className={styles.statsGrid}>
           {/* Statistiques principales */}
           <div className={styles.statsCard}>
-            <h3>Vue d'ensemble</h3>
+            <h3>Vue d'ensemble détaillée</h3>
             <div className={styles.statsList}>
               <div className={styles.statItem}>
                 <span className={styles.statLabel}>Total des visites :</span>

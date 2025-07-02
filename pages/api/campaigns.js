@@ -21,7 +21,8 @@ export default async function handler(req, res) {
           email: campaignData.email,
           profileImage: campaignData.profile_image,
           title: campaignData.title,
-          description: campaignData.description
+          description: campaignData.description,
+          totalVisits: campaignData.total_visits || 0
         };
         
         res.status(200).json(formattedCampaign);
@@ -39,7 +40,8 @@ export default async function handler(req, res) {
             email: campaign.email,
             profileImage: campaign.profile_image,
             title: campaign.title,
-            description: campaign.description
+            description: campaign.description,
+            totalVisits: campaign.total_visits || 0
           };
         });
         
