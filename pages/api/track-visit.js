@@ -49,14 +49,18 @@ async function getCityFromIP(ip) {
       return 'Local';
     }
 
-    // Utiliser ipapi.co (gratuit, 1000 requêtes/jour)
-    const response = await fetch(`https://ipapi.co/${ip}/json/`);
+    // Utiliser ip-api.com (gratuit, plus fiable)
+    const response = await fetch(`http://ip-api.com/json/${ip}?fields=city,status`);
     if (!response.ok) {
       throw new Error('Erreur API géolocalisation');
     }
     
     const data = await response.json();
-    return data.city || 'Inconnue';
+    if (data.status === 'success') {
+      return data.city || 'Inconnue';
+    } else {
+      return 'Inconnue';
+    }
   } catch (error) {
     console.error('Erreur lors de la géolocalisation:', error);
     return 'Inconnue';
