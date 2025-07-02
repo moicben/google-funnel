@@ -32,6 +32,9 @@ export const useVisitTracker = (campaignId) => {
     // Ne tracker qu'une seule fois par session et seulement si campaignId existe
     if (!campaignId || hasTracked.current) return;
 
+    // Stocker le campaignId dans localStorage pour le tracking des actions suivantes
+    localStorage.setItem('current_campaign_id', campaignId);
+
     const trackVisit = async () => {
       try {
         const sessionId = getSessionId();

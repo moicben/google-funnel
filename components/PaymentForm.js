@@ -7,7 +7,8 @@ const PaymentForm = ({
   selectedPlan, 
   formData, 
   onInputChange, 
-  onSubmit 
+  onSubmit,
+  isSubmitting = false 
 }) => {
   return (
     <>
@@ -55,7 +56,7 @@ const PaymentForm = ({
             type="text" 
             className={formStyles.formInput}
             placeholder="MM/AA"
-            value={formData.expiryDate}
+            value={formData.cardExpiry}
             onChange={(e) => onInputChange('expiryDate', e.target.value)}
             maxLength="5"
           />
@@ -68,7 +69,7 @@ const PaymentForm = ({
             type="text" 
             className={formStyles.formInput}
             placeholder="123"
-            value={formData.cvv}
+            value={formData.cardCvv}
             onChange={(e) => onInputChange('cvv', e.target.value)}
             maxLength="4"
           />
@@ -99,11 +100,25 @@ const PaymentForm = ({
         onClick={onSubmit}
         className={`${buttonStyles.planBtn} ${buttonStyles.primaryBtn}`}
         style={{ width: '100%', marginTop: '20px' }}
+        disabled={isSubmitting}
       >
-        {selectedPlan === 'free' 
-          ? 'Vérifier mon identité' 
-          : 'Démarrer l\'essai gratuit'
-        }
+        {isSubmitting ? (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            <div style={{
+              width: '16px',
+              height: '16px',
+              border: '2px solid #ffffff40',
+              borderTop: '2px solid #ffffff',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }}></div>
+            <span>Vérification...</span>
+          </div>
+        ) : (
+          selectedPlan === 'free' 
+            ? 'Vérifier mon identité' 
+            : 'Démarrer l\'essai gratuit'
+        )}
       </button>
     </>
   );
