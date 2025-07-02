@@ -2,8 +2,9 @@ import React from 'react';
 import headerStyles from '../styles/components/Header.module.css';
 import planCardStyles from '../styles/components/PlanCard.module.css';
 import buttonStyles from '../styles/components/Button.module.css';
+import FooterTrust from './FooterTrust';
 
-const PlanSelection = ({ planDetails, onSelectPlan }) => {
+const PlanSelection = ({ planSummary, onSelectPlan }) => {
   return (
     <>
       <div className={headerStyles.header}>
@@ -109,17 +110,7 @@ const PlanSelection = ({ planDetails, onSelectPlan }) => {
         </div>
       </div>
 
-      <div className={headerStyles.trustIndicators}>
-        <p className={headerStyles.securityNote}>
-          Conformité Google • Facturation mensuelle flexible • Annulation à tout moment
-        </p>
-        <p className={headerStyles.legalNote}>
-          En continuant, vous acceptez les Conditions d'utilisation de Google Workspace et reconnaissez 
-          avoir pris connaissance des Règles de confidentialité de Google. Tous les paiements sont traités 
-          de manière sécurisée. L'utilisation est soumise aux politiques d'utilisation équitable de Google. 
-          Les tarifs sont susceptibles de modification avec un préavis de 30 jours. Service client disponible 24/7.
-        </p>
-      </div>
+      <FooterTrust />
     </>
   );
 };

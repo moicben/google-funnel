@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { PageHead } from '../hooks/usePageMeta';
 import { useCampaign } from '../hooks/useCampaigns';
+import { useVisitTracker } from '../hooks/useVisitTracker';
 import BookingPopup from '../components/BookingPopup';
 import styles from '../styles/Index.module.css';
 
@@ -12,6 +13,9 @@ const Home = () => {
   
   // Utiliser le hook personnalisé pour récupérer les données de campagne
   const { campaign: campaignData, loading, error } = useCampaign(campaignId);
+  
+  // Tracker les visites de campagne
+  useVisitTracker(campaignId);
 
   useEffect(() => {
     if (error) {
@@ -98,6 +102,12 @@ const Home = () => {
               {campaignData.title}
             </div>
           </div>
+          {/* Logo Google Calendar visible seulement sur mobile */}
+          <img 
+            src="https://ssl.gstatic.com/calendar/images/dynamiclogo_2020q4/calendar_31_2x.png"
+            alt="Google Calendar"
+            className={styles.googleCalendarLogo}
+          />
         </div>
       )}
       

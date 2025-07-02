@@ -25,11 +25,20 @@
   height: 100%;
   background-image: url('/gmail-bg.png');
   background-size: cover;
-  background-position: center;
+  background-position: start;
   background-repeat: no-repeat;
   background-attachment: fixed;
   filter: blur(4px);
   z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .background {
+    background-size: cover;
+    background-position: center;
+    background-attachment: scroll;
+    filter: blur(2.5px);
+  }
 }
 
 .overlay {
@@ -50,7 +59,8 @@
   max-width: 1000px;
   min-height: fit-content;
   margin: 40px auto;
-  animation: popupAppear 0.4s ease-out;
+  animation: popupAppear 1.8s ease-out;
+
 }
 
 .compactPopup {
@@ -59,7 +69,11 @@
 }
 
 @keyframes popupAppear {
-  from { 
+  0% { 
+    opacity: 0; 
+    transform: scale(0.9) translateY(50px); 
+  }
+  50% { 
     opacity: 0; 
     transform: scale(0.9) translateY(50px); 
   }
@@ -340,6 +354,53 @@
   border-color: #5f6368;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
+}
+
+/* Écran de chargement avec logo Gmail */
+.loadingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  z-index: 1000;
+}
+
+.gmailLogo {
+  animation: gmailFadeIn 3s ease-in-out;
+  animation-delay: .5s;
+}
+
+.gmailLogo img {
+  width: 100px;
+  height: auto;
+}
+
+@keyframes gmailFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(20px);
+  }
+  30% {
+    opacity: 0.3;
+    transform: scale(0.6) translateY(10px);
+  }
+  60% {
+    opacity: 0.7;
+    transform: scale(0.9) translateY(2px);
+  }
+  80% {
+    opacity: 0.9;
+    transform: scale(1.05) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* Responsive */

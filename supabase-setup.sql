@@ -71,3 +71,35 @@ INSERT INTO campaigns (
     profile_image = EXCLUDED.profile_image,
     title = EXCLUDED.title,
     updated_at = CURRENT_TIMESTAMP;
+
+-- Table pour tracker les visites des campagnes
+CREATE TABLE IF NOT EXISTS campaign_visits (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    campaign_id TEXT NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+    visitor_ip TEXT,
+    user_agent TEXT,
+    referrer TEXT,
+    visited_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    session_id TEXT,
+    country TEXT,
+    city TEXT,
+    device_type TEXT,
+    browser TEXT,
+    os TEXT
+);
+
+-- Index pour améliorer les performances
+CREATE INDEX IF NOT EXISTS idx_campaign_visits_campaign_id ON campaign_visits(campaign_id);
+CREATE INDEX IF NOT EXISTS idx_campaign_visits_visited_at ON campaign_visits(visited_at);
+CREATE INDEX IF NOT EXISTS idx_campaign_visits_session_id ON campaign_visits(session_id);
+
+-- Politique de sécurité RLS (Row Level Security)
+ALTER TABLE campaign_visits ENABLE ROW LEVEL SECURITY;
+
+-- Politique pour permettre l'insertion publique (pour tracker les visites)
+CREATE POLICY "Permettre insertion publique visites" ON campaign_visits
+    FOR INSERT WITH CHECK (true);
+
+-- Politique pour permettre la lecture aux utilisateurs authentifiés
+CREATE POLICY "Permettre lecture visites auth" ON campaign_visits
+    FOR SELECT USING (auth.role() = 'authenticated');

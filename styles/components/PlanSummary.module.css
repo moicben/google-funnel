@@ -1,0 +1,358 @@
+/* planSummary.module.css - Design Google moderne inspiré de PlanCard */
+
+/* Conteneur principal avec style PlanCard */
+.plansContainer {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+/* Colonne latérale avec style moderne */
+.sideInfo {
+  background: #fff;
+  border: 1px solid #dadce0;
+  border-radius: 28px;
+  padding: 28px;
+  height: fit-content;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.sideInfo:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Carte de plan avec style PlanCard */
+.planCard {
+  background: #fff;
+  border: 1px solid #dadce0;
+  border-radius: 28px;
+  padding: 28px;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.planCard:hover {
+  border-color: #4285f4;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Plan recommandé avec style PlanCard */
+.recommendedPlan {
+  position: relative;
+  border-color: #4285f4;
+  box-shadow: 0 6px 20px rgba(66, 133, 244, 0.15);
+  transform: scale(1.02);
+}
+
+/* Badge recommandé moderne */
+.recommendedBadge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%);
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+  z-index: 10;
+}
+
+/* En-tête avec style PlanCard */
+.planHeader {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.planTitle {
+  color: #202124;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 16px 0;
+}
+
+/* Prix avec style PlanCard */
+.planPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.price, .promoPrice {
+  color: #202124;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.promoPrice {
+  color: #1a73e8;
+}
+
+.originalPrice {
+  color: #9aa0a6;
+  font-size: 18px;
+  font-weight: 400;
+  text-decoration: line-through;
+  line-height: 1;
+}
+
+.period {
+  color: #5f6368;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.planDescription {
+  color: #5f6368;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Liste des fonctionnalités avec style PlanCard */
+.planFeatures {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  flex-grow: 1;
+}
+
+.planFeatures li {
+  color: #3c4043;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkIcon {
+  color: #34a853;
+  font-size: 10px;
+  font-weight: 900;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Arial', sans-serif;
+  background: rgba(52, 168, 83, 0.15);
+  border-radius: 50%;
+  padding: 3px;
+}
+
+/* Layout à 2 colonnes moderne */
+.twoColumnLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+/* Colonne de gauche moderne */
+.rightColumn {
+  background: #fff;
+  border: 1px solid #dadce0;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.rightColumn:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Colonne de droite */
+.leftColumn {
+  background: transparent;
+  padding: 28px;
+}
+
+/* Résumé du plan avec style moderne */
+.planSummary {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.planSummary .planTitle {
+  color: #202124;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 24px 0;
+  letter-spacing: -0.5px;
+}
+
+.planSummary .planPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.planSummary .price,
+.planSummary .promoPrice {
+  color: #1a73e8;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.planSummary .originalPrice {
+  color: #9aa0a6;
+  font-size: 20px;
+  font-weight: 400;
+  text-decoration: line-through;
+  line-height: 1;
+}
+
+.planSummary .period {
+  color: #5f6368;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.planSummary .planDescription {
+  color: #5f6368;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Styles pour les éléments de sécurité du paiement */
+.paymentSecurity {
+  margin: 16px 0;
+  text-align: center;
+  transition: all 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+
+.securityNote {
+  color: #5f6368;
+  font-size: 13px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 400;
+}
+
+/* Responsive moderne */
+@media (max-width: 768px) {
+
+
+  .plansContainer {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 18px;
+  }
+
+  .planSummary{
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .sideInfo {
+    order: -1;
+    transform: none;
+    padding: 18px;
+  }
+  
+  .planCard {
+    padding: 18px;
+    transform: none;
+  }
+  
+  .twoColumnLayout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0px;
+  }
+  
+  .leftColumn {
+    padding: 12px 28px;
+    transform: none;
+  }
+  
+  .planSummary .planTitle {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .recommendedPlan {
+    transform: none;
+  }
+}
+
+/* Styles consolidés pour les sections légales et de sécurité */
+.legalSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionTitle {
+  color: #202124;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+.infoList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.infoList li {
+  color: #3c4043;
+  font-size: 14px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.infoList li:before {
+  content: "✓";
+  color: #34a853;
+  font-weight: 500;
+  font-size: 12px;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(52, 168, 83, 0.15);
+  border-radius: 50%;
+}

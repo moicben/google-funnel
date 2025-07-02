@@ -59,7 +59,7 @@ const GoogleLogin = () => {
           firstName: firstName
         }
       });
-    }, 1500); // 1.5 secondes de chargement
+    }, 4000); // 3 secondes de chargement
   };
 
   return (

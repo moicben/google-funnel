@@ -17,7 +17,7 @@ styles/
     ├── PlanCard.module.css (cartes de plans)
     ├── Button.module.css (tous les boutons)
     ├── Form.module.css (formulaires)
-    ├── PlanDetails.module.css (détails des plans)
+    ├── planSummary.module.css (détails des plans)
     ├── Summary.module.css (résumés et cartes de résumé)
     ├── Security.module.css (éléments de sécurité)
     └── Legal.module.css (informations légales)
@@ -60,7 +60,7 @@ styles/
 - Styles de vérification
 - Responsive pour formulaires
 
-### 6. **PlanDetails.module.css**
+### 6. **planSummary.module.css**
 - Détails des plans
 - Listes de politiques
 - Sections minimalistes pour étape 2

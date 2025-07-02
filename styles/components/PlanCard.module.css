@@ -21,9 +21,8 @@
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  animation: fadeInUp 0.6s ease-out;
+  animation: fadeInUp 1.2s ease-out;
   animation-fill-mode: both;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .planCard:hover { 
@@ -33,9 +32,9 @@
 }
 
 /* Animations pour les plans */
-.planCard:nth-child(1) { animation-delay: 0.1s; }
-.planCard:nth-child(2) { animation-delay: 0.2s; }
-.planCard:nth-child(3) { animation-delay: 0.3s; }
+.planCard:nth-child(1) { animation-delay: 0.2s; }
+.planCard:nth-child(2) { animation-delay: 0.4s; }
+.planCard:nth-child(3) { animation-delay: 0.6s; }
 
 @keyframes fadeInUp {
   from {

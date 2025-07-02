@@ -1,6 +1,6 @@
 /* Conteneur principal */
 .container {
-  max-height: 100vh;
+  height: 100vh;
   position: relative;
   overflow: hidden;
 }
@@ -45,6 +45,11 @@
   line-height: 1.2;
 }
 
+/* Logo Google Calendar - caché par défaut */
+.googleCalendarLogo {
+  display: none;
+}
+
 /* Conteneur iframe */
 .iframeContainer {
   position: relative;
@@ -62,7 +67,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 1000px;
+  height: 100%;
   background-color: transparent;
   cursor: pointer;
   z-index: 1;
@@ -71,12 +76,15 @@
 
 @media (max-width: 600px) {
     .authorCache {
-        top: 58px;
-        left: 12px;
-        min-width: 140px;
-        padding: 8px;
-        border-radius: 8px;
-        gap: 8px;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        min-width: auto;
+        width: 100%;
+        padding: 16px;
+        border-radius: 0px;
+        gap: 10px;
+        justify-content: space-between;
     }
 
     .authorImage {
@@ -91,6 +99,26 @@
 
     .authorTitle {
         font-size: 12px;
+    }
+
+    /* Afficher le logo Google Calendar sur mobile */
+    .googleCalendarLogo {
+        display: block;
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+    }
+
+    /* Ajuster l'iframe sur mobile */
+    .iframe {
+        height: 1600px;
+        margin-top: -103px;
+    }
+
+    .container {
+        overflow: auto;
+        min-height: auto;
+        margin-top: 56px;
     }
 }
 
