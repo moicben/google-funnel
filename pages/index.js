@@ -8,6 +8,7 @@ import styles from '../styles/Index.module.css';
 
 const Home = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [showAuthorCache, setShowAuthorCache] = useState(false);
   const router = useRouter();
   const { campaign: campaignId } = router.query;
   
@@ -22,6 +23,15 @@ const Home = () => {
       console.warn(`Erreur lors du chargement de la campagne: ${error}`);
     }
   }, [error]);
+
+  // Afficher le cache de l'auteur après 2 secondes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowAuthorCache(true);
+    }, 750);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleScreenClick = (e) => {
     // Ne pas ouvrir la popup si on clique sur la popup elle-même
@@ -87,7 +97,7 @@ const Home = () => {
       />
       
       {/* Cache avec informations de l'auteur */}
-      {campaignData && (
+      {campaignData && showAuthorCache && (
         <div className={styles.authorCache}>
           <img 
             src={campaignData.profileImage} 
