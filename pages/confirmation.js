@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { PageHead } from '../hooks/usePageMeta';
 import layoutStyles from '../styles/components/Layout.module.css';
 import headerStyles from '../styles/components/Header.module.css';
-import planSummaryStyles from '../styles/components/planSummary.module.css';
+import planSummaryStyles from '../styles/components/PlanSummary.module.css';
 import buttonStyles from '../styles/components/Button.module.css';
 import PlanSelection from '../components/PlanSelection';
 import PlanSummary from '../components/PlanSummary';
