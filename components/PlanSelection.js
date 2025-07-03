@@ -10,7 +10,7 @@ const PlanSelection = ({ planSummary, onSelectPlan }) => {
       <div className={headerStyles.header}>
         <div className={headerStyles.logoContainer}>
           <img 
-            src="https://done.lu/wp-content/uploads/2020/11/google-workspace-1.svg" 
+            src="google-workspace.svg" 
             alt="Google Workspace" 
             className={headerStyles.workspaceLogo}
           />

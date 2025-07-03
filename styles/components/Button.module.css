@@ -120,8 +120,8 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 20px;
-  color: #5f6368;
+  font-size: 16px;
+  color: #7c8086;
   transition: all 0.2s ease;
   z-index: 10;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

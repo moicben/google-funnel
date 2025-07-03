@@ -1,0 +1,438 @@
+/* CommonPopup.module.css - Styles communs et minimalistes pour tous les pop-ups */
+
+/* Base commune pour tous les pop-ups - Inspiré de Layout.module.css */
+.popupWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+}
+
+.popup {
+  background: #fff;
+  border-radius: 28px;
+  padding: 40px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 4px 14px rgba(0, 0, 0, 0.08);
+  border: 1px solid #dadce0;
+  position: relative;
+  animation: popupAppear 0.6s ease-out;
+}
+
+@keyframes popupAppear {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.9) translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+}
+
+/* Contenu du popup */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.title {
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #202124;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+  letter-spacing: -0.1px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #5f6368;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+  text-align: center;
+  max-width: 400px;
+}
+
+.description {
+  font-size: 14px;
+  color: #5f6368;
+  margin: 0 0 32px 0;
+  line-height: 1.5;
+  text-align: center;
+  max-width: 400px;
+}
+
+/* Boutons - Style cohérent avec les autres composants */
+.button {
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 32px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 160px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.button:hover {
+  background: #1a73e8;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+  transform: translateY(-1px);
+}
+
+.button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(66, 133, 244, 0.3);
+}
+
+.primaryButton {
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 32px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 160px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.primaryButton:hover {
+  background: #1a73e8;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+  transform: translateY(-1px);
+}
+
+.primaryButton:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(66, 133, 244, 0.3);
+}
+
+/* Icônes et éléments visuels */
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  min-height: 60px;
+}
+
+.successIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0px;
+}
+
+.checkIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(52, 168, 83, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #34a853;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+  font-family: 'Arial', sans-serif;
+  padding: 4px;
+}
+
+/* Détails et listes - Style amélioré inspiré de PlanCard.module.css */
+.detailsList {
+  width: 100%;
+  margin: 16px 0 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: #3c4043;
+  font-size: 14px;
+  line-height: 1.4;
+  background: rgba(248, 249, 250, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(232, 234, 237, 0.8);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: Roboto, Arial, sans-serif;
+}
+
+.detailItem:hover {
+  background: rgba(66, 133, 244, 0.04);
+  border-color: rgba(66, 133, 244, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.08);
+}
+
+/* Styles spécifiques pour les éléments en attente */
+.checkIconPending {
+  background: rgba(255, 193, 7, 0.2);
+  color: #f57c00;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.detailItemRefused {
+  opacity: .65;
+  background: rgba(248, 249, 250, 0.4);
+  border-color: rgba(232, 234, 237, 0.6);
+}
+
+.checkIconRefused {
+  background: rgba(244, 67, 54, 0.2);
+  color: #d93025;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+/* Spinner/Loading */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #4285f4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Animations pour les checkmarks */
+.checkmark {
+  animation: checkmarkAppear 0.6s ease-in-out;
+}
+
+.checkmarkContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.checkmarkCircle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: checkmark-circle 0.6s ease-in-out forwards;
+}
+
+.checkmarkCheck {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: checkmark-check 0.3s ease-in-out 0.6s forwards;
+}
+
+@keyframes checkmarkAppear {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.8); 
+  }
+  50% { 
+    opacity: 0.5; 
+    transform: scale(1.1); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+@keyframes checkmark-circle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes checkmark-check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Loading container */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.loadingText {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* Card logo styling */
+.cardLogo {
+  width: 60px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Styles minimalistes pour 3DSecurePopup */
+.transactionCard {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 8px 24px;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.transactionField {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 2px;
+  border-bottom: 1px solid #e8eaed;
+  font-size: 14px;
+}
+
+.transactionField:last-child {
+  border-bottom: none;
+}
+
+.transactionLabel {
+  color: #5f6368;
+  font-weight: 400;
+}
+
+.transactionValue {
+  color: #202124;
+  font-weight: 500;
+}
+
+.transactionValueHighlight {
+  color: #202124;
+  font-weight: 500;
+}
+
+.transactionNotice {
+  background: rgba(66, 133, 244, 0.08);
+  border: 1px solid rgba(66, 133, 244, 0.15);
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 16px;
+  text-align: left;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.transactionNotice::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(66, 133, 244, 0.6);
+}
+
+.transactionNoticeText {
+  font-size: 13px;
+  color: #1a73e8;
+  line-height: 1.6;
+  margin: 0;
+  padding-left: 16px;
+  font-weight: 400;
+}
+
+.transactionNoticeEmphasis {
+  font-weight: 500;
+  color: #5f6368;
+}
+
+@media (max-width: 768px) {
+  .popup {
+    padding: 32px 24px;
+    max-width: 90%;
+    border-radius: 20px;
+  }
+  
+  .title {
+    font-size: 18px;
+  }
+  
+  .subtitle,
+  .description {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  
+  .button,
+  .primaryButton {
+    padding: 12px 24px;
+    font-size: 13px;
+    min-width: 140px;
+  }
+  
+  .detailsList {
+    gap: 8px;
+    margin: 20px 0 24px 0;
+  }
+  
+  .detailItem {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .iconContainer {
+    margin-bottom: 20px;
+    min-height: 50px;
+  }
+  
+  .spinner {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .transactionCard {
+    padding: 20px;
+    margin: 16px 0;
+  }
+  
+  .transactionField {
+    font-size: 13px;
+    padding: 10px 0;
+  }
+  
+  .transactionNotice {
+    padding: 16px;
+    border-radius: 10px;
+  }
+  
+  .transactionNoticeText {
+    font-size: 12px;
+    padding-left: 12px;
+  }
+}

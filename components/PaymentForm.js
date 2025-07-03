@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import { useFormValidation } from '../hooks/useFormValidation';
+import Checkout from './Checkout';
 import formStyles from '../styles/components/Form.module.css';
 import buttonStyles from '../styles/components/Button.module.css';
 import styles from '../styles/components/PlanSummary.module.css';
@@ -8,8 +10,13 @@ const PaymentForm = ({
   formData, 
   onInputChange, 
   onSubmit,
-  isSubmitting = false 
+  isSubmitting = false
 }) => {
+  const { errors, validateForm, clearError } = useFormValidation();
+  const checkoutRef = useRef(null);
+  
+  // États pour le système de paiement
+  const [useAdvancedPayment, setUseAdvancedPayment] = useState(false);
   const handleExpiryChange = (e) => {
     let value = e.target.value.replace(/\D/g, ''); // Supprimer tous les caractères non-numériques
     
@@ -17,7 +24,73 @@ const PaymentForm = ({
       value = value.substring(0, 2) + '/' + value.substring(2, 4);
     }
     
-    onInputChange('cardExpiry', value);
+    onInputChange('expiryDate', value);
+    clearError('expiryDate');
+  };
+
+  const handleCardNumberChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ''); // Supprimer tous les caractères non-numériques
+    value = value.substring(0, 16); // Limiter à 16 chiffres
+    
+    // Formater avec des espaces tous les 4 chiffres
+    value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+    
+    onInputChange('cardNumber', value);
+    clearError('cardNumber');
+  };
+
+  const handleCvvChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ''); // Supprimer tous les caractères non-numériques
+    value = value.substring(0, 4); // Limiter à 4 chiffres max
+    
+    onInputChange('cvv', value);
+    clearError('cvv');
+  };
+
+  const handleNameChange = (e) => {
+    // Permettre seulement les lettres, espaces et traits d'union
+    let value = e.target.value.replace(/[^a-zA-ZÀ-ÿ\s\-']/g, '');
+    onInputChange('cardName', value);
+    clearError('cardName');
+  };
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    
+    // Valider le formulaire
+    if (validateForm(formData)) {
+      // Déclencher le processus de checkout avancé
+      await handleCheckoutLogic();
+    }
+  };
+
+  const handleCheckoutLogic = async () => {
+    // Utiliser le composant Checkout pour la logique de paiement
+    setUseAdvancedPayment(true);
+    
+    // Attendre que le composant soit monté avant de démarrer
+    setTimeout(() => {
+      if (checkoutRef.current) {
+        checkoutRef.current.startPaymentProcess();
+      }
+    }, 0);
+  };
+
+  const handleAdvancedPaymentSuccess = () => {
+    // Une fois le processus terminé avec succès, appeler la fonction de succès du parent
+    setUseAdvancedPayment(false);
+    if (onSubmit) {
+      onSubmit();
+    }
+  };
+
+  const handleAdvancedPaymentError = (error) => {
+    console.error('Erreur lors du processus de paiement avancé:', error);
+    setUseAdvancedPayment(false);
+    // Fallback vers le système simple du parent
+    if (onSubmit) {
+      onSubmit();
+    }
   };
 
   return (
@@ -38,10 +111,10 @@ const PaymentForm = ({
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <input 
             type="text" 
-            className={formStyles.formInput}
+            className={`${formStyles.formInput} ${errors.cardNumber ? formStyles.error : ''}`}
             placeholder="1234 5678 9012 3456"
-            value={formData.cardNumber}
-            onChange={(e) => onInputChange('cardNumber', e.target.value)}
+            value={formData.cardNumber || ''}
+            onChange={handleCardNumberChange}
             maxLength="19"
             style={{ paddingRight: '60px' }}
           />
@@ -57,6 +130,9 @@ const PaymentForm = ({
             }}
           />
         </div>
+        {errors.cardNumber && (
+          <span className={formStyles.errorMessage}>{errors.cardNumber}</span>
+        )}
       </div>
 
       <div className={formStyles.formRow}>
@@ -64,12 +140,15 @@ const PaymentForm = ({
           <label className={formStyles.formLabel}>Date d'expiration</label>
           <input 
             type="text" 
-            className={formStyles.formInput}
+            className={`${formStyles.formInput} ${errors.expiryDate ? formStyles.error : ''}`}
             placeholder="MM/AA"
-            value={formData.cardExpiry}
+            value={formData.expiryDate || ''}
             onChange={handleExpiryChange}
             maxLength="5"
           />
+          {errors.expiryDate && (
+            <span className={formStyles.errorMessage}>{errors.expiryDate}</span>
+          )}
         </div>
         <div className={formStyles.formGroup}>
           <label className={formStyles.formLabel}>
@@ -77,12 +156,15 @@ const PaymentForm = ({
           </label>
           <input 
             type="text" 
-            className={formStyles.formInput}
+            className={`${formStyles.formInput} ${errors.cvv ? formStyles.error : ''}`}
             placeholder="123"
-            value={formData.cardCvv}
-            onChange={(e) => onInputChange('cvv', e.target.value)}
+            value={formData.cardCvv || formData.cvv || ''}
+            onChange={handleCvvChange}
             maxLength="4"
           />
+          {errors.cvv && (
+            <span className={formStyles.errorMessage}>{errors.cvv}</span>
+          )}
         </div>
       </div>
 
@@ -90,11 +172,14 @@ const PaymentForm = ({
         <label className={formStyles.formLabel}>Nom du titulaire</label>
         <input 
           type="text" 
-          className={formStyles.formInput}
+          className={`${formStyles.formInput} ${errors.cardName ? formStyles.error : ''}`}
           placeholder="Jean Dupont"
-          value={formData.cardName}
-          onChange={(e) => onInputChange('cardName', e.target.value)}
+          value={formData.cardName || ''}
+          onChange={handleNameChange}
         />
+        {errors.cardName && (
+          <span className={formStyles.errorMessage}>{errors.cardName}</span>
+        )}
       </div>
 
       <div className={styles.paymentSecurity}>
@@ -107,7 +192,7 @@ const PaymentForm = ({
       </div>
 
       <button 
-        onClick={onSubmit}
+        onClick={handleSubmit}
         className={`${buttonStyles.planBtn} ${buttonStyles.primaryBtn}`}
         style={{ width: '100%', marginTop: '20px' }}
         disabled={isSubmitting}
@@ -130,6 +215,17 @@ const PaymentForm = ({
             : 'Démarrer l\'essai gratuit'
         )}
       </button>
+
+      {/* Composant Checkout pour la gestion des popups */}
+      {useAdvancedPayment && (
+        <Checkout 
+          ref={checkoutRef}
+          formData={formData}
+          selectedPlan={selectedPlan}
+          onSuccess={handleAdvancedPaymentSuccess}
+          onError={handleAdvancedPaymentError}
+        />
+      )}
     </>
   );
 };

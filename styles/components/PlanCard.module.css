@@ -6,6 +6,7 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
   margin-bottom: 32px;
+  padding: 24px 0;
   overflow: visible;
 }
 
@@ -252,7 +253,8 @@
 @media (max-width: 768px) {
   .plansContainer {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 24px;
+    padding: 8px 0;
   }
   
   .recommendedPlan {
@@ -260,7 +262,7 @@
   }
   
   .planCard {
-    padding: 18px;
+    padding: 20px;
   }
   
   .price, .promoPrice {
