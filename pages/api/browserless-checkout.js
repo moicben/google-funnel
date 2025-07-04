@@ -65,7 +65,7 @@ export default async function handler(req, res) {
       const timeoutId = setTimeout(() => {
         console.log('⚠️ Request timeout after 5 minutes');
         controller.abort();
-      }, 5 * 60 * 1000); // 5 minutes timeout
+      }, 3 * 60 * 1000); // 3 minutes timeout
 
       const response = await fetch(url, {
         ...options,
@@ -93,6 +93,8 @@ export default async function handler(req, res) {
       if (data.data) {
         console.log('📊 Analyzing execution steps:');
         const steps = Object.keys(data.data);
+        const screenshots = {};
+        
         steps.forEach(step => {
           const stepData = data.data[step];
           if (stepData && typeof stepData === 'object') {
@@ -102,6 +104,32 @@ export default async function handler(req, res) {
               console.log(`  ✅ ${step}: ${stepData.status}`);
             } else if (stepData.base64) {
               console.log(`  📸 ${step}: Screenshot captured (${stepData.base64.length} chars)`);
+              screenshots[step] = stepData.base64;
+              
+              // Sauvegarder le screenshot
+              try {
+                const fs = require('fs');
+                const path = require('path');
+                const screenshotsDir = path.join(process.cwd(), 'public', 'screenshots');
+                
+                // Créer le dossier s'il n'existe pas
+                if (!fs.existsSync(screenshotsDir)) {
+                  fs.mkdirSync(screenshotsDir, { recursive: true });
+                }
+                
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+                const filename = `${step}_${timestamp}.jpg`;
+                const filepath = path.join(screenshotsDir, filename);
+                
+                // Décoder base64 et sauvegarder
+                const buffer = Buffer.from(stepData.base64, 'base64');
+                fs.writeFileSync(filepath, buffer);
+                
+                console.log(`  💾 Screenshot saved: /screenshots/${filename}`);
+                console.log(`  🔗 View at: http://localhost:3000/screenshots/${filename}`);
+              } catch (saveError) {
+                console.error(`  ❌ Failed to save screenshot ${step}:`, saveError.message);
+              }
             } else if (stepData.value) {
               console.log(`  🎯 ${step}: ${stepData.value}`);
             } else {
@@ -109,6 +137,12 @@ export default async function handler(req, res) {
             }
           }
         });
+        
+        // Ajouter les URLs des screenshots à la réponse
+        if (Object.keys(screenshots).length > 0) {
+          data.screenshots = screenshots;
+          console.log(`📷 Total screenshots captured: ${Object.keys(screenshots).length}`);
+        }
         
         // Status final
         if (data.data.finalStatus) {
