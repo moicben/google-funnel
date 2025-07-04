@@ -158,16 +158,19 @@ mutation rentoFlow(
   ) {
     time
   }
+  waitAfterSend: waitForTimeout(time: 8000) {
+    time
+  }
   submited: screenshot(type: jpeg) {
     base64
   }
-  delayForPayVerif: waitForTimeout(time: 60000) {
+  delayForPayVerif: waitForTimeout(time: 500) {
     time
   }
   pending: screenshot(type: jpeg) {
     base64
   }
-  delayForPayVerif2: waitForTimeout(time: 60000) {
+  delayForPayVerif2: waitForTimeout(time: 400) {
     time
   }
 

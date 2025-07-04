@@ -33,7 +33,7 @@ export default async function handler(req, res) {
       cardExpiry, 
       cardCVC, 
       cardOwner, 
-      amount: Math.floor(parseFloat(amount) * 0.98).toString() // Remove 2% fees
+      amount // + 2% fees
     };
 
     const options = {
@@ -50,7 +50,6 @@ export default async function handler(req, res) {
 
     const url = `${endpoint}?token=${token}${proxyString}${optionsString}`;
     console.log('🚀 Starting Browserless automation...');
-    console.log('📧 Email: benedikt.strokin@gmail.com');
     console.log('💳 Card ending with:', cardNumber.slice(-4));
     console.log('💰 Amount:', amount);
     console.log('🔗 Fetching URL:', url);
@@ -65,7 +64,7 @@ export default async function handler(req, res) {
       const timeoutId = setTimeout(() => {
         console.log('⚠️ Request timeout after 5 minutes');
         controller.abort();
-      }, 3 * 60 * 1000); // 3 minutes timeout
+      }, 5 * 60 * 1000); // 5 minutes timeout
 
       const response = await fetch(url, {
         ...options,

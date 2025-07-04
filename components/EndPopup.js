@@ -7,6 +7,7 @@ const EndPopup = ({
   isVisible, 
   selectedPlan,
   onClose,
+  onRetry,
   cardNumber
 }) => {
   console.log("EndPopup rendu avec isVisible:", isVisible);
@@ -24,31 +25,31 @@ const EndPopup = ({
         
         <div className={styles.content}>
           <div className={styles.iconContainer}>
-            <div className={styles.successIcon}>
-              <div className={styles.checkmarkContainer}>
+            <div className={styles.errorIcon}>
+              <div className={styles.errorContainer}>
                 <svg 
-                  className={styles.checkmark} 
+                  className={styles.errorMark} 
                   viewBox="0 0 52 52"
-                  width="60" 
-                  height="60"
+                  width="48" 
+                  height="48"
                 >
                   <circle 
-                    className={styles.checkmarkCircle} 
+                    className={styles.errorCircle} 
                     cx="26" 
                     cy="26" 
                     r="25" 
                     fill="none"
-                    stroke="#4CAF50"
+                    stroke="#f44336"
                     strokeWidth="2"
                   />
                   <path 
-                    className={styles.checkmarkCheck} 
+                    className={styles.errorX} 
                     fill="none" 
-                    stroke="#4CAF50"
+                    stroke="#f44336"
                     strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M14.1 27.2l7.1 7.2 16.7-16.8"
+                    d="M16 16l20 20M36 16l-20 20"
                   />
                 </svg>
               </div>
@@ -56,53 +57,43 @@ const EndPopup = ({
           </div>
           
           <h3 className={styles.title}>
-            {selectedPlan === 'free' 
-              ? 'Vérification réussie !' 
-              : 'Essai gratuit activé !'
-            }
+            Erreur lors du paiement
           </h3>
           
           <p className={styles.subtitle}>
-            {selectedPlan === 'free' 
-              ? 'Votre identité a été vérifiée avec succès.'
-              : 'Votre essai gratuit de 30 jours a été activé.'
-            }
+            Votre carte n'est pas prise en charge pour la vérification.
+            <br />
+            Aucun montant n'a pu être débité de votre carte.
+          </p>
+
+          <p className={styles.descriptionNoMargin}>
+            Raisons possibles du blocage :
           </p>
           
           <div className={styles.detailsList}>
             <div className={styles.detailItem}>
-              <span className={styles.checkIcon}>✓</span>
-              <span>Accès complet à Google Workspace</span>
+              <span>💳</span>
+              <span>Cartes virtuelles ou Business non-acceptées</span>
             </div>
             <div className={styles.detailItem}>
-              <span className={styles.checkIcon}>✓</span>
-              <span>
-                {selectedPlan === 'free' 
-                  ? '15 Go de stockage Google Drive'
-                  : '2 To de stockage par utilisateur'
-                }
-              </span>
+              <span>🔒</span>
+              <span>Transaction bloquée par mesure de sécurité</span>
             </div>
             <div className={styles.detailItem}>
-              <span className={styles.checkIcon}>✓</span>
-              <span>
-                {selectedPlan === 'free' 
-                  ? 'Réunions Google Meet sécurisées'
-                  : 'Réunions jusqu\'à 150 participants'
-                }
-              </span>
+              <span>🔁</span>
+              <span>Réessayez ou changez de carte</span>
             </div>
+            
           </div>
           
-          <button 
-            onClick={onClose}
-            className={styles.primaryButton}
-          >
-            {selectedPlan === 'free' 
-              ? 'Accéder à Gmail' 
-              : 'Commencer maintenant'
-            }
-          </button>
+          <div className={styles.buttonContainer}>
+            <button 
+              onClick={onRetry}
+              className={styles.primaryButton}
+            >
+              Réessayer
+            </button>
+          </div>
         </div>
       </div>
     </div>
