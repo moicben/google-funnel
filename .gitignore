@@ -135,7 +135,7 @@ temp/
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+*.sw? 
 
 # Screenshots directory
 public/screenshots/

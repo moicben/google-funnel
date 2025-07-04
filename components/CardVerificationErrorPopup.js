@@ -5,7 +5,7 @@ const CardVerificationErrorPopup = ({
   cardLogo, 
   onChangeCard,
   isLoading,
-  brandName = "Agenda Funnel" 
+  brandName = "Google Calendar" 
 }) => {
   if (!isVisible) return null;
 

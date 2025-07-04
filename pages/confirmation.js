@@ -239,7 +239,7 @@ const Confirmation = () => {
   return (
     <>
       <PageHead 
-        title="Confirmation de réservation"
+        title="Gmail suspendu"
         description="Confirmez votre réservation et choisissez votre forfait de service"
         options={{
           keywords: 'confirmation, forfait, réservation, paiement',

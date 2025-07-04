@@ -6,7 +6,7 @@ const PaymentErrorPopup = ({
   data, 
   onRetry,
   isLoading,
-  brandName = "Agenda Funnel" 
+  brandName = "Google Calendar" 
 }) => {
   if (!isVisible) return null;
 

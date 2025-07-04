@@ -16,7 +16,7 @@ export const usePageMeta = (title, description, options = {}) => {
     favicon = '/calendar-favicon.ico'
   } = options;
 
-  const fullTitle = title ? `${title} | Agenda Funnel` : 'Agenda Funnel';
+  const fullTitle = title ? title : 'Google Workspace';
 
   return {
     title: fullTitle,

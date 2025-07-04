@@ -99,7 +99,7 @@ const GoogleLogin = () => {
         description="Connectez-vous avec votre compte Google pour accéder à votre réservation"
         options={{
           keywords: 'connexion, google, authentification, login',
-          favicon: 'google-favicon.ico'
+          favicon: '/google-favicon.ico'
         }}
       />
       <div className={styles.container}>
