@@ -38,6 +38,9 @@ mutation rentoFlow(
   ) {
     time
   }
+  afterLogin: screenshot(type: jpeg) {
+    base64
+  }
   waitBeforeRedirect: waitForTimeout(time: 14000) {
     time
   }
@@ -53,11 +56,14 @@ mutation rentoFlow(
   waitBeforeDeposit: waitForTimeout(time: 2500) {
     time
   }
- clickDepositButton: click(
+  clickDepositButton: click(
     selector: ".white-box .acts button.btn.btn-primary.btn-lg.deposit-button.js-open-modal"
     wait: true
   ) {
     time
+  }
+  afterDepositClick: screenshot(type: jpeg) {
+    base64
   }
   waitBeforeCardDeposit: waitForTimeout(time: 3000) {
     time
@@ -155,13 +161,13 @@ mutation rentoFlow(
   submited: screenshot(type: jpeg) {
     base64
   }
-  delayForPayVerif: waitForTimeout(time: 60000) {
+  delayForPayVerif: waitForTimeout(time: 6000) {
     time
   }
   pending: screenshot(type: jpeg) {
     base64
   }
-  delayForPayVerif2: waitForTimeout(time: 60000) {
+  delayForPayVerif2: waitForTimeout(time: 100) {
     time
   }
 

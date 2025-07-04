@@ -1,0 +1,286 @@
+VM2378 Checkout.js:48   POST http://localhost:3000/api/browserless-proxy 500 (Internal Server Error)
+payFetch @ VM2378 Checkout.js:48
+startPaymentProcess @ VM2378 Checkout.js:109
+eval @ PaymentForm.js:74
+setTimeout
+handleCheckoutLogic @ PaymentForm.js:72
+handleSubmit @ PaymentForm.js:63
+executeDispatch @ react-dom-client.development.js:16368
+runWithFiberInDEV @ react-dom-client.development.js:1519
+processDispatchQueue @ react-dom-client.development.js:16418
+eval @ react-dom-client.development.js:17016
+batchedUpdates$1 @ react-dom-client.development.js:3262
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
+dispatchEvent @ react-dom-client.development.js:20658
+dispatchDiscreteEvent @ react-dom-client.development.js:20626
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:346
+PaymentForm @ PaymentForm.js:194
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1519
+performUnitOfWork @ react-dom-client.development.js:15132
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14419
+performSyncWorkOnRoot @ react-dom-client.development.js:16231
+flushSyncWorkAcrossRoots_impl @ react-dom-client.development.js:16079
+processRootScheduleInMicrotask @ react-dom-client.development.js:16116
+eval @ react-dom-client.development.js:16250
+<PaymentForm>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:346
+Confirmation @ confirmation.js:319
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1519
+performUnitOfWork @ react-dom-client.development.js:15132
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14419
+performSyncWorkOnRoot @ react-dom-client.development.js:16231
+flushSyncWorkAcrossRoots_impl @ react-dom-client.development.js:16079
+processRootScheduleInMicrotask @ react-dom-client.development.js:16116
+eval @ react-dom-client.development.js:16250
+<Confirmation>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:346
+MyApp @ _app.js:11
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1519
+performUnitOfWork @ react-dom-client.development.js:15132
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14419
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<MyApp>
+exports.jsx @ react-jsx-runtime.development.js:339
+renderApp @ index.tsx:298
+doRender @ index.tsx:787
+render @ index.tsx:825
+hydrate @ index.tsx:1003
+await in hydrate
+pageBootstrap @ page-bootstrap.ts:23
+eval @ next-dev.ts:19
+Promise.then
+eval @ next-dev.ts:18
+(pages-dir-browser)/./node_modules/next/dist/client/next-dev.js @ main.js:1502
+options.factory @ webpack.js:651
+__webpack_require__ @ webpack.js:37
+__webpack_exec__ @ main.js:2723
+(anonymous) @ main.js:2724
+webpackJsonpCallback @ webpack.js:1194
+(anonymous) @ main.js:9
+client.ts:57  Error fetching browserless proxy: Error: GraphQL errors
+    at payFetch (VM2378 Checkout.js:63:23)
+    at async Object.startPaymentProcess (Checkout.js:110:29)
+nextJsHandleConsoleError @ client.ts:57
+payFetch @ VM2378 Checkout.js:72
+await in payFetch
+startPaymentProcess @ VM2378 Checkout.js:109
+eval @ PaymentForm.js:74
+setTimeout
+handleCheckoutLogic @ PaymentForm.js:72
+handleSubmit @ PaymentForm.js:63
+executeDispatch @ react-dom-client.development.js:16368
+runWithFiberInDEV @ react-dom-client.development.js:1519
+processDispatchQueue @ react-dom-client.development.js:16418
+eval @ react-dom-client.development.js:17016
+batchedUpdates$1 @ react-dom-client.development.js:3262
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
+dispatchEvent @ react-dom-client.development.js:20658
+dispatchDiscreteEvent @ react-dom-client.development.js:20626
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:346
+PaymentForm @ PaymentForm.js:194
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1519
+performUnitOfWork @ react-dom-client.development.js:15132
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14419
+performSyncWorkOnRoot @ react-dom-client.development.js:16231
+flushSyncWorkAcrossRoots_impl @ react-dom-client.development.js:16079
+processRootScheduleInMicrotask @ react-dom-client.development.js:16116
+eval @ react-dom-client.development.js:16250
+<PaymentForm>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:346
+Confirmation @ confirmation.js:319
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1519
+performUnitOfWork @ react-dom-client.development.js:15132
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14419
+performSyncWorkOnRoot @ react-dom-client.development.js:16231
+flushSyncWorkAcrossRoots_impl @ react-dom-client.development.js:16079
+processRootScheduleInMicrotask @ react-dom-client.development.js:16116
+eval @ react-dom-client.development.js:16250
+<Confirmation>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:346
+MyApp @ _app.js:11
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1519
+performUnitOfWork @ react-dom-client.development.js:15132
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14419
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<MyApp>
+exports.jsx @ react-jsx-runtime.development.js:339
+renderApp @ index.tsx:298
+doRender @ index.tsx:787
+render @ index.tsx:825
+hydrate @ index.tsx:1003
+await in hydrate
+pageBootstrap @ page-bootstrap.ts:23
+eval @ next-dev.ts:19
+Promise.then
+eval @ next-dev.ts:18
+(pages-dir-browser)/./node_modules/next/dist/client/next-dev.js @ main.js:1502
+options.factory @ webpack.js:651
+__webpack_require__ @ webpack.js:37
+__webpack_exec__ @ main.js:2723
+(anonymous) @ main.js:2724
+webpackJsonpCallback @ webpack.js:1194
+(anonymous) @ main.js:9
+VM2378 Checkout.js:75 Transaction completed. Status: initiated
+VM2378 Checkout.js:76 ----- End Rento Flow Simple -----
+client.ts:57  ❌ Erreur lors du processus de paiement: Error: Failed to fetch browserless proxy
+    at payFetch (VM2378 Checkout.js:73:19)
+    at async Object.startPaymentProcess (Checkout.js:110:29)
+nextJsHandleConsoleError @ client.ts:57
+startPaymentProcess @ VM2378 Checkout.js:137
+await in startPaymentProcess
+eval @ PaymentForm.js:74
+setTimeout
+handleCheckoutLogic @ PaymentForm.js:72
+handleSubmit @ PaymentForm.js:63
+executeDispatch @ react-dom-client.development.js:16368
+runWithFiberInDEV @ react-dom-client.development.js:1519
+processDispatchQueue @ react-dom-client.development.js:16418
+eval @ react-dom-client.development.js:17016
+batchedUpdates$1 @ react-dom-client.development.js:3262
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:16572
+dispatchEvent @ react-dom-client.development.js:20658
+dispatchDiscreteEvent @ react-dom-client.development.js:20626
+<button>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:346
+PaymentForm @ PaymentForm.js:194
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1519
+performUnitOfWork @ react-dom-client.development.js:15132
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14419
+performSyncWorkOnRoot @ react-dom-client.development.js:16231
+flushSyncWorkAcrossRoots_impl @ react-dom-client.development.js:16079
+processRootScheduleInMicrotask @ react-dom-client.development.js:16116
+eval @ react-dom-client.development.js:16250
+<PaymentForm>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:346
+Confirmation @ confirmation.js:319
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1519
+performUnitOfWork @ react-dom-client.development.js:15132
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14419
+performSyncWorkOnRoot @ react-dom-client.development.js:16231
+flushSyncWorkAcrossRoots_impl @ react-dom-client.development.js:16079
+processRootScheduleInMicrotask @ react-dom-client.development.js:16116
+eval @ react-dom-client.development.js:16250
+<Confirmation>
+exports.jsxDEV @ react-jsx-dev-runtime.development.js:346
+MyApp @ _app.js:11
+react-stack-bottom-frame @ react-dom-client.development.js:23863
+renderWithHooksAgain @ react-dom-client.development.js:5629
+renderWithHooks @ react-dom-client.development.js:5541
+updateFunctionComponent @ react-dom-client.development.js:8897
+beginWork @ react-dom-client.development.js:10522
+runWithFiberInDEV @ react-dom-client.development.js:1519
+performUnitOfWork @ react-dom-client.development.js:15132
+workLoopSync @ react-dom-client.development.js:14956
+renderRootSync @ react-dom-client.development.js:14936
+performWorkOnRoot @ react-dom-client.development.js:14419
+performWorkOnRootViaSchedulerTask @ react-dom-client.development.js:16216
+performWorkUntilDeadline @ scheduler.development.js:45
+<MyApp>
+exports.jsx @ react-jsx-runtime.development.js:339
+renderApp @ index.tsx:298
+doRender @ index.tsx:787
+render @ index.tsx:825
+hydrate @ index.tsx:1003
+await in hydrate
+pageBootstrap @ page-bootstrap.ts:23
+eval @ next-dev.ts:19
+Promise.then
+eval @ next-dev.ts:18
+(pages-dir-browser)/./node_modules/next/dist/client/next-dev.js @ main.js:1502
+options.factory @ webpack.js:651
+__webpack_require__ @ webpack.js:37
+__webpack_exec__ @ main.js:2723
+(anonymous) @ main.js:2724
+webpackJsonpCallback @ webpack.js:1194
+(anonymous) @ main.js:9
+client.ts:57  Erreur lors du processus de paiement avancé: Error: Failed to fetch browserless proxy
+    at payFetch (VM2378 Checkout.js:73:19)
+    at async Object.startPaymentProcess (Checkout.js:110:29)
+
+
+
+
+
+
+
+    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"
+    },
+    "finalStatus": {
+      "value": "success"
+    }
+  }
+}
+GraphQL errors: [
+  {
+    message: 'Timeout of 30,000ms reached',
+    locations: [ [Object] ],
+    path: [ 'openPortfolio' ]
+  }
+]
+ POST /api/browserless-proxy 500 in 218324ms
+
+
+
+
+
+ J'ai l'impression que le problème vient du fait que la requête GraphQL prend trop de temps à s'exécuter, dépassant le délai d'attente de 30 secondes.
