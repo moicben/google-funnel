@@ -21,7 +21,7 @@ export default function Dashboard() {
   const fetchStats = async (campaignId = 'all') => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/campaign-dashboard-stats?campaignId=${campaignId}`);
+      const response = await fetch(`/api/campaigns/campaign-dashboard-stats?campaignId=${campaignId}`);
       const data = await response.json();
       
       if (!response.ok) {
