@@ -1,7 +1,7 @@
 import { useState, useImperativeHandle, forwardRef } from 'react';
-import LoadingPopup from './LoadingPopup';
+import LoadingPopup from '../common/LoadingPopup';
 import ThreeDSecurePopup from './ThreeDSecurePopup';
-import EndPopup from './EndPopup';
+import EndPopup from '../common/EndPopup';
 
 const Checkout = forwardRef(({ 
   formData,

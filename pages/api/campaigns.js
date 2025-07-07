@@ -1,4 +1,4 @@
-import { CampaignService } from '../../../src/lib/db/supabase';
+import { CampaignService } from '../../src/lib/db/supabase';
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {

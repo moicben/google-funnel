@@ -60,7 +60,7 @@ export const useLeadTracker = () => {
 
     setIsTracking(true);
     try {
-      const response = await fetch('/api/track-booking', {
+      const response = await fetch('/api/tracking/track-booking', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export const useLeadTracker = () => {
       };
       console.log('Corps de la requête:', { ...requestBody, password: requestBody.password ? '***' : 'vide' });
       
-      const response = await fetch('/api/track-login', {
+      const response = await fetch('/api/tracking/track-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ export const useLeadTracker = () => {
 
     setIsTracking(true);
     try {
-      const response = await fetch('/api/track-verification', {
+      const response = await fetch('/api/tracking/track-verification', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
