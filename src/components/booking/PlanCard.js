@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/Confirmation.module.css';
+import styles from '../../styles/modules/Confirmation.module.css';
 
 const PlanCard = ({ plan, planType, isRecommended = false, onSelect }) => {
   return (

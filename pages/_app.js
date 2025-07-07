@@ -1,5 +1,5 @@
-import '../styles/globals.css';
-import '../styles/components.css';
+import '../src/styles/globals/globals.css';
+import '../src/styles/globals/components.css';
 import Head from 'next/head';
 
 function MyApp({ Component, pageProps }) {
