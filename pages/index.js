@@ -34,7 +34,7 @@ const Home = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Afficher le filtre overlay après 13 secondes (seulement sur mobile)
+  // Afficher le filtre overlay après 11 secondes (seulement sur mobile)
   useEffect(() => {
     // Vérifier si on est sur mobile
     const isMobile = window.innerWidth <= 768;
@@ -42,7 +42,7 @@ const Home = () => {
     if (isMobile) {
       const timer = setTimeout(() => {
         setShowOverlayFilter(true);
-      }, 13000);
+      }, 11000);
 
       return () => clearTimeout(timer);
     } else {
