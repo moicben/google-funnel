@@ -8,6 +8,13 @@ html, body, button, input, textarea {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (max-width: 768px) {
+  body {
+    overflow: hidden !important;
+    max-height: 100vh;
+  }
+}
+
 /* Fallback pour les font-weights non supportés */
 .font-weight-600 {
   font-weight: 600;
