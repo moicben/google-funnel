@@ -40,7 +40,7 @@ export const useVisitTracker = (campaignId) => {
         const sessionId = getSessionId();
         const referrer = document.referrer || '';
 
-        const response = await fetch('/api/track-visit', {
+        const response = await fetch('/api/tracking/track-visit', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

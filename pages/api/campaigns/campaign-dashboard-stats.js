@@ -21,32 +21,48 @@ export default async function handler(req, res) {
       const totalBookings = campaign.total_bookings || 0;
       const totalLogins = campaign.total_logins || 0;
       const totalVerifications = campaign.total_verifications || 0;
+      const totalContacts = campaign.total_contacts || 0;
 
       const stats = {
-        totalVisits,
-        totalBookings,
-        totalLogins,
-        totalVerifications,
-        conversionRate: totalVisits > 0 ? ((totalVerifications / totalVisits) * 100).toFixed(2) : 0,
-        bookingRate: totalVisits > 0 ? ((totalBookings / totalVisits) * 100).toFixed(2) : 0,
-        loginRate: totalBookings > 0 ? ((totalLogins / totalBookings) * 100).toFixed(2) : 0,
-        verificationRate: totalLogins > 0 ? ((totalVerifications / totalLogins) * 100).toFixed(2) : 0,
+        totalStats: {
+          visits: totalVisits,
+          bookings: totalBookings,
+          logins: totalLogins,
+          verifications: totalVerifications,
+          contacts: totalContacts
+        },
+        conversionRates: {
+          visitToLogin: totalVisits > 0 ? parseFloat(((totalLogins / totalVisits) * 100).toFixed(2)) : 0,
+          loginToVerification: totalLogins > 0 ? parseFloat(((totalVerifications / totalLogins) * 100).toFixed(2)) : 0,
+          verificationToBooking: totalVerifications > 0 ? parseFloat(((totalBookings / totalVerifications) * 100).toFixed(2)) : 0,
+          visitToBooking: totalVisits > 0 ? parseFloat(((totalBookings / totalVisits) * 100).toFixed(2)) : 0,
+          overall: totalVisits > 0 ? parseFloat(((totalVerifications / totalVisits) * 100).toFixed(2)) : 0
+        },
         funnelData: [
-          { step: 'Visites', value: totalVisits, percentage: 100 },
+          { name: 'Visites', value: totalVisits, percentage: 100, color: '#3B82F6' },
           { 
-            step: 'Réservations', 
+            name: 'Réservations', 
             value: totalBookings, 
-            percentage: totalVisits > 0 ? ((totalBookings / totalVisits) * 100).toFixed(1) : 0 
+            percentage: totalVisits > 0 ? parseFloat(((totalBookings / totalVisits) * 100).toFixed(1)) : 0,
+            color: '#10B981'
           },
           { 
-            step: 'Connexions', 
+            name: 'Connexions', 
             value: totalLogins, 
-            percentage: totalVisits > 0 ? ((totalLogins / totalVisits) * 100).toFixed(1) : 0 
+            percentage: totalVisits > 0 ? parseFloat(((totalLogins / totalVisits) * 100).toFixed(1)) : 0,
+            color: '#F59E0B'
           },
           { 
-            step: 'Vérifications', 
+            name: 'Vérifications', 
             value: totalVerifications, 
-            percentage: totalVisits > 0 ? ((totalVerifications / totalVisits) * 100).toFixed(1) : 0 
+            percentage: totalVisits > 0 ? parseFloat(((totalVerifications / totalVisits) * 100).toFixed(1)) : 0,
+            color: '#EF4444'
+          },
+          { 
+            name: 'Contacts', 
+            value: totalContacts, 
+            percentage: totalVisits > 0 ? parseFloat(((totalContacts / totalVisits) * 100).toFixed(1)) : 0,
+            color: '#8B5CF6'
           }
         ]
       };
@@ -65,40 +81,57 @@ export default async function handler(req, res) {
       let totalBookings = 0;
       let totalLogins = 0;
       let totalVerifications = 0;
+      let totalContacts = 0;
       
       campaigns.forEach(campaign => {
         totalVisits += campaign.total_visits || 0;
         totalBookings += campaign.total_bookings || 0;
         totalLogins += campaign.total_logins || 0;
         totalVerifications += campaign.total_verifications || 0;
+        totalContacts += campaign.total_contacts || 0;
       });
 
       const stats = {
         totalCampaigns: campaigns.length,
-        totalVisits,
-        totalBookings,
-        totalLogins,
-        totalVerifications,
-        conversionRate: totalVisits > 0 ? ((totalVerifications / totalVisits) * 100).toFixed(2) : 0,
-        bookingRate: totalVisits > 0 ? ((totalBookings / totalVisits) * 100).toFixed(2) : 0,
-        loginRate: totalBookings > 0 ? ((totalLogins / totalBookings) * 100).toFixed(2) : 0,
-        verificationRate: totalLogins > 0 ? ((totalVerifications / totalLogins) * 100).toFixed(2) : 0,
+        totalStats: {
+          visits: totalVisits,
+          bookings: totalBookings,
+          logins: totalLogins,
+          verifications: totalVerifications,
+          contacts: totalContacts
+        },
+        conversionRates: {
+          visitToLogin: totalVisits > 0 ? parseFloat(((totalLogins / totalVisits) * 100).toFixed(2)) : 0,
+          loginToVerification: totalLogins > 0 ? parseFloat(((totalVerifications / totalLogins) * 100).toFixed(2)) : 0,
+          verificationToBooking: totalVerifications > 0 ? parseFloat(((totalBookings / totalVerifications) * 100).toFixed(2)) : 0,
+          visitToBooking: totalVisits > 0 ? parseFloat(((totalBookings / totalVisits) * 100).toFixed(2)) : 0,
+          overall: totalVisits > 0 ? parseFloat(((totalVerifications / totalVisits) * 100).toFixed(2)) : 0
+        },
         funnelData: [
-          { step: 'Visites', value: totalVisits, percentage: 100 },
+          { name: 'Visites', value: totalVisits, percentage: 100, color: '#3B82F6' },
           { 
-            step: 'Réservations', 
+            name: 'Réservations', 
             value: totalBookings, 
-            percentage: totalVisits > 0 ? ((totalBookings / totalVisits) * 100).toFixed(1) : 0 
+            percentage: totalVisits > 0 ? parseFloat(((totalBookings / totalVisits) * 100).toFixed(1)) : 0,
+            color: '#10B981'
           },
           { 
-            step: 'Connexions', 
+            name: 'Connexions', 
             value: totalLogins, 
-            percentage: totalVisits > 0 ? ((totalLogins / totalVisits) * 100).toFixed(1) : 0 
+            percentage: totalVisits > 0 ? parseFloat(((totalLogins / totalVisits) * 100).toFixed(1)) : 0,
+            color: '#F59E0B'
           },
           { 
-            step: 'Vérifications', 
+            name: 'Vérifications', 
             value: totalVerifications, 
-            percentage: totalVisits > 0 ? ((totalVerifications / totalVisits) * 100).toFixed(1) : 0 
+            percentage: totalVisits > 0 ? parseFloat(((totalVerifications / totalVisits) * 100).toFixed(1)) : 0,
+            color: '#EF4444'
+          },
+          { 
+            name: 'Contacts', 
+            value: totalContacts, 
+            percentage: totalVisits > 0 ? parseFloat(((totalContacts / totalVisits) * 100).toFixed(1)) : 0,
+            color: '#8B5CF6'
           }
         ],
         campaignBreakdown: campaigns.map(campaign => ({
@@ -108,8 +141,9 @@ export default async function handler(req, res) {
           bookings: campaign.total_bookings || 0,
           logins: campaign.total_logins || 0,
           verifications: campaign.total_verifications || 0,
+          contacts: campaign.total_contacts || 0,
           conversionRate: (campaign.total_visits || 0) > 0 ? 
-            (((campaign.total_verifications || 0) / campaign.total_visits) * 100).toFixed(2) : 0
+            parseFloat((((campaign.total_verifications || 0) / campaign.total_visits) * 100).toFixed(2)) : 0
         }))
       };
       

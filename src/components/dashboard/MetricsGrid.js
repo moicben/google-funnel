@@ -54,6 +54,13 @@ const MetricsGrid = ({ stats }) => {
       icon: Calendar,
       colorClass: "red", 
       percentage: conversionRates.verificationToBooking
+    },
+    {
+      title: "Contacts",
+      value: totalStats.contacts,
+      icon: Users,
+      colorClass: "purple", 
+      percentage: totalStats.visits > 0 ? ((totalStats.contacts / totalStats.visits) * 100) : 0
     }
   ];
   
