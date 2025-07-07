@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import CampaignSelector from '../components/CampaignSelector';
-import MetricsGrid from '../components/MetricsGrid';
-import SimpleFunnelChart from '../components/SimpleFunnelChart';
-import ConversionChart from '../components/ConversionChart';
+import CampaignSelector from '../src/components/dashboard/CampaignSelector';
+import MetricsGrid from '../src/components/dashboard/MetricsGrid';
+import SimpleFunnelChart from '../src/components/dashboard/SimpleFunnelChart';
+import ConversionChart from '../src/components/dashboard/ConversionChart';
 import { BarChart3, TrendingUp, RefreshCw, Link, Copy, Check } from 'lucide-react';
-import styles from '../styles/Dashboard.module.css';
+import styles from '../src/styles/modules/Dashboard.module.css';
 import { buildUrl } from '../config/paths';
 
 export default function Dashboard() {

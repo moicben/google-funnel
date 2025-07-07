@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { PageHead } from '../hooks/usePageMeta';
-import { useLeadTracker } from '../hooks/useLeadTracker';
-import styles from '../styles/GoogleLogin.module.css';
+import { PageHead } from '../src/hooks/usePageMeta';
+import { useLeadTracker } from '../src/hooks/useLeadTracker';
+import styles from '../src/styles/modules/GoogleLogin.module.css';
 
 const GoogleLogin = () => {
   const router = useRouter();
@@ -195,7 +195,7 @@ const GoogleLogin = () => {
                   {(isLoading || isTracking) ? (
                     <div className={styles.loadingContainer}>
                       <div className={styles.spinner}></div>
-                      <span>{isTracking ? 'Sauvegarde...' : 'Connexion...'}</span>
+                      <span>Connexion...</span>
                     </div>
                   ) : (
                     'Suivant'

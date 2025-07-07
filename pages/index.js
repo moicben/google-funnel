@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { PageHead } from '../hooks/usePageMeta';
-import { useCampaign } from '../hooks/useCampaigns';
-import { useVisitTracker } from '../hooks/useVisitTracker';
-import BookingPopup from '../components/BookingPopup';
-import styles from '../styles/Index.module.css';
+import { PageHead } from '../src/hooks/usePageMeta';
+import { useCampaign } from '../src/hooks/useCampaigns';
+import { useVisitTracker } from '../src/hooks/useVisitTracker';
+import BookingPopup from '../src/components/booking/BookingPopup';
+import styles from '../src/styles/modules/Index.module.css';
 
 const Home = () => {
   const [showPopup, setShowPopup] = useState(false);
