@@ -25,8 +25,8 @@
 /* Responsive mobile */
 @media (max-width: 768px) {
   .popupOverlay {
-    align-items: center;
-    padding-bottom: 64px;
+    align-items: flex-start;
+    padding: 0;
   }
   
   .popupContainer {
