@@ -60,17 +60,17 @@ button {
 
 /* Règles spécifiques pour empêcher le zoom sur les inputs */
 input, textarea, select {
-  font-size: 16px !important;
   -webkit-text-size-adjust: none;
   -moz-text-size-adjust: none;
   -ms-text-size-adjust: none;
   text-size-adjust: none;
 }
 
+
+
 /* Empêcher le zoom sur mobile pour tous les éléments interactifs */
 @media (max-width: 768px) {
   input, textarea, select, button {
-    font-size: 16px !important;
     touch-action: manipulation;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -86,7 +86,6 @@ input, textarea, select {
   
   /* Empêcher le zoom sur focus des inputs */
   input:focus, textarea:focus, select:focus {
-    font-size: 16px !important;
     zoom: 1;
     transform: scale(1);
   }
