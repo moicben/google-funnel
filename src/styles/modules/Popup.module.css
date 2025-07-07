@@ -24,10 +24,16 @@
 
 /* Responsive mobile */
 @media (max-width: 768px) {
+  .popupOverlay {
+    align-items: flex-start;
+    padding: 0;
+  }
+  
   .popupContainer {
     width: 95%;
-    max-height: none;
+    max-height: calc(100vh - 32px);
     height: auto;
+    margin: 16px 0;
   }
 }
 

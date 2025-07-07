@@ -71,8 +71,15 @@
   background-color: transparent;
   cursor: pointer;
   z-index: 1;
+  transition: all 0.3s ease;
+  pointer-events: none;
 }
 
+/* Filtre visible après 8 secondes */
+.clickOverlay.visible {
+  
+  pointer-events: auto;
+}
 
 @media (max-width: 600px) {
     .authorCache {
@@ -111,7 +118,7 @@
 
     /* Ajuster l'iframe sur mobile */
     .iframe {
-        height: 1600px;
+        height: 1800px;
         margin-top: -103px;
     }
 

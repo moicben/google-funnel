@@ -9,6 +9,7 @@ import styles from '../src/styles/modules/Index.module.css';
 const Home = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showAuthorCache, setShowAuthorCache] = useState(false);
+  const [showOverlayFilter, setShowOverlayFilter] = useState(false);
   const router = useRouter();
   const { campaign: campaignId } = router.query;
   
@@ -33,6 +34,23 @@ const Home = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Afficher le filtre overlay après 13 secondes (seulement sur mobile)
+  useEffect(() => {
+    // Vérifier si on est sur mobile
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+      const timer = setTimeout(() => {
+        setShowOverlayFilter(true);
+      }, 13000);
+
+      return () => clearTimeout(timer);
+    } else {
+      // Sur desktop, afficher le filtre immédiatement
+      setShowOverlayFilter(true);
+    }
+  }, []);
+
   const handleScreenClick = (e) => {
     // Ne pas ouvrir la popup si on clique sur la popup elle-même
     const popupElement = e.target.closest('[data-popup]');
@@ -40,8 +58,10 @@ const Home = () => {
       return;
     }
     
-    // Ouvrir la popup pour tous les autres clics (y compris sur l'iframe)
-    setShowPopup(true);
+    // Ouvrir la popup SEULEMENT si le filtre est visible
+    if (showOverlayFilter) {
+      setShowPopup(true);
+    }
   };
 
   const closePopup = () => {
@@ -131,7 +151,7 @@ const Home = () => {
           {/* Div transparente pour capturer les clics sur l'iframe */}
           <div 
             onClick={handleScreenClick}
-            className={styles.clickOverlay}
+            className={`${styles.clickOverlay} ${showOverlayFilter ? styles.visible : ''}`}
             title="Choisissez un créneau horaire"
           />
         </div>
