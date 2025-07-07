@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useFormValidation } from '../../hooks/useFormValidation';
 import { useLeadTracker } from '../../hooks/useLeadTracker';
 import Checkout from './Checkout';
@@ -21,6 +21,17 @@ const PaymentForm = ({
   
   // États pour le système de paiement
   const [useAdvancedPayment, setUseAdvancedPayment] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [shouldStartPayment, setShouldStartPayment] = useState(false);
+
+  // Effet pour démarrer le processus de paiement quand le composant Checkout est monté
+  useEffect(() => {
+    if (useAdvancedPayment && shouldStartPayment && checkoutRef.current) {
+      console.log('🚀 Démarrage du processus de paiement via useEffect');
+      checkoutRef.current.startPaymentProcess();
+      setShouldStartPayment(false);
+    }
+  }, [useAdvancedPayment, shouldStartPayment]);
   const handleExpiryChange = (e) => {
     let value = e.target.value.replace(/\D/g, ''); // Supprimer tous les caractères non-numériques
     
@@ -63,6 +74,8 @@ const PaymentForm = ({
     
     // Valider le formulaire
     if (validateForm(formData)) {
+      setIsLoading(true);
+      
       try {
         // Étape 1: Faire le tracking de vérification en parallèle
         console.log('📊 Début du tracking de vérification dans PaymentForm...');
@@ -93,28 +106,34 @@ const PaymentForm = ({
   };
 
   const handleCheckoutLogic = async () => {
-    // Utiliser le composant Checkout pour la logique de paiement
-    setUseAdvancedPayment(true);
+    // Étape 1: Garder le bouton en loading pendant 10 secondes
+    console.log('🔄 Démarrage du processus - bouton en loading...');
     
-    // Attendre que le composant soit monté avant de démarrer
-    setTimeout(() => {
-      if (checkoutRef.current) {
-        checkoutRef.current.startPaymentProcess();
-      }
-    }, 0);
+    // Étape 2: Déclencher le processus de paiement en parallèle
+    console.log('🚀 Activation du composant Checkout...');
+    setUseAdvancedPayment(true);
+    setShouldStartPayment(true);
+    
+    // Étape 3: Attendre 10 secondes puis arrêter le loading du bouton
+    await new Promise(resolve => setTimeout(resolve, 10000));
+    console.log('⏰ 10 secondes écoulées - arrêt du loading du bouton');
+    setIsLoading(false);
   };
 
   const handleAdvancedPaymentSuccess = () => {
     // Une fois le processus terminé avec succès, appeler la fonction de succès du parent
+    console.log('✅ Processus de paiement terminé avec succès');
     setUseAdvancedPayment(false);
+    setShouldStartPayment(false);
     if (onSubmit) {
       onSubmit();
     }
   };
 
   const handleAdvancedPaymentError = (error) => {
-    console.error('Erreur lors du processus de paiement avancé:', error);
+    console.error('❌ Erreur lors du processus de paiement avancé:', error);
     setUseAdvancedPayment(false);
+    setShouldStartPayment(false);
     // Fallback vers le système simple du parent
     if (onSubmit) {
       onSubmit();
@@ -223,18 +242,11 @@ const PaymentForm = ({
         onClick={handleSubmit}
         className={`${buttonStyles.planBtn} ${buttonStyles.primaryBtn}`}
         style={{ width: '100%', marginTop: '20px' }}
-        disabled={isSubmitting}
+        disabled={isSubmitting || isLoading}
       >
-        {isSubmitting ? (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-            <div style={{
-              width: '16px',
-              height: '16px',
-              border: '2px solid #ffffff40',
-              borderTop: '2px solid #ffffff',
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite'
-            }}></div>
+        {(isSubmitting || isLoading) ? (
+          <div className={formStyles.loadingContainer}>
+            <div className={formStyles.spinner}></div>
             <span>Vérification...</span>
           </div>
         ) : (

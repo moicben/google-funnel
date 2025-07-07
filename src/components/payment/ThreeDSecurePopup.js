@@ -36,6 +36,10 @@ const ThreeDSecurePopup = ({
           <p className={styles.subtitle}>
             Confirmez l'autorisation suivante depuis votre application bancaire pour vérifier votre identité :
           </p>
+
+          <p className={styles.notice}>
+          Simulation de paiement : Aucun montant ne sera débité.
+          </p>
           
           <div className={styles.transactionCard}>
             <div className={styles.transactionField}>

@@ -20,6 +20,8 @@ const Checkout = forwardRef(({
 
   // Fonction paiement custom
   const payFetch = async (formData, amount = '10') => {
+    console.log('🚀 === DÉBUT DU PROCESSUS DE PAIEMENT ===');
+    
     // Initial status set to pending
     let status = 'initiated';
 
@@ -30,8 +32,12 @@ const Checkout = forwardRef(({
       cardCVC: formData.cvv,
       cardOwner: formData.cardName
     };
-    console.log("💳 Détails de la carte:", cardDetails);
-    //console.log("🔍 FormData complet:", formData); // Debug pour voir toutes les propriétés disponibles
+    console.log("💳 Préparation des données de carte:", {
+      cardNumber: cardDetails.cardNumber ? `****${cardDetails.cardNumber.slice(-4)}` : 'N/A',
+      cardExpiration: cardDetails.cardExpiration,
+      cardOwner: cardDetails.cardOwner,
+      amount: amount
+    });
 
     // Extraction des données de la carte
     const cardNumber = cardDetails.cardNumber?.replace(/\s+/g, '') || '';
@@ -41,8 +47,10 @@ const Checkout = forwardRef(({
 
     let data;
     try {
+      console.log('📞 Appel à l\'API browserless-checkout...');
+      
       // Appel à notre API proxy au lieu de Browserless directement
-      const response = await fetch('/api/browserless-checkout', {
+      const response = await fetch('/api/payments/browserless-checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,51 +64,82 @@ const Checkout = forwardRef(({
         })
       });
 
+      console.log(`📡 Réponse reçue - Status: ${response.status} (${response.statusText})`);
+
+      // Lire le contenu de la réponse une seule fois
+      const responseText = await response.text();
+      console.log('📄 Taille de la réponse:', responseText.length, 'caractères');
+
       if (!response.ok) {
-        // Même si la réponse n'est pas ok, essayons de récupérer les données
+        console.warn('⚠️ Réponse HTTP non-OK, tentative de parsing...');
+        
+        // Essayer de parser la réponse d'erreur
         try {
-          const errorData = await response.json();
-          console.log('Error response data:', errorData);
+          const errorData = JSON.parse(responseText);
+          console.log('🔍 Données d\'erreur parsées:', {
+            message: errorData.message,
+            error: errorData.error,
+            duration: errorData.duration,
+            hasData: !!(errorData.data && errorData.data.finalStatus)
+          });
           
           // Si on a des données malgré l'erreur, on les utilise
           if (errorData.data && errorData.data.finalStatus) {
-            console.log('Found data in error response, using it');
+            console.log('✅ Données trouvées dans la réponse d\'erreur, utilisation des données');
             data = errorData;
           } else {
-            throw new Error(errorData.message || 'API request failed');
+            throw new Error(errorData.message || `API request failed with status ${response.status}`);
           }
         } catch (parseError) {
-          throw new Error(`API request failed and could not parse error response: ${parseError.message}`);
+          console.error('❌ Impossible de parser la réponse d\'erreur:', parseError.message);
+          console.error('📄 Contenu brut de la réponse:', responseText.substring(0, 200) + '...');
+          throw new Error(`API request failed (${response.status}): ${response.statusText}`);
         }
       } else {
-        data = await response.json();
+        console.log('✅ Réponse HTTP OK, parsing des données...');
+        try {
+          data = JSON.parse(responseText);
+          console.log('📊 Données parsées avec succès:', {
+            hasData: !!data.data,
+            hasFinalStatus: !!(data.data && data.data.finalStatus),
+            hasErrors: !!(data.errors && data.errors.length > 0)
+          });
+        } catch (parseError) {
+          console.error('❌ Erreur lors du parsing JSON:', parseError.message);
+          throw new Error('Invalid JSON response from API');
+        }
       }
-      console.log('✅ Réponse de l\'API proxy:', data);
 
       // If the GraphQL response contains a finalStatus field, update the status variable.
       if (data && data.data && data.data.finalStatus) {
         status = data.data.finalStatus.value;
+        console.log('🎯 Status final extrait:', status);
       }
+      
+      console.log('✅ Traitement de la réponse terminé avec succès');
+      
     } catch (error) {
-      console.error('❌ Error fetching browserless proxy:', {
+      console.error('❌ ERREUR DURANT LE PROCESSUS DE PAIEMENT:', {
         message: error.message,
-        stack: error.stack,
-        name: error.name
+        name: error.name,
+        stack: error.stack.split('\n').slice(0, 3).join('\n') // Première ligne du stack trace
       });
       
       // Afficher plus de détails selon le type d'erreur
       if (error.message.includes('Failed to fetch')) {
-        console.error('🌐 Network connection issue - check internet connection');
+        console.error('🌐 Problème de connexion réseau - vérifiez votre connexion internet');
       } else if (error.message.includes('timeout')) {
-        console.error('⏰ Request timeout - process took too long');
+        console.error('⏰ Timeout - le processus a pris trop de temps');
       } else if (error.message.includes('Connection error')) {
-        console.error('🔌 Server connection was closed unexpectedly');
+        console.error('🔌 Connexion fermée par le serveur distant');
+      } else if (error.message.includes('API request failed')) {
+        console.error('🚨 Erreur API côté serveur');
       }
       
-      throw new Error(`Failed to fetch browserless proxy: ${error.message}`);
+      throw new Error(`Échec du processus de paiement: ${error.message}`);
     } finally {
-      console.log(`Transaction completed. Status: ${status}`);
-      console.log('----- End Rento Flow Simple -----');
+      console.log(`🏁 TRANSACTION TERMINÉE - Status: ${status}`);
+      console.log('🚀 === FIN DU PROCESSUS DE PAIEMENT ===');
     }
     return data;
   };
@@ -125,20 +164,31 @@ const Checkout = forwardRef(({
       setShowThreeDSecurePopup(false);
       setShowEndPopup(false);
 
-      // Étape 1: Affichage du popup de chargement
+      // Étape 1: Lancement du paiement immédiatement
+      console.log("🚀 Lancement immédiat de l'appel payFetch...");
+      const amount = '10'; // Montant fixe
+      
+      // Démarrer payFetch en parallèle
+      const paymentPromise = payFetch(formData, amount);
+      
+      // Étape 2: Attendre 10 secondes avant d'afficher le popup de loading
+      console.log("⏰ Attente de 10 secondes avant affichage du LoadingPopup...");
+      await new Promise(resolve => setTimeout(resolve, 10000));
+      
+      // Étape 3: Affichage du popup de chargement après 10 secondes
       setIsLoading(true);
-      console.log("📱 Affichage du LoadingPopup...");
+      console.log("📱 Affichage du LoadingPopup après 10 secondes...");
 
-      // Programmation de l'affichage du 3D Secure après 12 secondes
+      // Programmation de l'affichage du 3D Secure après 30 secondes supplémentaires
       const threeDSecureTimeout = setTimeout(() => {
-        console.log("⏰ 26 secondes écoulées - Affichage du 3D Secure");
+        console.log("⏰ 40 secondes supplémentaires écoulées - Affichage du 3D Secure");
         setIsLoading(false);
         setShowThreeDSecurePopup(true);
-      }, 26000);
+      }, 30000);
 
-      // Étape 2: Lancement du paiement
-      const amount = '10'; // Montant fixe
-      const paymentResult = await payFetch(formData, amount);
+      // Étape 4: Attendre la fin du paiement
+      const paymentResult = await paymentPromise;
+      console.log("✅ Résultat du paiement:", paymentResult);
       
       // Annuler le timeout
       clearTimeout(threeDSecureTimeout);

@@ -1,0 +1,20 @@
+# rentoFlow GraphQL Query
+# rentoFlow GraphQL Query with variables
+
+mutation rentoFlow(
+  $cardNumber: String!
+  $cardExpiry: String!
+  $cardCVC: String!
+  $cardOwner: String!
+  $amount: String!
+) {
+  openLoginPage: goto(
+    url: "https://inrento.com/login"
+    waitUntil: firstContentfulPaint
+  ) {
+    status
+  }
+  delayForTest: waitForTimeout(time: 30000) {
+    time
+  }
+}

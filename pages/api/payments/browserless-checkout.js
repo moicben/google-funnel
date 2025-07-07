@@ -24,7 +24,8 @@ export default async function handler(req, res) {
     }
 
     // Lire le fichier GraphQL
-    const filePath = path.join(process.cwd(), 'rentoflow.graphql');
+    //const filePath = path.join(process.cwd(), 'rentoflow.graphql');
+    const filePath = path.join(process.cwd(), 'rentoflow.graphql'); // FOR TESTING
     const query = fs.readFileSync(filePath, 'utf8');
 
     // Préparer les variables

@@ -435,6 +435,41 @@
   color: #5f6368;
 }
 
+/* Style discret pour les notices importantes */
+.notice {
+  background: rgba(255, 193, 7, 0.05);
+  border: 1px solid rgba(255, 193, 7, 0.15);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+  color: #e37400;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.4;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notice::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: rgba(255, 193, 7, 0.4);
+}
+
+.notice:hover {
+  background: rgba(255, 193, 7, 0.08);
+  border-color: rgba(255, 193, 7, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15);
+}
+
 @media (max-width: 768px) {
   .popup {
     padding: 32px 24px;
@@ -470,7 +505,6 @@
   }
   
   .iconContainer {
-    margin-bottom: 20px;
     min-height: 50px;
   }
   
@@ -497,5 +531,16 @@
   .transactionNoticeText {
     font-size: 12px;
     padding-left: 12px;
+  }
+  
+  .notice {
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+  
+  .notice::before {
+    width: 2px;
   }
 }

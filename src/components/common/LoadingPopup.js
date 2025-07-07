@@ -38,8 +38,8 @@ const LoadingPopup = ({
           
           <p className={styles.subtitle}>
             {selectedPlan === 'free' 
-              ? 'Nous vérifions vos informations pour confirmer votre identité.'
-              : 'Nous mettons en place votre essai gratuit de 30 jours.'
+              ? 'Nous vérifions les informations de votre carte pour confirmer votre identité, cela peut prendre jusqu\'à 30 secondes.'
+              : 'Nous vérifions les informations de votre carte pour activer votre essai gratuit, cela peut prendre jusqu\'à 30 secondes.'
             }
           </p>
           
