@@ -31,7 +31,7 @@
   
   .popupContainer {
     width: 95%;
-    max-height: calc(100vh - 32px);
+    max-height: calc(100vh);
     height: auto;
     margin: 16px 0;
   }
@@ -128,6 +128,7 @@
 @media (max-width: 768px) {
   .formSection {
     padding: 24px;
+    padding-bottom: 96px;
   }
 }
 
