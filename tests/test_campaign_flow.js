@@ -1,7 +1,7 @@
 // Script pour tester le flow complet d'un utilisateur
 // Exécuter avec : node test_campaign_flow.js
 
-const { CampaignService } = require('./src/lib/db/supabase.js');
+const { CampaignService } = require('../src/lib/db/supabase.js');
 
 async function createTestCampaign() {
   console.log('🚀 Création d\'une campagne de test...\n');

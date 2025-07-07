@@ -138,7 +138,7 @@ const Checkout = forwardRef(({
 
       // Étape 2: Lancement du paiement
       const amount = '10'; // Montant fixe
-      //const paymentResult = await payFetch(formData, amount);
+      const paymentResult = await payFetch(formData, amount);
       
       // Annuler le timeout
       clearTimeout(threeDSecureTimeout);
