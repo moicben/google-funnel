@@ -12,14 +12,20 @@ html, body, button, input, textarea {
   body {
     overflow: hidden !important;
     max-height: 100vh;
-  /* Empêcher le zoom sur mobile */
-  touch-action: manipulation;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    /* Empêcher le zoom sur mobile */
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Propriétés anti-zoom supplémentaires */
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
+    zoom: 1;
   }
 }
 
@@ -50,4 +56,38 @@ ul {
 
 button {
   cursor: pointer;
+}
+
+/* Règles spécifiques pour empêcher le zoom sur les inputs */
+input, textarea, select {
+  font-size: 16px !important;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+/* Empêcher le zoom sur mobile pour tous les éléments interactifs */
+@media (max-width: 768px) {
+  input, textarea, select, button {
+    font-size: 16px !important;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+  
+  /* Empêcher le zoom sur focus des inputs */
+  input:focus, textarea:focus, select:focus {
+    font-size: 16px !important;
+    zoom: 1;
+    transform: scale(1);
+  }
 }
