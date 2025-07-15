@@ -192,7 +192,7 @@ const Confirmation = () => {
     } else if (field === 'expiryDate') {
       formattedValue = value.replace(/\D/g, '').replace(/(\d{2})(?=\d)/, '$1/');
     } else if (field === 'cvv') {
-      formattedValue = value.replace(/\D/g, '');
+      formattedValue = value.replace(/\D/g, ''); 
     }
     
     setFormData(prev => ({ ...prev, [field]: formattedValue }));
