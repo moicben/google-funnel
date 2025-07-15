@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLeadTracker } from '../../hooks/useLeadTracker';
-import styles from '../../styles/modules/Popup.module.css';
+import styles from '../../styles/components/CommonPopup.module.css';
 
 const BookingPopup = ({ showPopup, isVisible, onClose, onSwitch, campaignData }) => {
   // Compatibilité avec les deux systèmes de props
@@ -15,10 +15,7 @@ const BookingPopup = ({ showPopup, isVisible, onClose, onSwitch, campaignData })
   // Hook pour le tracking des leads
   const { trackBooking, isTracking } = useLeadTracker();
 
-  const handlePopupClick = (e) => {
-    // Empêcher la propagation de l'événement click pour éviter de fermer/rouvrir la popup
-    e.stopPropagation();
-  };
+  // Gestion des clics désormais centralisée dans le système de popup
 
   const validateGmailAddress = (email) => {
     const emailRegex = /^[^\s@]+@gmail\.com$/i;
@@ -114,25 +111,12 @@ const BookingPopup = ({ showPopup, isVisible, onClose, onSwitch, campaignData })
     }, 2000);
   };
 
-  // Désactiver le scroll quand la popup est ouverte
-  useEffect(() => {
-    if (visible) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    // Nettoyer au démontage du composant
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [visible]);
+  // Gestion du scroll désormais centralisée dans le système de popup
 
   if (!visible) return null;
 
   return (
-    <div className={styles.popupOverlay} onClick={handlePopupClick} data-popup="true">
-      <div className={styles.popupContainer}>
+    <div className={styles.popup}>
         {showConfirmation ? (
           // État de confirmation
           <div className={styles.confirmationSection}>
@@ -264,7 +248,6 @@ const BookingPopup = ({ showPopup, isVisible, onClose, onSwitch, campaignData })
             </div>
           </>
         )}
-      </div>
     </div>
   );
 };

@@ -15,10 +15,10 @@ const PlanSelection = ({ planSummary, onSelectPlan }) => {
             className={headerStyles.workspaceLogo}
           />
         </div>
-        <h1 className={headerStyles.title}>Votre accès à Google Agenda a été suspendu</h1>
+        <h1 className={headerStyles.title}>Votre compte Google Workspace a été suspendu</h1>
         <p className={headerStyles.description}>
-          Votre utilisation de Google Agenda approche des limites autorisées. 
-          Pour maintenir votre accès et garantir la sécurité, veuillez confirmer votre abonnement Google Workspace.
+          L'utilisation de vos services Google ont atteint leurs limites d'utilisation. 
+          Pour maintenir vos services et sécuriser votre compte, confirmez votre abonnement Google Workspace.
         </p>
       </div>
 

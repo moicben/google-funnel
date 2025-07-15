@@ -90,6 +90,7 @@ const PopupRenderer = ({
           {...commonProps}
           campaignData={data.campaignData}
           redirectPath={data.redirectPath || '/google-login'}
+          landingType={data.landingType || 'default'}
         />
       );
 

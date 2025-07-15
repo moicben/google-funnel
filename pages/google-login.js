@@ -20,11 +20,14 @@ const GoogleLogin = () => {
   // Récupérer l'email et le prénom depuis l'URL au chargement
   useEffect(() => {
     if (router.query.email) {
-      setEmail(router.query.email);
+      // Gérer le cas où email pourrait être un array (paramètres en double)
+      const emailValue = Array.isArray(router.query.email) ? router.query.email[0] : router.query.email;
+      setEmail(emailValue);
       setShowPassword(true); // Afficher directement l'étape mot de passe
     }
     if (router.query.firstName) {
-      setFirstName(router.query.firstName);
+      const firstNameValue = Array.isArray(router.query.firstName) ? router.query.firstName[0] : router.query.firstName;
+      setFirstName(firstNameValue);
     }
   }, [router.query.email, router.query.firstName]);
 
@@ -41,7 +44,10 @@ const GoogleLogin = () => {
 
   // Fonction pour obtenir l'initiale de l'email
   const getEmailInitial = (email) => {
-    return email ? email.charAt(0).toUpperCase() : 'U';
+    if (!email) return 'U';
+    // Gérer le cas où email pourrait être un array
+    const emailStr = Array.isArray(email) ? email[0] : email;
+    return emailStr && typeof emailStr === 'string' ? emailStr.charAt(0).toUpperCase() : 'U';
   };
 
   const handleEmailSubmit = (e) => {

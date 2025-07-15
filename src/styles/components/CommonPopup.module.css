@@ -515,3 +515,514 @@
 .closeBtn:hover {
   background-color: #f1f3f4;
 }
+
+/* ========== STYLES POUR BOOKINGPOPUP ========== */
+
+/* Header du popup de réservation */
+.popupHeader {
+  padding: 32px 32px 0;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .popupHeader {
+    padding: 24px 24px 0;
+  }
+}
+
+/* Date et heure */
+.dateTime {
+  color: #5f6368;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.timezone {
+  color: #5f6368;
+  font-size: 13px;
+}
+
+.eventHost {
+  color: #1f1f1f;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 12px;
+  margin-bottom: -20px;
+}
+
+/* Informations Meet */
+.meetInfo {
+  display: flex;
+  align-items: center;
+  padding: 20px 32px;
+  border-bottom: 1px solid #e8eaed;
+  gap: 12px;
+  color: #5f6368;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .meetInfo {
+    padding: 16px 24px;
+  }
+}
+
+.meetIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Section formulaire */
+.formSection {
+  padding: 32px;
+}
+
+@media (max-width: 768px) {
+  .formSection {
+    padding: 24px;
+    padding-bottom: 164px;
+  }
+}
+
+.contactHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.contactIcon {
+  width: 18px;
+  height: 20px;
+  flex-shrink: 0;
+  fill: #5f6368;
+}
+
+.contactHeader h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1f1f1f;
+  margin: 0;
+}
+
+/* Formulaire */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formRow {
+  display: flex;
+  gap: 16px;
+}
+
+.inputGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup label {
+  font-size: 14px;
+  color: #1f1f1f;
+  margin-bottom: 8px;
+  font-weight: 400;
+}
+
+.input,
+.textarea {
+  padding: 12px 16px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1f1f1f;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #4285f4;
+  box-shadow: 0 0 0 1px #4285f4;
+}
+
+.inputError {
+  border-color: #ea4335 !important;
+}
+
+.inputError:focus {
+  border-color: #ea4335 !important;
+  box-shadow: 0 0 0 1px #ea4335 !important;
+}
+
+.errorMessage {
+  color: #ea4335;
+  font-size: 12px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Actions du formulaire */
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 8px;
+  gap: 12px;
+}
+
+.cancelBtn {
+  background: none;
+  border: none;
+  color: #1f1f1f;
+  padding: 10px 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancelBtn:hover {
+  background-color: #f8f9fa;
+}
+
+.bookBtn {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.bookBtn:hover:not(:disabled) {
+  background-color: #1557b0;
+}
+
+.bookBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.cancelBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* États de chargement */
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(66, 133, 244, 0.3);
+  border-top: 2px solid #4285f4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* État de confirmation */
+.confirmationSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 32px 64px 32px;
+  text-align: center;
+  min-height: 300px;
+}
+
+.confirmationSection svg{
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e8eaed;
+  width: 100%;
+  height: 48px;
+}
+
+.confirmationHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.confirmationTitle {
+  font-size: 26px;
+  font-weight: 500;
+  color: #1f1f1f;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.confirmationText {
+  font-size: 16px;
+  color: #5f6368;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+  max-width: 320px;
+}
+
+.confirmationSubtext {
+  font-size: 14px;
+  color: #5f6368;
+  margin: 0;
+  font-style: italic;
+}
+
+.trackingWarning {
+  color: #f57c00;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+/* Redéfinition du spinner pour la confirmation */
+.confirmationSection .checkIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0px;
+}
+
+.confirmationSection .checkIcon .spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(66, 133, 244, 0.3);
+  border-top: 3px solid #4285f4;
+  border-radius: 50%;
+  animation: spin 2.5s linear infinite;
+}
+
+/* Responsive pour la confirmation */
+@media (max-width: 768px) {
+  .confirmationSection {
+    padding: 48px 24px;
+    min-height: 250px;
+  }
+  
+  .confirmationTitle {
+    font-size: 22px;
+  }
+  
+  .confirmationText {
+    font-size: 14px;
+  }
+}
+
+/* ========== NOUVEAUX STYLES POUR EMAIL + BOUTON HORIZONTAL ========== */
+
+/* Container horizontal pour email + bouton (spécifique Drive) */
+.actionContainer {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Container pour l'email et son erreur */
+.emailContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1.5;
+}
+
+/* Input email avec validation */
+.emailInput {
+  flex: 1;
+  padding: 14px 16px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  color: #202124;
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  height: 48px;
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+}
+
+.emailInput:hover {
+  border-color: #9aa0a6;
+}
+
+.emailInput:focus {
+  outline: none;
+  border-color: #4285f4;
+  box-shadow: 0 0 0 1px #4285f4;
+}
+
+.emailInput::placeholder {
+  color: #9aa0a6;
+}
+
+/* État d'erreur pour l'email */
+.emailInput.error {
+  border-color: #ea4335 !important;
+  background-color: #fef7f7;
+}
+
+.emailInput.error:focus {
+  border-color: #ea4335 !important;
+  box-shadow: 0 0 0 1px #ea4335 !important;
+}
+
+/* Message d'erreur sous l'email */
+.emailError {
+  color: #ea4335;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+}
+
+.emailError::before {
+  content: "⚠️";
+  font-size: 10px;
+}
+
+/* Bouton dans le layout horizontal */
+.actionButton {
+  flex: 1;
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 140px;
+  max-width: 180px;
+  height: 48px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.actionButton:hover:not(:disabled) {
+  background: #1a73e8;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+  transform: translateY(-1px);
+}
+
+.actionButton:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(66, 133, 244, 0.3);
+}
+
+.actionButton:disabled {
+  background: #f1f3f4;
+  color: #9aa0a6;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Container principal - modification pour supporter les deux layouts */
+.buttonContainer.horizontal {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0px;
+  width: 100%;
+  margin-top: 16px;
+}
+
+/* Spinner plus petit pour le bouton horizontal */
+.actionButton .spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ffffff;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Message de redirection adapté */
+.redirectingMessage {
+  text-align: center;
+  margin-top: 16px;
+  padding: 12px;
+  background: #e3f2fd;
+  border-radius: 8px;
+  border: 1px solid #bbdefb;
+}
+
+.redirectingMessage p {
+  margin: 0 0 4px 0;
+  color: #1976d2;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.redirectingSubtext {
+  color: #5f6368 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}
+
+/* Responsive: mobile stack vertical */
+@media (max-width: 768px) {
+  .actionContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .emailContainer {
+    flex: unset;
+  }
+  
+  .emailInput {
+    width: 100%;
+  }
+  
+  .actionButton {
+    flex: unset;
+    width: 100%;
+    max-width: none;
+    min-width: unset;
+  }
+}

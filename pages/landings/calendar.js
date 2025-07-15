@@ -5,6 +5,8 @@ import { useCampaign } from '../../src/hooks/useCampaigns';
 import { useVisitTracker } from '../../src/hooks/useVisitTracker';
 import { usePopupManager, POPUP_TYPES } from '../../src/hooks/usePopupManager';
 import PopupRenderer from '../../src/components/common/PopupRenderer';
+import GoogleLoader from '../../src/components/common/GoogleLoader';
+import LandingService from '../../src/services/landingService';
 import styles from '../../src/styles/modules/Index.module.css';
 
 const CalendarLanding = () => {
@@ -37,21 +39,9 @@ const CalendarLanding = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Afficher le filtre overlay après 11 secondes (seulement sur mobile)
+  // Afficher le filtre overlay après un délai (responsive)
   useEffect(() => {
-    // Vérifier si on est sur mobile
-    const isMobile = window.innerWidth <= 768;
-    
-    if (isMobile) {
-      const timer = setTimeout(() => {
-        setShowOverlayFilter(true);
-      }, 11000);
-
-      return () => clearTimeout(timer);
-    } else {
-      // Sur desktop, afficher le filtre immédiatement
-      setShowOverlayFilter(true);
-    }
+    return LandingService.setupOverlayTiming(setShowOverlayFilter);
   }, []);
 
   const handleScreenClick = (e) => {
@@ -61,35 +51,42 @@ const CalendarLanding = () => {
       return;
     }
     
+    // Empêcher la propagation de l'événement
+    e.stopPropagation();
+    
+    console.log('Clic sur calendrier, campaignData:', campaignData);
+    
     // Ouvrir la popup SEULEMENT si le filtre est visible
     if (showOverlayFilter) {
-      popupManager.openBookingPopup({
-        campaignData
-      });
+      popupManager.openBookingPopup(getStandardPopupProps(campaignData));
     }
+  };
+
+  const handleOverlayClick = (e) => {
+    // Ne pas ouvrir la popup si on clique sur la popup elle-même
+    const popupElement = e.target.closest('[data-popup]');
+    if (popupElement) {
+      return;
+    }
+    
+    // Empêcher la propagation de l'événement
+    e.stopPropagation();
+    
+    console.log('Clic sur overlay calendrier, campaignData:', campaignData);
+    
+    // Déclencher popup de réservation
+    popupManager.openBookingPopup(getStandardPopupProps(campaignData));
   };
 
   const handlePopupClose = () => {
     popupManager.closePopup();
   };
 
-  // Titre dynamique basé sur les données de campagne
-  const getPageTitle = () => {
-    if (loading) return 'Chargement...';
-    if (campaignData) {
-      return `Réservez avec ${campaignData.firstName} ${campaignData.lastName}`;
-    }
-    return 'Choisissez votre créneau';
-  };
-
-  // Description dynamique basée sur les données de campagne  
-  const getPageDescription = () => {
-    if (loading) return 'Chargement de votre calendrier de réservation...';
-    if (campaignData) {
-      return `Réservez facilement votre créneau avec ${campaignData.firstName} ${campaignData.lastName}. Calendrier interactif disponible.`;
-    }
-    return 'Sélectionnez facilement votre créneau de réservation dans notre calendrier interactif';
-  };
+  // Utilisation du service pour les métadonnées de page
+  const pageMeta = LandingService.generatePageMeta(campaignData, loading, 'calendar');
+  
+  // Utilisation du service pour les gestionnaires d'événements
+  const eventHandlers = LandingService.createEventHandlers(popupManager, campaignData, 'calendar');
 
   // Affichage en cas d'erreur
   if (error) {
@@ -113,11 +110,11 @@ const CalendarLanding = () => {
   return (
     <>
       <PageHead 
-        title={getPageTitle()}
-        description={getPageDescription()}
+        title={pageMeta.title}
+        description={pageMeta.description}
         options={{
-          keywords: 'réservation, calendrier, créneau, rendez-vous',
-          favicon: '/calendar-favicon.ico'
+          keywords: pageMeta.keywords,
+          favicon: pageMeta.favicon
         }}
       />
       
@@ -155,7 +152,7 @@ const CalendarLanding = () => {
           />
           {/* Div transparente pour capturer les clics sur l'iframe */}
           <div 
-            onClick={handleScreenClick}
+            onClick={eventHandlers.handleOverlayClick}
             className={`${styles.clickOverlay} ${showOverlayFilter ? styles.visible : ''}`}
             title="Choisissez un créneau horaire"
           />
@@ -163,17 +160,7 @@ const CalendarLanding = () => {
         
         {/* Loader superposé pendant le chargement */}
         {loading && (
-          <div className={styles.overlayLoader}>
-            <div className={styles.googleLoader}>
-              <div className={styles.googleSpinner}>
-                <div className={styles.googleSpinnerBlue}></div>
-                <div className={styles.googleSpinnerRed}></div>
-                <div className={styles.googleSpinnerYellow}></div>
-                <div className={styles.googleSpinnerGreen}></div>
-              </div>
-            </div>
-            <p className={styles.loadingText}>Chargement du calendrier...</p>
-          </div>
+          <GoogleLoader loadingText="Chargement du calendrier..." />
         )}
         
         {/* Système de popup centralisé */}
