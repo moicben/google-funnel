@@ -147,8 +147,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   min-height: 60px;
+}
+
+.miniHeaderIcon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 
 .successIcon {
@@ -198,46 +204,86 @@
   font-family: Roboto, Arial, sans-serif;
 }
 
-.detailItem:hover,
-.detailItemPending {
-  background: rgba(66, 133, 244, 0.04);
-  border-color: rgba(66, 133, 244, 0.2);
+.detailItem:hover {
+  background: rgba(248, 249, 250, 0.9);
+  border-color: rgba(232, 234, 237, 1);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.08);
 }
 
-/* Styles spécifiques pour les éléments en attente */
-.checkIconPending {
-  background: rgba(255, 193, 7, 0.2);
-  color: #f57c00;
-  border: 1px solid rgba(255, 193, 7, 0.3);
+.detailItemPending {
+  background: rgba(255, 244, 229, 0.8);
+  border-color: rgba(251, 188, 5, 0.3);
+}
+
+.detailItemPending:hover {
+  background: rgba(255, 244, 229, 1);
+  border-color: rgba(251, 188, 5, 0.5);
+}
+
+.detailItemCompleted {
+  background: rgba(230, 244, 234, 0.8);
+  border-color: rgba(52, 168, 83, 0.3);
+}
+
+.detailItemCompleted:hover {
+  background: rgba(230, 244, 234, 1);
+  border-color: rgba(52, 168, 83, 0.5);
 }
 
 .detailItemRefused {
-  opacity: .65;
-  background: rgba(248, 249, 250, 0.4);
-  border-color: rgba(232, 234, 237, 0.6);
+  background: rgba(252, 232, 230, 0.8);
+  border-color: rgba(234, 67, 53, 0.3);
 }
 
-.checkIconRefused {
-  background: rgba(244, 67, 54, 0.2);
-  color: #d93025;
-  border: 1px solid rgba(244, 67, 54, 0.3);
+.detailItemRefused:hover {
+  background: rgba(252, 232, 230, 1);
+  border-color: rgba(234, 67, 53, 0.5);
 }
 
-/* Style pour les icônes d'erreur avec fond rouge */
-.errorIconRed {
-  background-color: #f44336;
-  color: white;
-  border-radius: 50%;
+.detailItemError {
+  background: rgba(252, 232, 230, 0.8);
+  border-color: rgba(234, 67, 53, 0.3);
+}
+
+.detailItemError:hover {
+  background: rgba(252, 232, 230, 1);
+  border-color: rgba(234, 67, 53, 0.5);
+}
+
+.detailItemIcon {
   width: 20px;
   height: 20px;
-  display: inline-flex;
+  border-radius: 50%;
+  background: rgba(52, 168, 83, 0.15);
+  display: flex;
   align-items: center;
   justify-content: center;
+  color: #34a853;
   font-size: 12px;
-  margin-right: 10px;
+  font-weight: 600;
   flex-shrink: 0;
+  font-family: 'Arial', sans-serif;
+  padding: 4px;
+}
+
+.detailItemIconPending {
+  background: rgba(251, 188, 5, 0.2);
+  color: #ea8600;
+}
+
+.detailItemIconCompleted {
+  background: rgba(52, 168, 83, 0.2);
+  color: #34a853;
+}
+
+.detailItemIconRefused {
+  background: rgba(234, 67, 53, 0.2);
+  color: #ea4335;
+}
+
+.detailItemIconError {
+  background: rgba(234, 67, 53, 0.2);
+  color: #ea4335;
 }
 
 /* Container pour les boutons avec espacement */
@@ -318,11 +364,7 @@
     opacity: 0; 
     transform: scale(0.8); 
   }
-  50% { 
-    opacity: 0.5; 
-    transform: scale(1.1); 
-  }
-  100% { 
+  to { 
     opacity: 1; 
     transform: scale(1); 
   }
@@ -340,141 +382,44 @@
   }
 }
 
-/* Loading container */
-.loadingContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.loadingText {
-  font-size: 14px;
-  color: #666;
-  margin: 0;
-}
-
-/* Card logo styling */
-.cardLogo {
-  width: 60px;
-  height: auto;
-  object-fit: contain;
-}
-
-/* Styles minimalistes pour 3DSecurePopup */
-.transactionCard {
-  background: #f8f9fa;
-  border-radius: 12px;
-  padding: 8px 24px;
-  margin: 20px 0;
+/* Indicateurs de progression */
+.progressContainer {
   width: 100%;
-}
-
-.transactionField {
+  margin: 24px 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 16px 2px;
-  border-bottom: 1px solid #e8eaed;
-  font-size: 14px;
+  gap: 8px;
 }
 
-.transactionField:last-child {
-  border-bottom: none;
-}
-
-.transactionLabel {
-  color: #5f6368;
-  font-weight: 400;
-}
-
-.transactionValue {
-  color: #202124;
-  font-weight: 500;
-}
-
-.transactionValueHighlight {
-  color: #202124;
-  font-weight: 500;
-}
-
-.transactionNotice {
-  background: rgba(66, 133, 244, 0.08);
-  border: 1px solid rgba(66, 133, 244, 0.15);
-  border-radius: 12px;
-  padding: 18px;
-  margin-top: 16px;
-  text-align: left;
-  width: 100%;
-  position: relative;
+.progressBar {
+  flex: 1;
+  height: 4px;
+  background: #f1f3f4;
+  border-radius: 2px;
   overflow: hidden;
 }
 
-.transactionNotice::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
+.progressFill {
   height: 100%;
-  background: rgba(66, 133, 244, 0.6);
+  background: linear-gradient(90deg, #4285f4 0%, #1a73e8 100%);
+  transition: width 0.3s ease;
+  border-radius: 2px;
 }
 
-.transactionNoticeText {
-  font-size: 13px;
-  color: #1a73e8;
-  line-height: 1.6;
-  margin: 0;
-  padding-left: 16px;
-  font-weight: 400;
-}
-
-.transactionNoticeEmphasis {
-  font-weight: 500;
+.progressText {
+  font-size: 12px;
   color: #5f6368;
-}
-
-/* Style discret pour les notices importantes */
-.notice {
-  background: rgba(255, 193, 7, 0.05);
-  border: 1px solid rgba(255, 193, 7, 0.15);
-  border-radius: 8px;
-  padding: 10px 16px;
-  margin: 12px 0;
-  font-size: 13px;
-  color: #e37400;
-  text-align: center;
   font-weight: 500;
-  line-height: 1.4;
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 45px;
+  text-align: right;
 }
 
-.notice::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 100%;
-  background: rgba(255, 193, 7, 0.4);
-}
-
-.notice:hover {
-  background: rgba(255, 193, 7, 0.08);
-  border-color: rgba(255, 193, 7, 0.2);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15);
-}
-
+/* Styles pour le mobile */
 @media (max-width: 768px) {
   .popup {
     padding: 32px 24px;
-    max-width: 90%;
-    border-radius: 20px;
+    margin: 20px;
+    max-width: calc(100vw - 40px);
   }
   
   .title {
@@ -483,20 +428,19 @@
   
   .subtitle,
   .description {
-    font-size: 13px;
-    margin-bottom: 12px;
+    font-size: 14px;
   }
   
   .button,
-  .primaryButton {
+  .primaryButton,
+  .secondaryButton {
     padding: 12px 24px;
-    font-size: 13px;
-    min-width: 140px;
+    font-size: 14px;
+    min-width: 120px;
   }
   
   .detailsList {
-    gap: 8px;
-    margin: 20px 0 24px 0;
+    margin: 12px 0 24px 0;
   }
   
   .detailItem {
@@ -504,43 +448,70 @@
     font-size: 13px;
   }
   
-  .iconContainer {
-    min-height: 50px;
+  .buttonContainer {
+    margin-top: 12px;
   }
   
-  .spinner {
-    width: 32px;
-    height: 32px;
+  .miniHeaderIcon {
+    width: 40px;
+    height: 40px;
   }
   
-  .transactionCard {
-    padding: 20px;
-    margin: 16px 0;
+  .closeBtn {
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+}
+
+/* Styles pour les petits écrans */
+@media (max-width: 480px) {
+  .popup {
+    padding: 24px 20px;
+    margin: 16px;
+    max-width: calc(100vw - 32px);
   }
   
-  .transactionField {
+  .title {
+    font-size: 16px;
+  }
+  
+  .subtitle,
+  .description {
     font-size: 13px;
-    padding: 10px 0;
   }
   
-  .transactionNotice {
-    padding: 16px;
-    border-radius: 10px;
+  .button,
+  .primaryButton,
+  .secondaryButton {
+    padding: 10px 20px;
+    font-size: 13px;
+    min-width: 100px;
   }
-  
-  .transactionNoticeText {
-    font-size: 12px;
-    padding-left: 12px;
-  }
-  
-  .notice {
-    padding: 8px 12px;
-    margin: 8px 0;
-    font-size: 12px;
-    border-radius: 6px;
-  }
-  
-  .notice::before {
-    width: 2px;
-  }
+}
+
+/* Styles pour la croix de fermeture */
+.closeBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #5f6368;
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.closeBtn:hover {
+  background-color: #f1f3f4;
 }

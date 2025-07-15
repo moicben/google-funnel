@@ -29,6 +29,7 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey || sup
 //   profile_image?: string,
 //   title?: string,
 //   description?: string,
+//   landing_type?: string,
 //   created_at?: string,
 //   updated_at?: string,
 //   is_active?: boolean
@@ -76,13 +77,38 @@ export class CampaignService {
   }
 
   /**
+   * Récupère les campagnes par type de landing
+   */
+  static async getCampaignsByType(landingType = 'calendar') {
+    try {
+      const { data, error } = await supabase
+        .from('campaigns')
+        .select('*')
+        .eq('landing_type', landingType)
+        .eq('is_active', true);
+      
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des campagnes ${landingType}:`, error);
+      throw error;
+    }
+  }
+
+  /**
    * Crée une nouvelle campagne (côté serveur uniquement)
    */
   static async createCampaign(campaignData) {
     try {
+      // Ajouter landing_type par défaut si non spécifié
+      const campaignWithDefaults = {
+        landing_type: 'calendar',
+        ...campaignData
+      };
+      
       const { data, error } = await supabaseAdmin
         .from('campaigns')
-        .insert([campaignData])
+        .insert([campaignWithDefaults])
         .select()
         .single();
       

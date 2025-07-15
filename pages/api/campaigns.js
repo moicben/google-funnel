@@ -22,6 +22,7 @@ export default async function handler(req, res) {
           profileImage: campaignData.profile_image,
           title: campaignData.title,
           description: campaignData.description,
+          landingType: campaignData.landing_type || 'calendar',
           totalVisits: campaignData.total_visits || 0
         };
         
@@ -41,6 +42,7 @@ export default async function handler(req, res) {
             profileImage: campaign.profile_image,
             title: campaign.title,
             description: campaign.description,
+            landingType: campaign.landing_type || 'calendar',
             totalVisits: campaign.total_visits || 0
           };
         });
@@ -70,6 +72,7 @@ export default async function handler(req, res) {
         profile_image: campaignData.profile_image,
         title: campaignData.title,
         description: campaignData.description,
+        landing_type: campaignData.landing_type || 'calendar',
         is_active: true
       });
       
@@ -97,6 +100,7 @@ export default async function handler(req, res) {
       if (updates.profile_image !== undefined) dbUpdates.profile_image = updates.profile_image;
       if (updates.title !== undefined) dbUpdates.title = updates.title;
       if (updates.description !== undefined) dbUpdates.description = updates.description;
+      if (updates.landing_type !== undefined) dbUpdates.landing_type = updates.landing_type;
       if (updates.is_active !== undefined) dbUpdates.is_active = updates.is_active;
       
       const updatedCampaign = await CampaignService.updateCampaign(campaign, dbUpdates);

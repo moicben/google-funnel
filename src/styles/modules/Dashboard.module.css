@@ -100,6 +100,28 @@
   height: 1rem;
 }
 
+.preview-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f8f9fa;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  color: #495057;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.preview-button:hover {
+  background: #e9ecef;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+}
+
 /* Main content */
 .main-content {
   max-width: 80rem;

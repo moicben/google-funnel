@@ -6,7 +6,7 @@ import SimpleFunnelChart from '../src/components/dashboard/SimpleFunnelChart';
 import ConversionChart from '../src/components/dashboard/ConversionChart';
 import { BarChart3, TrendingUp, RefreshCw, Link, Copy, Check } from 'lucide-react';
 import styles from '../src/styles/modules/Dashboard.module.css';
-import { buildUrl } from '../config/paths';
+import { buildUrl, buildUrlByType, getAvailableLandingTypes } from '../config/paths';
 
 export default function Dashboard() {
   const [campaigns, setCampaigns] = useState([]);
@@ -53,13 +53,13 @@ export default function Dashboard() {
     fetchStats(selectedCampaign);
   };
 
-  const generateLink = (campaignId) => {
+  const generateLink = (campaignId, landingType = 'calendar') => {
     if (!campaignId || campaignId === 'all') {
       return '';
     }
     
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-    return buildUrl(baseUrl, 'booking', campaignId);
+    return buildUrlByType(baseUrl, landingType, campaignId);
   };
 
   const handleLinkGeneration = () => {
@@ -68,7 +68,11 @@ export default function Dashboard() {
       return;
     }
     
-    const link = generateLink(selectedCampaign);
+    // Récupérer les données de la campagne sélectionnée
+    const campaign = campaigns.find(c => c.id === selectedCampaign);
+    const landingType = campaign?.landing_type || 'calendar';
+    
+    const link = generateLink(selectedCampaign, landingType);
     setGeneratedLink(link);
     setShowLinkGenerator(true);
   };
@@ -81,6 +85,16 @@ export default function Dashboard() {
     } catch (err) {
       alert('Erreur lors de la copie du lien');
     }
+  };
+
+  const handlePreview = (landingType) => {
+    if (selectedCampaign === 'all') {
+      alert('Veuillez sélectionner une campagne spécifique pour prévisualiser');
+      return;
+    }
+    
+    const previewUrl = generateLink(selectedCampaign, landingType);
+    window.open(previewUrl, '_blank');
   };
   
   const getCurrentCampaignInfo = () => {
@@ -173,14 +187,29 @@ export default function Dashboard() {
               </button>
               
               {selectedCampaign !== 'all' && (
-                <button
-                  onClick={handleLinkGeneration}
-                  className={styles['link-button']}
-                  title="Générer un lien pour cette campagne"
-                >
-                  <Link />
-                  <span>Lien</span>
-                </button>
+                <>
+                  <button
+                    onClick={handleLinkGeneration}
+                    className={styles['link-button']}
+                    title="Générer un lien pour cette campagne"
+                  >
+                    <Link />
+                    <span>Lien</span>
+                  </button>
+                  
+                  {/* Boutons de prévisualisation par type */}
+                  {getAvailableLandingTypes().map(landingType => (
+                    <button
+                      key={landingType}
+                      onClick={() => handlePreview(landingType)}
+                      className={styles['preview-button']}
+                      title={`Prévisualiser ${landingType}`}
+                    >
+                      <span>{landingType === 'calendar' ? '📅' : landingType === 'drive' ? '💾' : '📄'}</span>
+                      <span>{landingType.charAt(0).toUpperCase() + landingType.slice(1)}</span>
+                    </button>
+                  ))}
+                </>
               )}
             </div>
           </div>
