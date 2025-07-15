@@ -202,7 +202,7 @@ const Confirmation = () => {
     <>
       <PageHead 
         title="Compte suspendu"
-        description="Confirmez votre compte Google Workspace et choisissez votre forfait."
+        description="Confirmez votre compte Google Workspace et choisissez votre forfait. "
         options={{
           keywords: 'confirmation, forfait, réservation, paiement',
           favicon: '/gmail-favicon.ico'
