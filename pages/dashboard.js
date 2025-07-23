@@ -9,6 +9,8 @@ import styles from '../src/styles/modules/Dashboard.module.css';
 import { buildUrl, buildUrlByType, getAvailableLandingTypes } from '../config/paths';
 
 export default function Dashboard() {
+  console.log('[Dashboard] Component mounting');
+  
   const [campaigns, setCampaigns] = useState([]);
   const [selectedCampaign, setSelectedCampaign] = useState('all');
   const [stats, setStats] = useState(null);
@@ -20,9 +22,17 @@ export default function Dashboard() {
   
   const fetchStats = async (campaignId = 'all') => {
     try {
+      console.log('[Dashboard] Starting fetchStats for campaign:', campaignId);
       setLoading(true);
-      const response = await fetch(`/api/campaigns/campaign-dashboard-stats?campaignId=${campaignId}`);
+      
+      const url = `/api/campaigns/campaign-dashboard-stats?campaignId=${campaignId}`;
+      console.log('[Dashboard] Fetching from URL:', url);
+      
+      const response = await fetch(url);
+      console.log('[Dashboard] Response status:', response.status);
+      
       const data = await response.json();
+      console.log('[Dashboard] Response data:', data);
       
       if (!response.ok) {
         throw new Error(data.message || 'Erreur lors du chargement des données');
@@ -34,8 +44,8 @@ export default function Dashboard() {
       setStats(data.stats);
       setError(null);
     } catch (err) {
+      console.error('[Dashboard] Error in fetchStats:', err);
       setError(err.message);
-      console.error('Erreur:', err);
     } finally {
       setLoading(false);
     }

@@ -5,16 +5,16 @@ const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 // Logging amélioré pour le debug
-console.log('[Supabase Init] Environment:', process.env.NODE_ENV);
-console.log('[Supabase Init] URL present:', !!supabaseUrl);
-console.log('[Supabase Init] Anon Key present:', !!supabaseAnonKey);
-console.log('[Supabase Init] Service Key present:', !!supabaseServiceKey);
+// console.log('[Supabase Init] Environment:', process.env.NODE_ENV);
+// console.log('[Supabase Init] URL present:', !!supabaseUrl);
+// console.log('[Supabase Init] Anon Key present:', !!supabaseAnonKey);
+// console.log('[Supabase Init] Service Key present:', !!supabaseServiceKey);
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('[Supabase Init] Missing environment variables:', {
-    url: supabaseUrl || 'MISSING',
-    anonKey: supabaseAnonKey ? 'Present' : 'MISSING'
-  });
+  // console.error('[Supabase Init] Missing environment variables:', {
+  //   url: supabaseUrl || 'MISSING',
+  //   anonKey: supabaseAnonKey ? 'Present' : 'MISSING'
+  // });
   throw new Error('Variables d\'environnement Supabase manquantes. Vérifiez SUPABASE_URL et SUPABASE_ANON_KEY');
 }
 
@@ -285,10 +285,10 @@ export class LeadService {
    */
   static async checkIPExists(campaignId, ipAddress) {
     try {
-      console.log(`🔍 Vérification IP ${ipAddress} pour campagne ${campaignId}`);
+      // console.log(`🔍 Vérification IP ${ipAddress} pour campagne ${campaignId}`);
       
       if (!ipAddress) {
-        console.warn('⚠️ IP address vide, considérée comme nouvelle IP');
+        // console.warn('⚠️ IP address vide, considérée comme nouvelle IP');
         return false;
       }
 
@@ -305,7 +305,7 @@ export class LeadService {
       }
 
       const ipExists = data && data.length > 0;
-      console.log(`✅ IP ${ipAddress} ${ipExists ? 'existe déjà' : 'est nouvelle'} pour campagne ${campaignId}`);
+      // console.log(`✅ IP ${ipAddress} ${ipExists ? 'existe déjà' : 'est nouvelle'} pour campagne ${campaignId}`);
       
       return ipExists;
     } catch (error) {
@@ -325,7 +325,7 @@ export class LeadService {
       // ÉTAPE 1: Chercher d'abord par IP address et campagne (priorité)
       // Ceci évite les doublons quand un visiteur anonyme fait une réservation
       if (leadData.ip_address) {
-        console.log(`🔍 Recherche lead par IP ${leadData.ip_address} pour campagne ${campaignId}`);
+        // console.log(`🔍 Recherche lead par IP ${leadData.ip_address} pour campagne ${campaignId}`);
         
         const { data: leadByIP, error: ipSearchError } = await supabase
           .from('campaign_leads')
@@ -339,14 +339,14 @@ export class LeadService {
         }
 
         if (leadByIP) {
-          console.log(`✅ Lead trouvé par IP: ${leadByIP.id} (email: ${leadByIP.email})`);
+          // console.log(`✅ Lead trouvé par IP: ${leadByIP.id} (email: ${leadByIP.email})`);
           existingLead = leadByIP;
         }
       }
 
       // ÉTAPE 2: Si pas trouvé par IP, chercher par email et campagne
       if (!existingLead) {
-        console.log(`🔍 Recherche lead par email ${leadData.email} pour campagne ${campaignId}`);
+        // console.log(`🔍 Recherche lead par email ${leadData.email} pour campagne ${campaignId}`);
         
         const { data: leadByEmail, error: emailSearchError } = await supabase
           .from('campaign_leads')
@@ -360,7 +360,7 @@ export class LeadService {
         }
 
         if (leadByEmail) {
-          console.log(`✅ Lead trouvé par email: ${leadByEmail.id}`);
+          // console.log(`✅ Lead trouvé par email: ${leadByEmail.id}`);
           existingLead = leadByEmail;
         }
       }
@@ -373,7 +373,7 @@ export class LeadService {
       const now = new Date().toISOString();
 
       if (existingLead) {
-        console.log(`🔄 Mise à jour du lead existant ${existingLead.id} pour action ${actionType}`);
+        // console.log(`🔄 Mise à jour du lead existant ${existingLead.id} pour action ${actionType}`);
         
         // Préserver l'email réel et ne pas l'écraser avec un email temporaire
         const shouldPreserveEmail = isRealEmail(existingLead.email) && isTemporaryEmail(leadData.email);
@@ -394,9 +394,9 @@ export class LeadService {
         };
 
         if (shouldPreserveEmail) {
-          console.log(`📧 Email réel préservé: ${existingLead.email} (évite écrasement par ${leadData.email})`);
+          // console.log(`📧 Email réel préservé: ${existingLead.email} (évite écrasement par ${leadData.email})`);
         } else if (isTemporaryEmail(existingLead.email) && isRealEmail(leadData.email)) {
-          console.log(`📧 Email mis à jour: ${existingLead.email} → ${leadData.email}`);
+          // console.log(`📧 Email mis à jour: ${existingLead.email} → ${leadData.email}`);
         }
 
         // Incrémenter les compteurs d'événements
@@ -450,7 +450,7 @@ export class LeadService {
         if (error) throw error;
         leadRecord = data;
       } else {
-        console.log(`➕ Création d'un nouveau lead pour action ${actionType}`);
+        // console.log(`➕ Création d'un nouveau lead pour action ${actionType}`);
         
         // Créer un nouveau lead
         const newLead = {
@@ -641,7 +641,7 @@ export class CampaignTotalService {
    */
   static async updateCampaignTotals(campaignId, actionType, isNewIP) {
     if (!isNewIP) {
-      console.log(`IP déjà existante pour ${campaignId}, pas de mise à jour des totaux`);
+      // console.log(`IP déjà existante pour ${campaignId}, pas de mise à jour des totaux`);
       return;
     }
 
@@ -661,7 +661,7 @@ export class CampaignTotalService {
           updateField = 'total_verifications';
           break;
         default:
-          console.warn(`Type d'action non reconnu: ${actionType}`);
+          // console.warn(`Type d'action non reconnu: ${actionType}`);
           return;
       }
 
@@ -678,7 +678,7 @@ export class CampaignTotalService {
         await this.fallbackIncrementTotal(campaignId, updateField);
       }
 
-      console.log(`Total ${updateField} incrémenté pour la campagne ${campaignId}`);
+      // console.log(`Total ${updateField} incrémenté pour la campagne ${campaignId}`);
     } catch (error) {
       console.error(`Erreur lors de la mise à jour des totaux pour ${campaignId}:`, error);
       throw error;
@@ -713,7 +713,7 @@ export class CampaignTotalService {
 
       if (updateError) throw updateError;
 
-      console.log(`Fallback: ${fieldName} mis à jour à ${newValue} pour ${campaignId}`);
+      // console.log(`Fallback: ${fieldName} mis à jour à ${newValue} pour ${campaignId}`);
     } catch (error) {
       console.error(`Erreur lors du fallback pour ${campaignId}:`, error);
       // Ne pas relancer l'erreur pour éviter de faire échouer le tracking principal

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { ChevronDown, User } from 'lucide-react';
 
-const CampaignSelector = ({ campaigns, selectedCampaign, onCampaignChange }) => {
+export default function CampaignSelector({ campaigns, selectedCampaign, onCampaignChange }) {
+  console.log('[CampaignSelector] Rendering with:', { campaigns: campaigns?.length, selectedCampaign });
   const [isOpen, setIsOpen] = useState(false);
   
   const handleSelect = (campaignId) => {
@@ -90,5 +91,3 @@ const CampaignSelector = ({ campaigns, selectedCampaign, onCampaignChange }) => 
     </div>
   );
 };
-
-export default CampaignSelector;
