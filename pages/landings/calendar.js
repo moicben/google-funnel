@@ -58,25 +58,13 @@ const CalendarLanding = () => {
     
     // Ouvrir la popup SEULEMENT si le filtre est visible
     if (showOverlayFilter) {
-      popupManager.openBookingPopup(getStandardPopupProps(campaignData));
+      popupManager.openCalendarPopup({
+        campaignData: campaignData
+      });
     }
   };
 
-  const handleOverlayClick = (e) => {
-    // Ne pas ouvrir la popup si on clique sur la popup elle-même
-    const popupElement = e.target.closest('[data-popup]');
-    if (popupElement) {
-      return;
-    }
-    
-    // Empêcher la propagation de l'événement
-    e.stopPropagation();
-    
-    console.log('Clic sur overlay calendrier, campaignData:', campaignData);
-    
-    // Déclencher popup de réservation
-    popupManager.openBookingPopup(getStandardPopupProps(campaignData));
-  };
+
 
   const handlePopupClose = () => {
     popupManager.closePopup();
@@ -170,7 +158,6 @@ const CalendarLanding = () => {
           data={popupManager.data}
           config={popupManager.config}
           onClose={handlePopupClose}
-          onSwitch={popupManager.switchPopup}
         />
       </div>
     </>

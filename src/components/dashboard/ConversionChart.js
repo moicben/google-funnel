@@ -6,15 +6,15 @@ const ConversionChart = ({ stats }) => {
   const { conversionRates } = stats;
   
   const conversionData = [
-    { name: 'Visite → Connexion', rate: conversionRates.visitToLogin },
-    { name: 'Connexion → Vérification', rate: conversionRates.loginToVerification },
-    { name: 'Vérification → Réservation', rate: conversionRates.verificationToBooking },
-    { name: 'Visite → Réservation', rate: conversionRates.visitToBooking }
+    { name: 'Contact → Connexion', rate: conversionRates.contactToLogin },
+    { name: 'Contact → Vérification', rate: conversionRates.contactToVerification },
+    { name: 'Contact → Réservation', rate: conversionRates.contactToBooking },
+    { name: 'Visite → Contact', rate: conversionRates.visitToContact }
   ];
   
   const pieData = [
-    { name: 'Convertis', value: conversionRates.visitToBooking, color: '#10B981' },
-    { name: 'Non convertis', value: 100 - conversionRates.visitToBooking, color: '#E5E7EB' }
+    { name: 'Convertis', value: conversionRates.contactToBooking, color: '#10B981' },
+    { name: 'Non convertis', value: 100 - conversionRates.contactToBooking, color: '#E5E7EB' }
   ];
   
   return (
@@ -36,16 +36,16 @@ const ConversionChart = ({ stats }) => {
             <Line 
               type="monotone" 
               dataKey="rate" 
-              stroke="#3B82F6" 
+              stroke="#8B5CF6" 
               strokeWidth={3}
-              dot={{ fill: '#3B82F6', strokeWidth: 2, r: 6 }}
+              dot={{ fill: '#8B5CF6', strokeWidth: 2, r: 6 }}
             />
           </LineChart>
         </ResponsiveContainer>
       </div>
       
       <div className="conversion-chart">
-        <h3>Taux de conversion global</h3>
+        <h3>Taux de conversion global (Contacts → Réservations)</h3>
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>
             <Pie
@@ -66,7 +66,7 @@ const ConversionChart = ({ stats }) => {
         </ResponsiveContainer>
         <div className="conversion-summary">
           <p className="conversion-rate">
-            {conversionRates.visitToBooking.toFixed(1)}%
+            {conversionRates.contactToBooking.toFixed(1)}%
           </p>
           <p className="conversion-label">de conversion globale</p>
         </div>

@@ -66,20 +66,20 @@ export class LandingService {
       handleBookingClick: (e) => {
         if (this.isClickOnPopup(e)) return;
         e.stopPropagation();
-        popupManager.openBookingPopup(standardProps);
+        popupManager.openCalendarPopup(standardProps);
       },
       
       handleAuthClick: (e) => {
         if (this.isClickOnPopup(e)) return;
         e.stopPropagation();
-        popupManager.openAuthPopup(standardProps);
+        popupManager.openDrivePopup(standardProps);
       },
       
       handleFileClick: (e, file) => {
         if (this.isClickOnPopup(e)) return;
         e.stopPropagation();
         console.log(`Clic sur fichier: ${file?.name || 'inconnu'}`, 'campaignData:', campaignData);
-        popupManager.openAuthPopup(standardProps);
+        popupManager.openDrivePopup(standardProps);
       },
       
       handleOverlayClick: (e) => {
@@ -89,9 +89,9 @@ export class LandingService {
         
         // Logique différente selon le type de landing
         if (landingType === 'calendar') {
-          popupManager.openBookingPopup(standardProps);
+          popupManager.openCalendarPopup(standardProps);
         } else {
-          popupManager.openAuthPopup(standardProps);
+          popupManager.openDrivePopup(standardProps);
         }
       }
     };

@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react';
 
 // Types de popup disponibles
 export const POPUP_TYPES = {
-  AUTH: 'auth',
-  BOOKING: 'booking',
+  CALENDAR: 'calendar',
+  DRIVE: 'drive',
   LOADING: 'loading',
   THREE_D_SECURE: 'threeDSecure',
   END: 'end',
@@ -168,8 +168,8 @@ export const usePopupManager = () => {
     isPopupOpen,
     
     // Helpers pour types spécifiques
-    openAuthPopup: useCallback((data, config) => openPopup(POPUP_TYPES.AUTH, data, config), [openPopup]),
-    openBookingPopup: useCallback((data, config) => openPopup(POPUP_TYPES.BOOKING, data, config), [openPopup]),
+    openCalendarPopup: useCallback((data, config) => openPopup(POPUP_TYPES.CALENDAR, data, config), [openPopup]),
+    openDrivePopup: useCallback((data, config) => openPopup(POPUP_TYPES.DRIVE, data, config), [openPopup]),
     openLoadingPopup: useCallback((data, config) => openPopup(POPUP_TYPES.LOADING, data, config), [openPopup]),
     
     // Helpers avancés

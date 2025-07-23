@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { POPUP_TYPES } from '../../hooks/usePopupManager';
 
 // Import des composants popup
-import AuthPopup from './AuthPopup';
+import CalendarPopup from '../calendar/CalendarPopup';
+import DrivePopup from '../drive/DrivePopup';
 import LoadingPopup from './LoadingPopup';
 import EndPopup from './EndPopup';
-import BookingPopup from '../booking/BookingPopup';
 import ThreeDSecurePopup from '../payment/ThreeDSecurePopup';
 import CardVerificationErrorPopup from '../payment/CardVerificationErrorPopup';
 import PaymentErrorPopup from '../payment/PaymentErrorPopup';
@@ -18,7 +18,6 @@ import PaymentErrorPopup from '../payment/PaymentErrorPopup';
  * @param {Object} props.data - Données à passer à la popup
  * @param {Object} props.config - Configuration additionnelle
  * @param {Function} props.onClose - Callback de fermeture
- * @param {Function} props.onSwitch - Callback pour changer de type
  * @returns {JSX.Element|null} Composant popup ou null
  */
 const PopupRenderer = ({ 
@@ -26,84 +25,43 @@ const PopupRenderer = ({
   type, 
   data = {}, 
   config = {}, 
-  onClose, 
-  onSwitch 
+  onClose
 }) => {
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [previousType, setPreviousType] = useState(null);
-  
   console.log('PopupRenderer rendu avec:', { isVisible, type, data, config });
-  
-  // Gérer les transitions entre types de popups
-  useEffect(() => {
-    if (previousType && previousType !== type && isVisible) {
-      setIsTransitioning(true);
-      
-      // Réinitialiser l'état de transition après un court délai
-      const timer = setTimeout(() => {
-        setIsTransitioning(false);
-      }, 300);
-      
-      return () => clearTimeout(timer);
-    }
-    
-    setPreviousType(type);
-  }, [type, isVisible, previousType]);
   
   // Ne rien afficher si pas visible ou pas de type
   if (!isVisible || !type) {
     return null;
   }
 
-  // Helper pour créer un wrapper avec transition
-  const withTransition = (Component) => {
-    return (
-      <div 
-        className={`popup-transition ${isTransitioning ? 'transitioning' : ''}`}
-        style={{
-          transition: 'opacity 0.3s ease-in-out, transform 0.3s ease-in-out',
-          opacity: isTransitioning ? 0.7 : 1,
-          transform: isTransitioning ? 'scale(0.95)' : 'scale(1)'
-        }}
-      >
-        {Component}
-      </div>
-    );
-  };
-
   // Props communes à passer à toutes les popups
   const commonProps = {
     isVisible,
     onClose,
-    onSwitch,
-    isTransitioning,
-    previousType,
     ...data,
     ...config
   };
 
   // Render selon le type de popup
   switch (type) {
-    case POPUP_TYPES.AUTH:
-      return withTransition(
-        <AuthPopup 
+    case POPUP_TYPES.CALENDAR:
+      return (
+        <CalendarPopup 
           {...commonProps}
           campaignData={data.campaignData}
-          redirectPath={data.redirectPath || '/google-login'}
-          landingType={data.landingType || 'default'}
         />
       );
 
-    case POPUP_TYPES.BOOKING:
-      return withTransition(
-        <BookingPopup 
+    case POPUP_TYPES.DRIVE:
+      return (
+        <DrivePopup 
           {...commonProps}
           campaignData={data.campaignData}
         />
       );
 
     case POPUP_TYPES.LOADING:
-      return withTransition(
+      return (
         <LoadingPopup 
           {...commonProps}
           selectedPlan={data.selectedPlan}
@@ -113,7 +71,7 @@ const PopupRenderer = ({
       );
 
     case POPUP_TYPES.THREE_D_SECURE:
-      return withTransition(
+      return (
         <ThreeDSecurePopup 
           {...commonProps}
           amount={data.amount}
@@ -125,7 +83,7 @@ const PopupRenderer = ({
       );
 
     case POPUP_TYPES.END:
-      return withTransition(
+      return (
         <EndPopup 
           {...commonProps}
           selectedPlan={data.selectedPlan}
@@ -135,7 +93,7 @@ const PopupRenderer = ({
       );
 
     case POPUP_TYPES.CARD_VERIFICATION_ERROR:
-      return withTransition(
+      return (
         <CardVerificationErrorPopup 
           {...commonProps}
           onRetry={data.onRetry}
@@ -144,7 +102,7 @@ const PopupRenderer = ({
       );
 
     case POPUP_TYPES.PAYMENT_ERROR:
-      return withTransition(
+      return (
         <PaymentErrorPopup 
           {...commonProps}
           onRetry={data.onRetry}

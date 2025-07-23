@@ -150,7 +150,6 @@ const LandingLayout = ({
           data={popupManager.data}
           config={popupManager.config}
           onClose={handlePopupClose}
-          onSwitch={popupManager.switchPopup}
         />
       </div>
     </>

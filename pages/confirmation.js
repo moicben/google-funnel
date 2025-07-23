@@ -42,6 +42,7 @@ const Confirmation = () => {
     if (router.query.firstName) {
       setFirstName(router.query.firstName);
     }
+    
   }, [router.query.email, router.query.firstName]);
 
   // Gérer l'écran de chargement avec le logo Gmail

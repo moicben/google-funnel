@@ -1,0 +1,22 @@
+[
+  {
+    "fileName": "main-overview.mdc",
+    "description": "Complete system overview documenting the campaign-based lead tracking and verification system, including core architecture, key components, and high-level data flows"
+  },
+  {
+    "fileName": "data-models-and-relationships.mdc",
+    "description": "Detailed documentation of the core data models (Campaigns, Leads, Visits, Verifications) and their relationships, including tracking mechanisms and deduplication logic"
+  },
+  {
+    "fileName": "lead-tracking-algorithms.mdc",
+    "description": "Documentation of the IP-based lead tracking algorithms, including visit attribution, conversion funnel progression, and unique visitor counting logic"
+  },
+  {
+    "fileName": "verification-flow.mdc",
+    "description": "Detailed documentation of the multi-stage payment verification flow, including card validation, 3D Secure simulation, and verification state management"
+  },
+  {
+    "fileName": "campaign-analytics.mdc",
+    "description": "Documentation of campaign analytics calculations, including unique visitor counting, conversion rate formulas, and aggregation of statistics across campaigns"
+  }
+]

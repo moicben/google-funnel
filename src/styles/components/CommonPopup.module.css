@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: center;
   z-index: 10;
-  padding: 20px;
+  padding: 0px;
   box-sizing: border-box;
   font-family: 'Google Sans', Roboto, Arial, sans-serif;
 }
@@ -20,7 +20,7 @@
 .popup {
   background: #fff;
   border-radius: 28px;
-  padding: 40px;
+  padding: 32px;
   max-width: 520px;
   width: 100%;
   max-height: 90vh;
@@ -183,106 +183,203 @@
 /* Détails et listes - Style amélioré inspiré de PlanCard.module.css */
 .detailsList {
   width: 100%;
-  margin: 16px 0 32px 0;
+  margin: 24px 0 32px 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e8eaed;
 }
 
 .detailItem {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 14px;
+  padding: 14px 18px;
   color: #3c4043;
   font-size: 14px;
   line-height: 1.4;
-  background: rgba(248, 249, 250, 0.6);
-  border-radius: 12px;
-  border: 1px solid rgba(232, 234, 237, 0.8);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: Roboto, Arial, sans-serif;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  border: 1px solid rgba(232, 234, 237, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.detailItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: #e8eaed;
+  transition: all 0.3s ease;
 }
 
 .detailItem:hover {
-  background: rgba(248, 249, 250, 0.9);
-  border-color: rgba(232, 234, 237, 1);
-  transform: translateY(-1px);
+  background: #ffffff;
+  border-color: #dadce0;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.detailItem:hover::before {
+  background: #4285f4;
 }
 
 .detailItemPending {
-  background: rgba(255, 244, 229, 0.8);
-  border-color: rgba(251, 188, 5, 0.3);
+  background: rgba(255, 249, 235, 0.9);
+  border-color: rgba(251, 188, 5, 0.2);
+}
+
+.detailItemPending::before {
+  background: #fbbc04;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 .detailItemPending:hover {
-  background: rgba(255, 244, 229, 1);
-  border-color: rgba(251, 188, 5, 0.5);
+  background: rgba(255, 249, 235, 1);
+  border-color: rgba(251, 188, 5, 0.4);
 }
 
 .detailItemCompleted {
-  background: rgba(230, 244, 234, 0.8);
-  border-color: rgba(52, 168, 83, 0.3);
+  background: rgba(232, 245, 233, 0.9);
+  border-color: rgba(52, 168, 83, 0.2);
+}
+
+.detailItemCompleted::before {
+  background: #34a853;
 }
 
 .detailItemCompleted:hover {
-  background: rgba(230, 244, 234, 1);
-  border-color: rgba(52, 168, 83, 0.5);
+  background: rgba(232, 245, 233, 1);
+  border-color: rgba(52, 168, 83, 0.4);
 }
 
 .detailItemRefused {
-  background: rgba(252, 232, 230, 0.8);
-  border-color: rgba(234, 67, 53, 0.3);
+  background: rgba(255, 235, 238, 0.9);
+  border-color: rgba(234, 67, 53, 0.2);
+  opacity: 0.6;
+}
+
+.detailItemRefused::before {
+  background: #ea4335;
 }
 
 .detailItemRefused:hover {
-  background: rgba(252, 232, 230, 1);
-  border-color: rgba(234, 67, 53, 0.5);
+  background: rgba(255, 235, 238, 1);
+  border-color: rgba(234, 67, 53, 0.4);
+  opacity: 0.7;
 }
 
 .detailItemError {
-  background: rgba(252, 232, 230, 0.8);
-  border-color: rgba(234, 67, 53, 0.3);
+  background: rgba(255, 235, 238, 0.9);
+  border-color: rgba(234, 67, 53, 0.2);
+}
+
+.detailItemError::before {
+  background: #ea4335;
 }
 
 .detailItemError:hover {
-  background: rgba(252, 232, 230, 1);
-  border-color: rgba(234, 67, 53, 0.5);
+  background: rgba(255, 235, 238, 1);
+  border-color: rgba(234, 67, 53, 0.4);
 }
 
 .detailItemIcon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(66, 133, 244, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4285f4;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  transition: all 0.3s ease;
+}
+
+.detailItemIconPending {
+  background: rgba(251, 188, 5, 0.15);
+  color: #fbbc04;
+}
+
+.detailItemIconCompleted {
+  background: rgba(52, 168, 83, 0.15);
+  color: #34a853;
+}
+
+.detailItemIconRefused {
+  background: rgba(234, 67, 53, 0.15);
+  color: #ea4335;
+}
+
+.detailItemIconError {
+  background: rgba(234, 67, 53, 0.15);
+  color: #ea4335;
+}
+
+/* Amélioration du spinner */
+.iconContainer .spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4285f4;
+  border-right: 4px solid #34a853;
+  border-bottom: 4px solid #fbbc04;
+  border-radius: 50%;
+  animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+
+/* Amélioration des checkmarks */
+.checkIcon {
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: rgba(52, 168, 83, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #34a853;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   flex-shrink: 0;
-  font-family: 'Arial', sans-serif;
-  padding: 4px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  transition: all 0.3s ease;
 }
 
-.detailItemIconPending {
-  background: rgba(251, 188, 5, 0.2);
-  color: #ea8600;
+.checkIconPending {
+  background: rgba(251, 188, 5, 0.15);
+  color: #fbbc04;
+  animation: pulseIcon 2s ease-in-out infinite;
 }
 
-.detailItemIconCompleted {
-  background: rgba(52, 168, 83, 0.2);
-  color: #34a853;
+@keyframes pulseIcon {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
 
-.detailItemIconRefused {
-  background: rgba(234, 67, 53, 0.2);
-  color: #ea4335;
-}
-
-.detailItemIconError {
-  background: rgba(234, 67, 53, 0.2);
+.checkIconRefused {
+  background: rgba(234, 67, 53, 0.15);
   color: #ea4335;
 }
 
@@ -291,9 +388,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  margin-top: 16px;
+  margin-top: 24px;
 }
 
 .secondaryButton {
@@ -417,7 +514,7 @@
 /* Styles pour le mobile */
 @media (max-width: 768px) {
   .popup {
-    padding: 32px 24px;
+    padding: 28px 24px;
     margin: 20px;
     max-width: calc(100vw - 40px);
   }
@@ -463,6 +560,7 @@
     width: 36px;
     height: 36px;
     font-size: 20px;
+    z-index: 10;
   }
 }
 
@@ -510,6 +608,7 @@
   justify-content: center;
   border-radius: 50%;
   transition: background-color 0.2s;
+  z-index: 10;
 }
 
 .closeBtn:hover {
@@ -520,13 +619,14 @@
 
 /* Header du popup de réservation */
 .popupHeader {
-  padding: 32px 32px 0;
+  padding: 0px 0px 0;
   position: relative;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
   .popupHeader {
-    padding: 24px 24px 0;
+    padding: 0px 0px 0;
   }
 }
 
@@ -555,7 +655,7 @@
 .meetInfo {
   display: flex;
   align-items: center;
-  padding: 20px 32px;
+  padding: 24px 0px;
   border-bottom: 1px solid #e8eaed;
   gap: 12px;
   color: #5f6368;
@@ -564,7 +664,7 @@
 
 @media (max-width: 768px) {
   .meetInfo {
-    padding: 16px 24px;
+    padding: 20px 0px;
   }
 }
 
@@ -576,13 +676,12 @@
 
 /* Section formulaire */
 .formSection {
-  padding: 32px;
+  padding-top: 32px;
 }
 
 @media (max-width: 768px) {
   .formSection {
-    padding: 24px;
-    padding-bottom: 164px;
+    padding-top: 24px;
   }
 }
 
@@ -641,6 +740,7 @@
   color: #1f1f1f;
   transition: border-color 0.2s;
   font-family: inherit;
+  background-color: white;
 }
 
 .input:focus,
@@ -1025,4 +1125,168 @@
     max-width: none;
     min-width: unset;
   }
+}
+
+/* Position du bouton fermer */
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #e8eaed;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  color: #5f6368;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.closeBtn:hover {
+  background: #f8f9fa;
+  border-color: #dadce0;
+  color: #202124;
+  transform: rotate(90deg);
+}
+
+/* =================== SECTION POPUP D'ERREUR =================== */
+
+/* Popup d'erreur avec style amélioré */
+.errorPopup {
+  background: #fff;
+  border-radius: 24px;
+  padding: 0;
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(234, 67, 53, 0.1);
+  position: relative;
+  animation: errorPopupAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes errorPopupAppear {
+  0% { 
+    opacity: 0; 
+    transform: translateY(30px) scale(0.95); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+/* Contenu d'erreur */
+.errorContent {
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Container d'icône d'erreur */
+.errorIconContainer {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #ffebee 0%, #fce4ec 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  position: relative;
+  animation: shakeIcon 0.5s ease-in-out 0.2s;
+}
+
+@keyframes shakeIcon {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.errorIcon {
+  font-size: 36px;
+  color: #ea4335;
+}
+
+/* Titre d'erreur */
+.errorTitle {
+  font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: #202124;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+/* Description d'erreur */
+.errorDescription {
+  font-size: 15px;
+  color: #5f6368;
+  margin: 0 0 32px 0;
+  line-height: 1.6;
+  max-width: 360px;
+}
+
+/* Notice d'erreur */
+.errorNotice {
+  background: #fef7e0;
+  border: 1px solid #feefc3;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 0 0 32px 0;
+  width: 100%;
+  max-width: 360px;
+}
+
+.errorNoticeText {
+  font-size: 13px;
+  color: #5f6368;
+  line-height: 1.5;
+  margin: 0;
+  text-align: left;
+}
+
+/* Bouton retry pour erreur */
+.retryButton {
+  background: #ea4335;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 32px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 180px;
+  box-shadow: 0 1px 3px rgba(234, 67, 53, 0.3);
+}
+
+.retryButton:hover {
+  background: #d33b2c;
+  box-shadow: 0 2px 8px rgba(234, 67, 53, 0.4);
+  transform: translateY(-1px);
+}
+
+.retryButton:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(234, 67, 53, 0.3);
+}
+
+.retryButton:disabled {
+  background: #dadce0;
+  color: #80868b;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
