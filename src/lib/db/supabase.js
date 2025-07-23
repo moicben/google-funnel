@@ -4,8 +4,18 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+// Logging amélioré pour le debug
+console.log('[Supabase Init] Environment:', process.env.NODE_ENV);
+console.log('[Supabase Init] URL present:', !!supabaseUrl);
+console.log('[Supabase Init] Anon Key present:', !!supabaseAnonKey);
+console.log('[Supabase Init] Service Key present:', !!supabaseServiceKey);
+
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Variables d\'environnement Supabase manquantes');
+  console.error('[Supabase Init] Missing environment variables:', {
+    url: supabaseUrl || 'MISSING',
+    anonKey: supabaseAnonKey ? 'Present' : 'MISSING'
+  });
+  throw new Error('Variables d\'environnement Supabase manquantes. Vérifiez SUPABASE_URL et SUPABASE_ANON_KEY');
 }
 
 // Client public pour les opérations côté client
