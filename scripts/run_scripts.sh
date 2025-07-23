@@ -9,8 +9,8 @@ if [ -f .env.local ]; then
 fi
 
 # Exporter les variables pour Node.js
-export NEXT_PUBLIC_SUPABASE_URL
-export NEXT_PUBLIC_SUPABASE_ANON_KEY
+export SUPABASE_URL
+export SUPABASE_ANON_KEY
 export SUPABASE_SERVICE_ROLE_KEY
 
 echo "🚀 Exécution avec les variables d'environnement chargées..."
