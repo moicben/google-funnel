@@ -4,6 +4,12 @@ const { BASE_PATH, LANDING_TYPES } = require('./config/paths');
 module.exports = {
   reactStrictMode: true,
   
+  // Force le rechargement des CSS modules
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
+  
   async rewrites() {
     const rewrites = [];
     
