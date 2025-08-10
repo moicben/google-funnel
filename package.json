@@ -14,6 +14,8 @@
     "node-fetch": "^2.7.0",
     "react": "latest",
     "react-dom": "latest",
-    "recharts": "^3.0.2"
+    "react-responsive": "^10.0.1",
+    "recharts": "^3.0.2",
+    "whois": "^2.15.0"
   }
 }

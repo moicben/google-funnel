@@ -22,11 +22,19 @@ module.exports = {
         source: `${config.basePath}/booking`,
         destination: `/landings/${landingType}`,
       });
+
+
     });
     
     return [
       // Routes spécifiques pour les landing pages
       ...rewrites,
+      
+      // Route spécifique pour post
+      {
+        source: '/post/ma-reco-2025',
+        destination: '/landings/post',
+      },
       
       // Routes legacy pour compatibilité
       // Page d'accueil (home)
@@ -34,6 +42,9 @@ module.exports = {
         source: `${BASE_PATH}/agenda`,
         destination: '/',
       },
+
+
+      
       // Page d'accueil avec paramètre de campagne (legacy)
       {
         source: `${BASE_PATH}/booking/:campaign`,

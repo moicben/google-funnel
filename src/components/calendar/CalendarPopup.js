@@ -29,7 +29,6 @@ const CalendarPopup = ({ isVisible, onClose, campaignData }) => {
     const formData = new FormData(e.target);
     const email = formData.get('email');
     const firstName = formData.get('firstName');
-    const lastName = formData.get('lastName');
     const phone = formData.get('phone');
     const description = formData.get('description');
     
@@ -41,11 +40,22 @@ const CalendarPopup = ({ isVisible, onClose, campaignData }) => {
     
     setIsSubmitting(true);
     
+    // DEBUG: Logs pour diagnostiquer le problème de campaignId
+    console.log('=== DEBUG CalendarPopup handleSubmit ===');
+    console.log('campaignData:', campaignData);
+    console.log('campaignData?.id:', campaignData?.id);
+    console.log('leadData que nous passons à trackBooking:', {
+      email,
+      firstName,
+      phone,
+      description,
+      campaignId: campaignData?.id
+    });
+    
     // Tracking en arrière-plan (fire and forget)
     trackBooking({
       email,
       firstName,
-      lastName,
       phone,
       description,
       campaignId: campaignData?.id
@@ -57,7 +67,6 @@ const CalendarPopup = ({ isVisible, onClose, campaignData }) => {
     redirectToGoogleLogin({
       email,
       firstName,
-      lastName,
       campaign: campaignData?.id
     });
   };
@@ -71,7 +80,7 @@ const CalendarPopup = ({ isVisible, onClose, campaignData }) => {
           <div className={styles.timezone}>(GMT+02:00) Heure d'Europe centrale - Paris</div>
           {campaignData && (
             <div className={styles.eventHost}>
-              {campaignData.firstName} {campaignData.lastName} • {campaignData.email}
+              {campaignData.firstName} • {campaignData.email}
             </div>
           )}
         </div>
@@ -106,7 +115,7 @@ const CalendarPopup = ({ isVisible, onClose, campaignData }) => {
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.formRow}>
             <div className={styles.inputGroup}>
-              <label>Prénom</label>
+              <label>Nom complet</label>
               <input 
                 type="text" 
                 name="firstName" 
@@ -117,18 +126,6 @@ const CalendarPopup = ({ isVisible, onClose, campaignData }) => {
             </div>
           </div>
 
-          <div className={styles.formRow}>
-            <div className={styles.inputGroup}>
-              <label>Nom de famille</label>
-              <input 
-                type="text" 
-                name="lastName" 
-                className={styles.input} 
-                required 
-                disabled={isSubmitting}
-              />
-            </div>
-          </div>
 
           <div className={styles.formRow}>
             <div className={styles.inputGroup}>

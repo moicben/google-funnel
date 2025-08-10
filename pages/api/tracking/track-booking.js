@@ -10,7 +10,6 @@ export default async function handler(req, res) {
       campaignId, 
       email, 
       firstName, 
-      lastName, 
       phone, 
       description,
       actionType = 'booking'
@@ -33,7 +32,6 @@ export default async function handler(req, res) {
     const leadData = {
       email,
       first_name: firstName,
-      last_name: lastName,
       phone,
       description,
       ip_address: ip,
@@ -49,10 +47,10 @@ export default async function handler(req, res) {
     res.status(200).json({ 
       success: true, 
       lead: {
+        campaign_id: lead.campaign_id,
         id: lead.id,
         email: lead.email,
         first_name: lead.first_name,
-        last_name: lead.last_name,
         booking_submitted: !!lead.booking_submitted_at,
         booking_count: lead.booking_count || 0
       }

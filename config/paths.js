@@ -13,6 +13,11 @@ export const LANDING_TYPES = {
     name: 'Google Drive', 
     favicon: '/drive-favicon.ico'
   },
+  post: {
+    basePath: '/post/ma-reco-2025',
+    name: 'Post Landing',
+    favicon: '/favicon.ico'
+  },
   custom: {
     basePath: '/custom',
     name: 'Custom Landing',

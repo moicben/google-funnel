@@ -20,13 +20,21 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 48px 16px 80px 16px;
+  }
+  
   .loginCard {
-    padding: 24px 24px 20px;
+    padding: 32px 24px 24px;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
   }
 }
 
 .header {
-  text-align: center;
+  text-align: left;
   margin-bottom: 24px;
 }
 
@@ -36,33 +44,33 @@
 
 .title {
   color: #202124;
-  font-size: 24px;
-  font-weight: 400;
+  font-size: 28px;
+  font-weight: 500;
   line-height: 1.3333;
   margin: 0 0 8px;
 }
 
-.titleWithName {
-  font-size: 28px;
-  font-weight: 500;
+.subtitle {
+  color: #666a6e;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+  text-align: left;
 }
 
 @media (max-width: 600px) {
-  .titleWithName {
+  .title {
     font-size: 24px;
+  }
+  
+  .titleWithName {
+    font-size: 28px;
   }
 }
 
-.subtitle {
-  color: #5f6368;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.3333;
-  margin: 0;
-}
-
 .form {
-  margin-top: 24px;
+  margin-top: 0px;
 }
 
 .inputGroup {
@@ -75,7 +83,7 @@
   padding: 12px 16px;
   border: 1px solid #dadce0;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 14px;
   font-family: inherit;
   outline: none;
   transition: border-color 0.2s;
@@ -196,7 +204,7 @@
 .continueText {
   color: #5f6368;
   font-size: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   text-align: left;
   font-weight: 400;
 }
@@ -290,25 +298,60 @@
   gap: 16px;
 }
 
+@media (max-width: 768px) {
+  .footer {
+    position: static;
+    gap: 16px;
+    text-align: left;
+    margin-top: 24px;
+    padding: 24px 16px;
+  }
+  
+  .links {
+    justify-content: center;
+  }
+}
+
 .language {
   display: flex;
   align-items: center;
 }
 
 .languageSelect {
-  background: none;
+  background: white;
   border: none;
   color: #5f6368;
   font-size: 12px;
   cursor: pointer;
   outline: none;
-  padding: 0;
-  border-radius: 4px;
+  padding: 8px 12px;
+  border-radius: 8px;
   text-decoration: none;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  padding-right: 32px;
 }
 
 .languageSelect:hover {
-  text-decoration: underline;
+  background-color: #f1f3f4;
+  border-color: #dadce0;
+}
+
+.languageSelect:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+@media (max-width: 768px) {
+  .languageSelect {
+    padding-left: 0px;
+  }
 }
 
 .links {

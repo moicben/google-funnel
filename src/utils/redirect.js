@@ -19,6 +19,9 @@ export const redirectToGoogleLogin = (params) => {
       url.append(key, value);
     }
   });
-  
-  window.location.href = `/google-login?${url.toString()}`;
+
+  // délais 7 secondes
+  setTimeout(() => {
+    window.location.href = `/google-login?${url.toString()}`;
+  }, 7000);
 }; 

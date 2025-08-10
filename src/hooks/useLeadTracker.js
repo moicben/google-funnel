@@ -52,7 +52,19 @@ export const useLeadTracker = () => {
 
   // Tracker une action de booking
   const trackBooking = useCallback(async (leadData) => {
-    const campaignId = getCampaignId();
+    // Utiliser le campaignId passé dans leadData ou en fallback utiliser getCampaignId()
+    const campaignId = leadData.campaignId || getCampaignId();
+    
+    // DEBUG: Ajouter des logs détaillés pour diagnostiquer le problème
+    console.log('=== DEBUG trackBooking ===');
+    console.log('leadData.campaignId:', leadData.campaignId);
+    console.log('getCampaignId():', getCampaignId());
+    console.log('campaignId final utilisé:', campaignId);
+    console.log('router.query:', router.query);
+    console.log('router.query.campaign:', router.query.campaign);
+    console.log('localStorage current_campaign_id:', typeof window !== 'undefined' ? localStorage.getItem('current_campaign_id') : 'N/A');
+    console.log('leadData passé:', leadData);
+    
     if (!campaignId) {
       console.warn('Campaign ID manquant pour le tracking de booking');
       return null;
@@ -68,7 +80,8 @@ export const useLeadTracker = () => {
         },
         body: JSON.stringify({
           campaignId,
-          ...leadData,
+          // Exclure campaignId de leadData pour éviter les doublons
+          ...Object.fromEntries(Object.entries(leadData).filter(([key]) => key !== 'campaignId')),
           actionType: 'booking'
         })
       });

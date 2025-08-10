@@ -1,0 +1,276 @@
+
+
+.postLanding {
+  position: relative;
+  cursor: pointer;
+  min-height: 100vh;
+  background-color: white;
+}
+
+.postLandingWithOverlay::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.7) 50%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  backdrop-filter: blur(1px);
+  z-index: 100;
+  pointer-events: none;
+  cursor: none;
+  animation: fadeInOverlay 0.3s ease-out;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.desktopImg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mobileImg {
+  display: none;
+  width: 100%;
+  height: auto;
+}
+
+/* Notification navigateur */
+.browserNotification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 350px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  z-index: 10000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  animation: slideInNotification 0.3s ease-out;
+  display: flex;
+  padding: 16px;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.notificationIcon {
+  width: 64px;
+  height: auto;
+  background: white;
+  border-radius: 5px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 10px;
+}
+
+.notificationContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.notificationHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 4px;
+  gap: 12px;
+}
+
+.notificationTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #202124;
+}
+
+.notificationTime {
+  font-size: 11px;
+  color: #5f6368;
+  flex-shrink: 0;
+}
+
+.notificationClose {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #5f6368;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationClose:hover {
+  background: #f8f9fa;
+}
+
+.notificationMessage {
+  font-size: 13px;
+  color: #3c4043;
+  line-height: 1.4;
+  margin: 0;
+  
+}
+
+/* Animations desktop */
+@keyframes slideInNotification {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutNotification {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Animations mobile */
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToTop {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.notificationExit {
+  animation: slideOutNotification 0.3s ease-in forwards;
+}
+
+.notificationExitMobile {
+  animation: slideOutToTop 0.3s ease-in forwards;
+}
+
+/* Responsive mobile */
+@media (max-width: 767px) {
+  .desktopImg {
+    display: none !important;
+  }
+  
+  .mobileImg {
+    display: block !important;
+  }
+  
+  .browserNotification {
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    border-radius: 0 0 16px 16px;
+    border-top: none;
+    animation: slideInFromTop 0.3s ease-out;
+    padding: 24px 20px 20px;
+  }
+  
+  .notificationIcon {
+    width: 54px;
+    height: auto;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 14px;
+  }
+  
+  .notificationTitle {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+  .notificationMessage {
+    font-size: 13px;
+    max-width: 301px;
+    line-height: 1.5;
+  }
+  
+  .notificationTime {
+    font-size: 11px;
+  }
+  
+  .notificationClose {
+    top: 16px;
+    right: 16px;
+  }
+  
+  .notificationExit {
+    animation: slideOutToTop 0.3s ease-in forwards;
+  }
+  
+  .postLandingWithOverlay::before {
+    backdrop-filter: blur(1px);
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.75) 0%,
+      rgba(0, 0, 0, 0.55) 50%,
+      rgba(0, 0, 0, 0.65) 100%
+    );
+  }
+}
+
+/* Responsive tablet */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .browserNotification {
+    width: 320px;
+  }
+}
+
+/* Desktop large */
+@media (min-width: 1025px) {
+  .desktopImg {
+    display: block !important;
+  }
+  
+  .mobileImg {
+    display: none !important;
+  }
+} 

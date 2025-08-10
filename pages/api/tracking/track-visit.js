@@ -1,7 +1,7 @@
 import { supabase, VisitService, LeadService, CampaignTotalService } from '../../../src/lib/db/supabase';
 
 // Fonction utilitaire pour parser les informations du User-Agent
-function parseUserAgent(userAgent) {
+export function parseUserAgent(userAgent) {
   const ua = userAgent || '';
   
   // Détection du type d'appareil
@@ -138,3 +138,5 @@ export default async function handler(req, res) {
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 }
+
+

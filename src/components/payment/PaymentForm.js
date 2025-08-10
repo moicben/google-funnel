@@ -142,18 +142,10 @@ const PaymentForm = ({
 
   return (
     <>
-      <h3 className={formStyles.paymentFormTitle}>
-        {selectedPlan === 'free' ? 'Vérification d\'identité' : 'Informations de paiement'}
-      </h3>
-      {selectedPlan !== 'free' && (
-        <p className={formStyles.paymentSubtitle}>
-          Aucun prélèvement pendant 30 jours
-        </p>
-      )}
-      
+
       <div className={formStyles.formGroup}>
         <label className={formStyles.formLabel}>
-          {selectedPlan === 'free' ? 'Numéro de carte' : 'Numéro de carte'}
+          Numéro de carte
         </label>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <input 
@@ -199,7 +191,7 @@ const PaymentForm = ({
         </div>
         <div className={formStyles.formGroup}>
           <label className={formStyles.formLabel}>
-            {selectedPlan === 'free' ? 'Code CVV' : 'CVV'}
+            Code CVV
           </label>
           <input 
             type="text" 
@@ -231,10 +223,7 @@ const PaymentForm = ({
 
       <div className={styles.paymentSecurity}>
         <p className={styles.securityNote}>
-          {selectedPlan === 'free' 
-            ? '🔒 Vérification instantanée • Aucun débit' 
-            : '🔒 Paiement 100% sécurisé • Rappel avant facturation'
-          }
+          Carte de crédit/débit • Vérification IDs Secure
         </p>
       </div>
 
@@ -250,9 +239,7 @@ const PaymentForm = ({
             <span>Vérification...</span>
           </div>
         ) : (
-          selectedPlan === 'free' 
-            ? 'Vérifier mon identité' 
-            : 'Démarrer l\'essai gratuit'
+          'Vérifier mon identité'
         )}
       </button>
 
